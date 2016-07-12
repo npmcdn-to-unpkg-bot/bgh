@@ -1,0 +1,79 @@
+.flash_message{
+	top:0;
+	width:100%;
+	position:absolute;
+	z-index:10000;
+	border:none;
+	border-radius:0
+}
+
+
+
+ul.tree {
+	list-style: none;
+	font-size: 18px;
+    padding: 20px;
+	background-color: #fff;
+	line-height: 1.2;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+ul.tree li{
+	list-style: none;
+}
+ul.tree label {
+	font-weight: normal;
+	position: relative;
+}
+ul.tree label input {
+	position: relative;
+	top: 2px;
+	left: -5px;
+}
+
+
+
+ol.sortable{
+	padding-left: 0px;
+}
+ol.sortable li{
+    list-style-type: none;
+    border: 1px solid rgba(0,0,0,.075);
+    cursor: move;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgba(255,255,255,0.6);
+}
+ol.sortable li:hover{
+    background-color: rgba(255,255,255,1);
+}
+ol.sortable li > div > img{
+    /*background-color: #fff;*/
+}
+
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+    color: #555;
+}
+
+.select2-container--default .select2-selection--multiple {
+    height: auto;
+}
