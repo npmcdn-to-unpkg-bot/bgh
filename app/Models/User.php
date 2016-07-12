@@ -111,17 +111,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @return mixed
      */
-    public function images()
+    public function products()
     {
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Product::class);
     }
 
     /**
      * @return mixed
      */
-    public function latestImages()
+    public function latestProducts()
     {
-        return $this->hasMany(Image::class)->orderBy('approved_at', 'desc');
+        return $this->hasMany(Product::class)->orderBy('approved_at', 'desc');
     }
 
     /**

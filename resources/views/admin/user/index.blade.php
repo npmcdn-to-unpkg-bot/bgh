@@ -54,7 +54,7 @@
                     {data: 'username', name: 'username',},
                     {data: 'fullname', name: 'fullname',},
                     {data: 'email', name: 'users.email',},
-                    {data: 'images', name: 'images', searchable: false},
+                    {data: 'products', name: 'products', searchable: false},
                     {data: 'comments', name: 'comments', searchable: false},
                     {data: 'featured_at', name: 'users.featured_at'},
                     {data: 'created_at', name: 'users.created_at'},

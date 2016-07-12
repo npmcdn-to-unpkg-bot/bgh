@@ -11,7 +11,7 @@
                 <li class="list-group-item"><strong>Email</strong> {{ $user->email }}</li>
                 <li class="list-group-item"><strong>Comments</strong> {{ $user->comments->count() }}</li>
                 <li class="list-group-item"><strong>Favorites</strong> {{ $user->favorites->count() }}</li>
-                <li class="list-group-item"><strong>Images</strong> {{ $user->images->count() }}</li>
+                <li class="list-group-item"><strong>Products</strong> {{ $user->products->count() }}</li>
                 <li class="list-group-item"><strong>Uploaded At</strong> {{ $user->created_at->diffForHumans() }} </li>
                 <li class="list-group-item"><strong>Last Updated</strong> {{ $user->updated_at->diffForHumans() }} </li>
                 <li class="list-group-item"><strong>Featured At</strong> {{ $user->featured_at  == null ? 'Not Featured' : $user->featured_at->diffForHumans() }} </li>

@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <h1 class="content-heading">{{ $title }} @if(Input::get('category')){{ t('in category') }} {{ getCategoryName(Input::get('category')) }}@endif</h1>
-    @include('gallery/util-list')
+    @include('product/util-list')
 
     <div class="row">
         @foreach($products as $item)

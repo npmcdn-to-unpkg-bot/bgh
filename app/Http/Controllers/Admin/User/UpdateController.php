@@ -20,7 +20,7 @@ class UpdateController extends Controller
      */
     public function getEdit($id)
     {
-        $user = User::whereId($id)->with('images', 'comments', 'favorites')->firstOrFail();
+        $user = User::whereId($id)->with('products', 'comments', 'favorites')->firstOrFail();
         $title = sprintf('Editing User %s (%s)', $user->fullname, $user->username);
 
         return view('admin.user.edit', compact('user', 'title'));
@@ -66,9 +66,9 @@ class UpdateController extends Controller
         ]);
         $user = User::whereId($request->route('id'))->firstOrFail();
         if ($request->get('delete')) {
-            foreach ($user->images()->get() as $image) {
-                $image->favorites()->delete();
-                foreach ($image->comments()->get() as $comment) {
+            foreach ($user->products()->get() as $product) {
+                $product->favorites()->delete();
+                foreach ($product->comments()->get() as $comment) {
                     $comment->votes()->delete();
                     foreach ($comment->reply()->get() as $reply) {
                         $reply->votes()->delete();
@@ -76,10 +76,10 @@ class UpdateController extends Controller
                     }
                     $comment->delete();
                 }
-                $d = new ResizeHelper(sprintf('%s.%s', $image->image_name, $image->type), 'uploads/images');
+                $d = new ResizeHelper($product->main_image, 'uploads/products');
                 $d->delete();
-                $image->info()->delete();
-                $image->delete();
+                $product->info()->delete();
+                $product->delete();
             }
             foreach ($user->comments()->get() as $comment) {
                 $comment->votes()->delete();

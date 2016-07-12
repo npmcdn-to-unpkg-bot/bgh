@@ -41,9 +41,9 @@ class UserController extends Controller
     {
         $users = User::select([
             'users.*',
-            DB::raw('count(images.user_id) as images'),
+            DB::raw('count(products.user_id) as products'),
             DB::raw('count(comments.user_id) as comments'),
-        ])->leftJoin('images', 'images.user_id', '=', 'users.id')
+        ])->leftJoin('products', 'products.user_id', '=', 'users.id')
             ->leftJoin('comments', 'comments.user_id', '=', 'users.id')
             ->groupBy('users.id');;
 
@@ -67,10 +67,10 @@ class UserController extends Controller
         $datatables = app('datatables')->of($users);
 
         if ($request->get('type') == 'approvalRequired') {
-            $datatables->addColumn('actions', function ($image) {
-                return '<a href="#" class="image-approve btn btn-sm btn-success" data-approve="' . $image->id . '"><i class="fa fa-check"></i> Approve </a>
-                 <a href="' . route('admin.users.edit', [$image->id]) . '" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-edit"></i> Edit </a>
-                <a href="#" class="image-disapprove btn btn-sm btn-danger" data-disapprove="' . $image->id . '"><i class="fa fa-times"></i> Delete</a>';
+            $datatables->addColumn('actions', function ($product) {
+                return '<a href="#" class="image-approve btn btn-sm btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i> Approve </a>
+                 <a href="' . route('admin.users.edit', [$product->id]) . '" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-edit"></i> Edit </a>
+                <a href="#" class="image-disapprove btn btn-sm btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i> Delete</a>';
             });
         } else {
             $datatables->addColumn('actions', function ($user) {

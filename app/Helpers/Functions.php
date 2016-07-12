@@ -4,10 +4,6 @@ use App\Models\Follow;
 use App\Models\Product;
 use App\Models\User;
 
-/**
- * @param $string
- * @return string
- */
 function t($string)
 {
     return trans('text.' . $string, [], null, session('my.locale'));
@@ -22,7 +18,6 @@ function siteSettings($request)
     });
 }
 
-
 function productCategories()
 {
     return Cache::rememberForever('product_categories', function () {
@@ -30,36 +25,20 @@ function productCategories()
     });
 }
 
-/**
- * Pagination limit per page in gallery
- *
- * @param int $int
- * @return int
- */
-// function perPage($int = 20)
-// {
-//     if (!siteSettings('numberOfProductsInGallery')) {
-//         return 20;
-//     }
+function perPage($int = 20)
+{
+    if (!siteSettings('numberOfProductsInGallery')) {
+        return 20;
+    }
 
-//     return abs((int)siteSettings('numberOfProductssInGallery'));
-// }
+    return abs((int)siteSettings('numberOfProductsInGallery'));
+}
 
-/**
- * Number of tags that an image can hold
- *
- * @param int $int
- * @return int
- */
 function tagLimit($int = 5)
 {
     return $int;
 }
 
-/**
- * @param int $int
- * @return int
- */
 function limitPerDay($int = 100)
 {
     if (siteSettings('limitPerDay') == '') {
@@ -69,14 +48,6 @@ function limitPerDay($int = 100)
     return siteSettings('limitPerDay');
 }
 
-
-/**
- * @param        $email
- * @param int $s
- * @param string $d
- * @param string $r
- * @return string
- */
 function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g')
 {
     $url = '//www.gravatar.com/avatar/';
@@ -86,10 +57,6 @@ function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g')
     return $url;
 }
 
-/**
- * @param $id
- * @return bool
- */
 function checkFavorite($id)
 {
     if (auth()->check() == false) {
@@ -103,9 +70,6 @@ function checkFavorite($id)
     return false;
 }
 
-/**
- * @return mixed
- */
 function getFeaturedUser()
 {
     return Cache::remember('featuredAuthor', 3, function () {
@@ -113,10 +77,6 @@ function getFeaturedUser()
     });
 }
 
-/**
- * @param int $limit
- * @return mixed
- */
 function getFeaturedImage($limit = 1)
 {
     return Cache::remember('featuredImage' . $limit, 10, function () use ($limit) {
@@ -124,10 +84,6 @@ function getFeaturedImage($limit = 1)
     });
 }
 
-/**
- * @param $id
- * @return bool
- */
 function checkFollow($id)
 {
     if (auth()->check() == false) {
@@ -140,10 +96,6 @@ function checkFollow($id)
     return false;
 }
 
-/**
- * @param $tags
- * @return array
- */
 function mostTags($tags)
 {
     $tags = implode(',', $tags->toArray());
@@ -177,22 +129,12 @@ function getCategoryName($slug = null)
     return $name;
 }
 
-
-
-/**
- * @param $text
- * @return mixed
- */
 function makeLinks($text)
 {
     return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@',
         '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
 }
 
-/**
- * @param null $votes
- * @return bool
- */
 function checkVoted($votes = null)
 {
     if (auth()->check() == false || !$votes) {
@@ -207,10 +149,6 @@ function checkVoted($votes = null)
     return in_array(auth()->user()->id, $a);
 }
 
-/**
- * @param $url
- * @return string
- */
 function addhttp($url)
 {
     if (!preg_match('~^(?:f|ht)tps?://~i', $url)) {
@@ -220,10 +158,6 @@ function addhttp($url)
     return $url;
 }
 
-/**
- * @param $input
- * @return bool
- */
 function countryIsoCodeMatch($input)
 {
     if (preg_match('/AF|AL|DZ|AS|AD|AG|AI|AG|AR|AA|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BL|BA|BW|BR|BC|BN|BG|BF|BI|KH|CM|CA|IC|CV|KY|CF|TD|CD|CL|CN|CI|CS|CO|CC|CG|CK|CR|CT|HR|CU|CB|CY|CZ|DK|DJ|DM|DO|TM|EC|EG|SV|GQ|ER|EE|ET|FA|FO|FJ|FI|FR|GF|PF|FS|GA|GM|GE|DE|GH|GI|GB|GR|GL|GD|GP|GU|GT|GN|GY|HT|HW|HN|HK|HU|IS|IN|ID|IA|IQ|IR|IM|IL|IT|JM|JP|JO|KZ|KE|KI|NK|KS|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MK|MG|MY|MW|MV|ML|MT|MH|MQ|MR|MU|ME|MX|MI|MD|MC|MN|MS|MA|MZ|MM|NA|NU|NP|AN|NL|NV|NC|NZ|NI|NE|NG|NW|NF|NO|OM|PK|PW|PS|PA|PG|PY|PE|PH|PO|PL|PT|PR|QA|ME|RS|RE|RO|RU|RW|NT|EU|HE|KN|LC|MB|PM|VC|SP|SO|AS|SM|ST|SA|SN|RS|SC|SL|SG|SK|SI|SB|OI|ZA|ES|LK|SD|SR|SZ|SE|CH|SY|TA|TW|TJ|TZ|TH|TG|TK|TO|TT|TN|TR|TU|TC|TV|UG|UA|AE|GB|US|UY|UZ|VU|VS|VE|VN|VB|VA|WK|WF|YE|ZR|ZM|ZW/',
@@ -234,10 +168,6 @@ function countryIsoCodeMatch($input)
     return false;
 }
 
-/**
- * @param $input
- * @return string
- */
 function countryResolver($input)
 {
     switch ($input) {
@@ -1209,9 +1139,6 @@ function languageArray()
     ];
 }
 
-/**
- * @return mixed
- */
 function maxUploadSize()
 {
     $max_upload = (int)(ini_get('upload_max_filesize'));
@@ -1220,10 +1147,6 @@ function maxUploadSize()
     return min($max_upload, $max_post);
 }
 
-/**
- * @param array $except
- * @return string
- */
 function query_params($except = [])
 {
     $query = Input::query();
