@@ -11,6 +11,7 @@ use Roumen\Feed\Facades\Feed;
 class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 {
 
+
     protected $model;
 
     public function  __construct(ProductCategory $model, ProductRepositoryInterface $products)
