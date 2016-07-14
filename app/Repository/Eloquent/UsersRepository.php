@@ -43,29 +43,18 @@ class UsersRepository extends AbstractRepository implements UsersRepositoryInter
 
     public function getAllUsers()
     {
-        return $this->model->confirmed()->with('latestProducts', 'comments')->paginate(perPage());
+        return $this->model->confirmed()->with('latestProducts')->paginate(perPage());
     }
 
     public function getTrendingUsers()
     {
         return $this->model->confirmed()
-            ->leftJoin('comments', 'comments.user_id', '=', 'users.id')
             ->leftJoin('products', 'products.user_id', '=', 'users.id')
-            ->select('users.*', DB::raw('count(comments.user_id)*5 + count(products.user_id)*2 as popular'))
-            ->groupBy('users.id')->with('products', 'latestProducts', 'comments')->orderBy('popular', 'desc')
+            ->select('users.*')
+            ->groupBy('users.id')->with('products', 'latestProducts')->orderBy('popular', 'desc')
             ->paginate(perPage());
     }
 
-
-    public function getUsersFavorites(User $user)
-    {
-        $products = $user->favorites()->lists('product_id');
-        if (!$products) {
-            $products = [null];
-        }
-
-        return $this->products->approved()->whereIn('id', $products)->orderBy('approved_at', 'desc')->paginate(perPage());
-    }
 
     public function getUsersFollowers($username)
     {
@@ -79,7 +68,7 @@ class UsersRepository extends AbstractRepository implements UsersRepositoryInter
 
     public function getUsersProducts(User $user)
     {
-        return $this->products->approved()->whereUserId($user->id)->with('comments', 'favorites', 'user', 'category')->orderBy('approved_at', 'desc')->paginate(perPage());
+        return $this->products->approved()->whereUserId($user->id)->with('user')->orderBy('approved_at', 'desc')->paginate(perPage());
     }
 
     public function createNew($request)
@@ -215,27 +204,5 @@ class UsersRepository extends AbstractRepository implements UsersRepositoryInter
         return $this->products->whereIn('user_id', $following)->orderBy('approved_at', 'desc')->paginate(perPage());
     }
 
-    public function getUsersRss($username)
-    {
-        $user = User::whereUsername($username)->first();
-        $products = Product::approved()->whereUserId($user->id)->orderBy('created_at', 'desc')->take(60)->get();
 
-        $feed = Feed::make();
-        $feed->title = siteSettings('siteName') . '/user/' . $user->username;
-        $feed->description = siteSettings('siteName') . '/user/' . $user->username;
-        $feed->link = URL::to('user/' . $user->username);
-        $feed->lang = 'en';
-
-        foreach ($products as $post) {
-            $desc = '<a href="' . route('product', ['id' => $post->id, 'slug' => $post->slug]) . '"><img src="' . Resize::img($post, 'mainProduct') . '" /></a><br/><br/>
-                <h2><a href="' . route('product', ['id' => $post->id, 'slug' => $post->slug]) . '">' . $post->title . '</a>
-                by
-                <a href="' . route('user', ['username' => $post->user->username]) . '">' . $user->fullname . '</a>
-                ( <a href="' . route('user', ['username' => $post->user->username]) . '">' . $user->username . '</a> )
-                </h2>' . $post->description;
-            $feed->add(ucfirst($post->title), $user->fullname, route('product', ['id' => $post->id, 'slug' => $post->slug]), $post->created_at, $desc);
-        }
-
-        return $feed->render('atom');
-    }
 }

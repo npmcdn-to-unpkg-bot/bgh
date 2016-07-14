@@ -10,42 +10,35 @@ use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
+
     public function boot(Request $request)
     {
 
+        // reb determino la url host para saber que base de datos levanto (en test es con ?country=uy)
         $host = $request->getHost();
-
+        // var_dump($host);
         if ($request->input('country') == 'uy') {
-
             \Config::set('database.default', 'mysql_uy');
-
-            \Config::set('app.locale', env('LOCALE_UY','en'));
-            app()->setLocale(env('LOCALE_UY',\Config::get('app.locale')));
-
-            \Config::set('app.timezone', env('TIMEZONE_UY','UTC'));
-            date_default_timezone_set(\Config::get('app.timezone'));
-
         }
 
-        // var_dump($host);
+        // reb cambio el idioma en base a la configuracion de la tabla settings
+        \Config::set('app.locale', siteSettings('locale'));
+        app()->setLocale(\Config::get('app.locale'));
+        setlocale(LC_TIME, \Config::get('app.locale'));
+
+        // reb cambio el UTM en base a la configuracion de la tabla settings
+        \Config::set('app.timezone', siteSettings('timezone'));
+        date_default_timezone_set(\Config::get('app.timezone'));
+
 
         Validator::extend('country', function ($attribute, $value, $parameters) {
             return countryIsoCodeMatch($value) == true;
         });
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register()
     {
-        //
+
     }
+
 }

@@ -29,6 +29,22 @@
                 </div><!-- /.info-box-content -->
             </div><!-- /.info-box -->
         </div>
+
+         <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Visits</span>
+              <span class="info-box-number">2,000</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+
+
+
     </div>
     <div class="row">
     <div class="col-md-8">
@@ -72,30 +88,30 @@
             ]
         });
 
-        var data = JSON.parse('{!! $signup !!}');
-        new Morris.Area({
-            element: 'signup-container',
-            data: data,
-            xkey: 'date',
-            ykeys: ['value'],
-            labels: ['Users'],
-            lineColors: ['#3c8dbc'],
-            hideHover: 'auto',
-            parseTime: false,
-            resize: true
-        });
+        // var data = JSON.parse('{!! $signup !!}');
+        // new Morris.Area({
+        //     element: 'signup-container',
+        //     data: data,
+        //     xkey: 'date',
+        //     ykeys: ['value'],
+        //     labels: ['Users'],
+        //     lineColors: ['#3c8dbc'],
+        //     hideHover: 'auto',
+        //     parseTime: false,
+        //     resize: true
+        // });
 
-        var newsdata = JSON.parse('{!! $products !!}');
-        new Morris.Area({
-            element: 'products-container',
-            data: newsdata,
-            xkey: 'date',
-            ykeys: ['value'],
-            labels: ['Products'],
-            lineColors: ['#3c8dbc'],
-            hideHover: 'auto',
-            parseTime: false,
-            resize: true
-        });
+        // var newsdata = JSON.parse('{!! $products !!}');
+        // new Morris.Area({
+        //     element: 'products-container',
+        //     data: newsdata,
+        //     xkey: 'date',
+        //     ykeys: ['value'],
+        //     labels: ['Products'],
+        //     lineColors: ['#3c8dbc'],
+        //     hideHover: 'auto',
+        //     parseTime: false,
+        //     resize: true
+        // });
     </script>
 @endsection

@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE_AR', 'UTC'),
+    'timezone' => env('TIMEZONE', 'UTC'),
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -55,7 +55,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-    'locale' => env('LOCALE_AR', 'en'),
+    'locale' => env('LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------

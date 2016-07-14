@@ -2,12 +2,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductInfo extends Model
 {
-
-    use SoftDeletes;
+    // reb activando, el delete en vez de borrar el registro, le pone fecha de baja (baja logica)
+    // use SoftDeletes;
 
     protected $table = 'products_info';
 

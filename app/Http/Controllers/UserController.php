@@ -66,11 +66,6 @@ class UserController extends Controller
         return view('user.following', compact('user', 'title', 'mostUsedTags'));
     }
 
-    public function getRss($user)
-    {
-        return $this->user->getUsersRss($user);
-    }
-
     public function getAll()
     {
         $users = $this->user->getTrendingUsers();

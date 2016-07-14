@@ -2,23 +2,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-10">
-            {!! Form::open()  !!}
-            <div class="form-group">
-                <label for="addnew">New</label>
-                {!! Form::text('addnew',null,['class'=>'form-control','placeholder'=>'Name of product category'])  !!}
-            </div>
-            <div class="form-group">
-                {!! Form::submit('Add',['class'=>'btn btn-success'])  !!}
-            </div>
-            {!! Form::close()  !!}
 
-
-            <div class="page-header">
-                <h3 class="content-heading">Categories
-                    <small>laralalalal </small>
-                </h3>
-            </div>
+        <div class="col-md-8">
 
             <div class='area' id='adminChannels'>
                 <ol class='sortable list channelList list-group'>
@@ -67,6 +52,20 @@
                 </ol>
             </div>
         </div>
+
+        <div class="col-md-4">
+            {!! Form::open()  !!}
+            <div class="form-group">
+                <label for="addnew">Add Category</label>
+                {!! Form::text('addnew',null,['class'=>'form-control','placeholder'=>'Name'])  !!}
+            </div>
+            <div class="form-group">
+                {!! Form::submit('Add',['class'=>'btn btn-success'])  !!}
+            </div>
+            {!! Form::close()  !!}
+
+        </div>
+
 
         @foreach (\App\Models\ProductCategory::orderBy('lft','asc')->get() as $category)
             <div class="modal fade" id="categoryMode-{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -45,6 +45,7 @@
 @endsection
 
 @section('extra-js')
+
     <script type="text/javascript">
 
         $(function () {

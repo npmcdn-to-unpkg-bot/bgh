@@ -2,11 +2,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class product extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = 'products';
     protected $softDelete = true;

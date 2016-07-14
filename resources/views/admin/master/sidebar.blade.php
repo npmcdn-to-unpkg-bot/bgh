@@ -1,12 +1,29 @@
 <section class="sidebar">
     <ul class="sidebar-menu">
-        <li class="header">SideBar</li>
+        <li class="header">{{ Carbon\Carbon::now()->formatLocalized('%A %d %B %Y') }}</li>
         <li class="treeview">
             <a href="{{ url('admin') }}">
                 <i class="ion ion-easel"></i>
                 <span>Dashboard</span>
             </a>
         </li>
+
+        <li class="treeview">
+            <a href="#">
+                <i class="ion ion-cube"></i>
+                <span>Products</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="{{ route('admin.productcategories', ['type' => 'approved']) }}"><i class="fa fa-sitemap"></i> Categories</a></li>
+                <li><a href="{{ route('admin.products.create') }}"><i class="fa fa-plus"></i> Create</a></li>
+                <li><a href="{{ route('admin.products', ['type' => 'approved']) }}"><i class="fa fa-reorder"></i> All</a></li>
+                <li><a href="{{ route('admin.products', ['type' => 'featured']) }}"><i class="fa fa-filter"></i> Featured</a></li>
+                <li><a href="{{ route('admin.products', ['type' => 'approvalRequired']) }}"><i class="fa fa-filter"></i> Require Approval</a></li>
+                <li><a href="{{ route('admin.products.bulkupload', ['type' => 'approvalRequired']) }}"><i class="fa fa-upload"></i> Bulk Create</a></li>
+            </ul>
+        </li>
+
         <li class="treeview">
             <a href="#">
                 <i class="ion ion-ios-people"></i>
@@ -22,20 +39,7 @@
             </ul>
         </li>
 
-        <li class="treeview">
-            <a href="#">
-                <i class="ion ion-cube"></i>
-                <span>Products</span>
-                <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="{{ route('admin.productcategories', ['type' => 'approved']) }}"><i class="fa fa-sitemap"></i> Categories</a></li>
-                <li><a href="{{ route('admin.products', ['type' => 'approved']) }}"><i class="fa fa-reorder"></i> All</a></li>
-                <li><a href="{{ route('admin.products', ['type' => 'featured']) }}"><i class="fa fa-reorder"></i> Featured</a></li>
-                <li><a href="{{ route('admin.products', ['type' => 'approvalRequired']) }}"><i class="fa fa-reorder"></i> Require Approval</a></li>
-                <li><a href="{{ route('admin.products.bulkupload', ['type' => 'approvalRequired']) }}"><i class="fa fa-reorder"></i> Bulk Upload</a></li>
-            </ul>
-        </li>
+
 
         <li class="treeview">
             <a href="#">
@@ -79,12 +83,5 @@
                 <li><a href="{{ route('admin.settings.sitemap') }}"><i class="fa fa-circle-o"></i>Sitemap</a></li>
             </ul>
         </li>
-        <li class="treeview">
-            <li><a href="{{ route('logout') }}">
-                <i class="fa fa-sign-out"></i>
-                <span>{{ t('Logout') }}</span>
-            </a>
-        </li>
-
     </ul>
 </section>

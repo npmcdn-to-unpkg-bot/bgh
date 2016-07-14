@@ -2,6 +2,7 @@
 use App\Models\Favorite;
 use App\Models\Follow;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\User;
 
 function t($string)

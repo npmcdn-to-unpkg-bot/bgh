@@ -79,37 +79,24 @@
         </nav>
         <!-- /mp-menu -->
 
-
-
-        <div class="scroller"><!-- this is for emulating position fixed of the nav -->
+        <div class="scroller">
             <div class="scroller-inner">
-
                 <div id="main_content" class="content clearfix">
-
                     <div class="row">
                         @yield('custom')
-
-
                         <div class="col-md-3">
                             @yield('sidebar')
                         </div>
-
-
                         <div class="col-md-9">
                             @yield('content')
                         </div>
-
                     </div>
-
                     @include('master/footer')
                 </div>
-            </div><!-- /scroller-inner -->
-        </div><!-- /scroller -->
+            </div>
+        </div>
 
-    </div><!-- /pusher -->
-
-
-
+    </div>
 
 </div><!-- /container -->
 

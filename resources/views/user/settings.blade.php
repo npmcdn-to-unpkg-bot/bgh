@@ -1,5 +1,22 @@
 @extends('master/index')
+
+@section('sidebar')
+
+    <a href="{{ route('user', ['username' => $user->username]) }}" class="thumbnail">
+        <img src="{{ Resize::avatar($user,'mainAvatar') }}" alt="{{ $user->username }}">
+    </a>
+
+    <h1 class="profile-fullname">
+        <span>{{ $user->fullname }}</span>
+        <p>
+            <small>{{ $user->username }}</small>
+        </p>
+    </h1>
+
+@endsection
+
 @section('content')
+
     <h3 class="content-heading"><i class="fa fa-user fa-fw"></i> {{ t('Change Avatar') }}</h3>
     {!! Form::open(['url'=>'settings/updateavatar','files'=> true,'role'=>'form']) !!}
     <div class="form-group">
@@ -359,5 +376,7 @@
         {!! Form::submit(t('Change Password'),['class'=>'btn btn-default btn-lg btn-success']) !!}
     </div>
     {!! Form::close() !!}
+
+
 
 @endsection

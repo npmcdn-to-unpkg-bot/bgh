@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-// use App\Models\Image;
+use App\Models\Image;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\NamespacedItemResolver;
@@ -217,14 +217,7 @@ class ResizeHelper extends NamespacedItemResolver
 
     private function newFileName()
     {
-
-        // var_dump('newFileName');
-
         $str = str_random(9);
-        if (Image::select('image_name')->whereImageName($str)->first()) {
-            $str = $this->dirName();
-        }
-
         return $str;
     }
 

@@ -124,25 +124,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Product::class)->orderBy('approved_at', 'desc');
     }
 
-    /**
-     * @return mixed
-     */
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class);
+    // }
 
-    /**
-     * @return mixed
-     */
     public function favorites()
     {
         return $this->hasMany(Favorite::class, 'user_id');
     }
 
-    /**
-     * @return mixed
-     */
     public function followers()
     {
         return $this->hasMany(Follow::class, 'follow_id');

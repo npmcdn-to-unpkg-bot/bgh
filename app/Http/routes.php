@@ -7,12 +7,10 @@ Route::get('/', ['as' => 'home', 'middleware' => 'guest', 'uses' => 'HomeControl
 Route::get('user/{username}', ['as' => 'user', 'uses' => 'UserController@getUser']);
 Route::get('user/{username}/favorites', ['as' => 'users.favorites', 'uses' => 'UserController@getFavorites']);
 Route::get('user/{username}/followers', ['as' => 'users.followers', 'uses' => 'UserController@getFollowers']);
-Route::get('user/{username}/rss', ['as' => 'users.rss', 'uses' => 'UserController@getRss']);
 Route::get('users', ['as' => 'users', 'uses' => 'UserController@getAll']);
 Route::get('productos/{category?}', ['as' => 'products', 'uses' => 'ProductCategoryController@getCategory'])->where('category', '(.*)');
 Route::get('producto/{id}/{slug?}', ['as' => 'product', 'uses' => 'ProductController@getIndex']);
 Route::get('tag/{tag}', ['as' => 'tags', 'uses' => 'TagsController@getIndex']);
-Route::get('tag/{tag}/rss', 'TagsController@getRss');
 Route::get('notifications', ['as' => 'notifications', 'uses' => 'UserController@getNotifications']);
 Route::get('tos', ['as' => 'tos', 'uses' => 'PolicyController@getTos']);
 Route::get('privacy', ['as' => 'privacy', 'uses' => 'PolicyController@getPrivacy']);
@@ -115,10 +113,12 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/products', ['as' => 'admin.products', 'uses' => 'Product\ProductController@getIndex']);
     Route::get('admin/products/data', ['as' => 'admin.products.data', 'uses' => 'Product\ProductController@getData']);
 
-    Route::get('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@getEdit']);
-    Route::post('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@postEdit']);
-    Route::get('admin/products/new', ['as' => 'admin.products.new', 'uses' => 'Product\ProductController@getNew']);
-    Route::post('admin/products/new', ['as' => 'admin.products.new', 'uses' => 'Product\ProductController@postNew']);
+    // mas cercano a REST con verbs
+    Route::get('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@edit']);
+    Route::patch('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@patch', 'before' => 'csrf']);
+    Route::delete('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@delete', 'before' => 'csrf']);
+    Route::get('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@create']);
+    Route::put('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@put', 'before' => 'csrf']);
 
     Route::post('admin/products/approve', ['as' => 'admin.products.approve', 'uses' => 'Product\ProductController@approve']);
     Route::post('admin/products/clearcache', ['as' => 'admin.products.clearcache', 'uses' => 'Product\ProductController@clearCache']);
