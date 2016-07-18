@@ -255,13 +255,20 @@ class ProductController extends Controller
     }
 
 
-    public function clearCache(Request $request)
+    public function clearCache($id)
     {
-        $product = Product::whereId($request->get('id'))->firstOrFail();
-        $cache = new ResizeHelper($product->main_image, $product->type);
-        $cache->clearCache();
 
+        $product = Product::whereId($id);
+
+        if(!isset($product->main_image)){
+           $product->main_image = 'default.png';
+        }
+
+        $cache = new ResizeHelper($product->main_image);
+        $cache->clearCache();
         return 'Cache is cleared, reload the page';
+
+
     }
 
 

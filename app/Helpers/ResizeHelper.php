@@ -8,9 +8,8 @@ use Illuminate\Support\NamespacedItemResolver;
 use Intervention\Image\Facades\Image as ImageResize;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @author Abhimanyu Sharma <abhimanyusharma003@gmail.com>
- */
+// reb http://image.intervention.io/api/greyscale para jugar con las imagenes que se generan
+
 class ResizeHelper extends NamespacedItemResolver
 {
     protected $cacheDir = 'cache';
@@ -19,41 +18,55 @@ class ResizeHelper extends NamespacedItemResolver
     private $width;
     private $height;
     private $type;
+    private $recipe;
 
-    public function __construct($name, $dirName = null, $width = null, $height = null, $type = 'fit', $watermark = false)
+    public function __construct($name, $dirName = null, $recipe = '', $width = null, $height = null, $type = 'fit', $watermark = false, $bnw = false)
     {
         $this->name = $name;
-        $this->source = sprintf('%s/%s', $dirName, $name);
         $this->dirName = sprintf('%s', $dirName);
+        $this->source = sprintf('%s/%s', $dirName, $name);
+        $this->recipe = $recipe;
         $this->width = $width;
         $this->height = $height;
         $this->type = $type;
         $this->watermark = $watermark;
-        $this->key = $this->createKey($this->source, "$type" . $this->width . $this->height);
+        $this->bnw = $bnw;
+        // $this->key = $this->createKey($this->source,  $this->width . $this->height, $this->recipe);
+        $this->key = $this->createKey($this->source, $this->recipe);
     }
 
-    protected function createKey($source, $fingerprint = null, $prefix = 'cached', $suffix = 'file')
+    protected function createKey($source, $recipe = 'default')
     {
-        return sprintf(
-            '%s.%s%s%s',
+        return sprintf('%s.%s',
             substr(hash('sha1', $source), 0, 8),
-            $prefix,
-            $this->pad($source, $source . '/' . $fingerprint),
-            $this->pad($source, $suffix, 3)
+            $recipe
         );
     }
 
-    protected function pad($src, $pad, $len = 16)
-    {
-        return substr(hash('sha1', sprintf('%s%s', $src, $pad)), 0, $len);
-    }
+
+    // protected function createKey($source, $fingerprint = null, $prefix = '', $suffix = '')
+    // {
+    //     return sprintf(
+    //         '%s.%s_%s%s',
+    //         substr(hash('sha1', $source), 0, 8),
+    //         $prefix,
+    //         $this->pad($source, $source . '/' . $fingerprint),
+    //         $suffix
+    //     );
+    // }
+
+    // protected function pad($src, $pad, $len = 16)
+    // {
+    //     return substr(hash('sha1', sprintf('%s%s', $src, $pad)), 0, $len);
+    // }
 
     public function resize()
     {
-        // REB
+
         if ($url = $this->checkIfCacheExits()) {
             return $url;
         }
+
         $this->createCache();
 
         // $img = new \stdClass();
@@ -70,32 +83,35 @@ class ResizeHelper extends NamespacedItemResolver
     {
         if (config('filesystems.default') == 'local') {
             $this->createCache();
-
             return $this->url();
         }
+
         if (Cache::store('image')->has($this->key)) {
             return Cache::store('image')->get($this->key);
         }
 
         return Cache::store('image')->rememberForever($this->key, function () {
             $this->createCache();
-
             return $this->url();
         });
     }
 
     protected function createCache()
     {
+
         if (Storage::exists($this->getCachedFileAbsolutePath()) == false) {
+
             if (Storage::exists($this->absoluteSoucePath())) {
                 $this->createCacheDir();
                 $content = Storage::read($this->absoluteSoucePath());
             } else {
-                $content = Storage::read($this->basePath() . '/uploads/assets/user.jpeg');
+                $content = Storage::read($this->basePath() . '/uploads/assets/placeholder.png');
             }
+
             list($image, $filename) = $this->doResize($content);
             Storage::put($filename, (string)$image, 'public');
         }
+
     }
 
     protected function getCachedFileAbsolutePath()
@@ -144,6 +160,7 @@ class ResizeHelper extends NamespacedItemResolver
 
     protected function doResize($content)
     {
+
         if ($this->type == 'resize') {
             $image = ImageResize::make($content)->resize($this->width, $this->height, function ($constraint) {
                 $constraint->aspectRatio();
@@ -152,9 +169,15 @@ class ResizeHelper extends NamespacedItemResolver
         } else {
             $image = ImageResize::make($content)->fit($this->width, $this->height);
         }
-        if ($this->watermark == true && env('WATERMARK') == true) {
-            $image->insert('uploads/assets/watermark.png', env('WATERMARK_POSITION', 'bottom-right'), 10, 10);
+
+        if($this->bnw){
+            $image = $image->greyscale();
         }
+
+        if ($this->watermark == true && env('WATERMARK') == true) {
+            $image->insert('uploads/assets/watermark.png', env('WATERMARK_POSITION', 'bottom-right'), 0, 0);
+        }
+
         $image->interlace();
         $image = (string)$image->encode($this->resolveMime($image), 100);
         $filename = $this->getCachedFileAbsolutePath();
@@ -246,7 +269,8 @@ class ResizeHelper extends NamespacedItemResolver
     {
         $sizes = Resize::getSizes();
         foreach ($sizes as $size) {
-            $key = $this->createKey($this->source, $size['method'] . $size['width'] . $size['height']);
+            $key = $this->createKey($this->source, $size['recipe']);
+            // $key = $this->createKey($this->source, $size['method'] . $size['width'] . $size['height']);
             Cache::store('image')->forget($key);
         }
     }
@@ -266,11 +290,7 @@ class ResizeHelper extends NamespacedItemResolver
         return true;
     }
 
-    /**
-     * Generate image for download
-     *
-     * @return string
-     */
+
     public function download()
     {
         $file = Storage::read($this->absoluteSoucePath());

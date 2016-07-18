@@ -3,9 +3,21 @@
         <li class="header">{{ Carbon\Carbon::now()->formatLocalized('%A %d %B %Y') }}</li>
         <li class="treeview">
             <a href="{{ url('admin') }}">
-                <i class="ion ion-easel"></i>
+                <i class="fa fa-suitcase"></i>
                 <span>Dashboard</span>
             </a>
+        </li>
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-file"></i>
+                <span>Pages</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="{{ route('admin.pages.create') }}"><i class="fa fa-plus"></i> Create</a></li>
+                <li><a href="{{ route('admin.pages') }}"><i class="fa fa-reorder"></i> List</a></li>
+            </ul>
         </li>
 
         <li class="treeview">
@@ -26,7 +38,7 @@
 
         <li class="treeview">
             <a href="#">
-                <i class="ion ion-ios-people"></i>
+                <i class="fa fa-user"></i>
                 <span>Users</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
@@ -43,7 +55,7 @@
 
         <li class="treeview">
             <a href="#">
-                <i class="ion ion-chatboxes"></i>
+                <i class="fa fa-comments"></i>
                 <span>Comments</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
@@ -55,7 +67,7 @@
 
         <li class="treeview">
             <a href="#">
-                <i class="ion ion-document-text"></i>
+                <i class="fa fa-book"></i>
                 <span>Blogs</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
@@ -66,13 +78,13 @@
         </li>
         <li class="treeview">
             <a href="{{ route('admin.reports') }}">
-                <i class="ion ion-ios-pie"></i>
+                <i class="fa fa-exclamation-triangle"></i>
                 <span>Reports</span>
             </a>
         </li>
         <li class="treeview">
             <a href="#">
-                <i class="ion ion-settings"></i>
+                <i class="fa fa-gear"></i>
                 <span>Site Settings</span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>

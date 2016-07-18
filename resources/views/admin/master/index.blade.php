@@ -1,6 +1,3 @@
-<?php
-    // var_dump(auth()->user());
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,33 +5,25 @@
     <title>{{ siteSettings('siteName') }} | {{ t('Admin') }}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-
-
     {!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
     {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') !!}
-
     {!! HTML::style('static/admin/css/normalize.css') !!}
+    {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
 
     {!! HTML::style('static/admin/css/AdminLTE.css') !!}
     {!! HTML::style('static/admin/css/custom.css') !!}
-
-    {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
 
     <!--[if lt IE 9]>
     {!! HTML::style('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js') !!}
     {!! HTML::style('https://oss.maxcdn.com/respond/1.4.2/respond.min.js') !!}
     <![endif]-->
 
-
-
     <!-- JQUERY -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
-
-
-   <!-- BOOTSTRAP -->
+    <!-- BOOTSTRAP -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <!-- Optional theme -->
@@ -49,21 +38,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
-
     {!! HTML::script('static/admin/js/bootstrap-dialog.min.js') !!}
-
     {!! HTML::script('static/admin/js/jquery.dataTables.min.js') !!}
     {!! HTML::script('static/admin/js/raphael.min.js') !!}
     {!! HTML::script('static/admin/js/morris.min.js') !!}
     {!! HTML::script('static/admin/js/adminLTE.js') !!}
-
-
     {!! HTML::script('static/admin/js/jquery.mjs.nestedSortable.js') !!}
 
-
     {!! HTML::script('static/admin/main.js') !!}
-
-
 
     <script type="text/javascript">
 
@@ -289,8 +271,6 @@
     </footer>
     <div class="control-sidebar-bg"></div>
 </div>
-
-
 
 
 @yield('extra-js')

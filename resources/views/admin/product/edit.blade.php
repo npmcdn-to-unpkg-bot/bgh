@@ -4,7 +4,7 @@
         <div class="col-md-3">
             <a href="{{ route('product',['id' => $product->id, 'slug' => $product->slug]) }}" target="_blank"><img src="{{ Resize::img($product->main_image,'featuredProduct') }}" class="thumbnail img-responsive"></a>
             <div class="form-group">
-                <button type="button" class="btn btn-danger clearProductCache" data-product="{{ $product->id }}"><i class="ion ion-nuclear"></i> Clear Cache</button>
+                {{-- <button type="button" class="btn btn-danger clearProductCache" data-product="{{ $product->id }}"><i class="ion ion-nuclear"></i> Clear Cache</button> --}}
             </div>
             <ul class="list-group">
                 <a href="#" class="list-group-item disabled">

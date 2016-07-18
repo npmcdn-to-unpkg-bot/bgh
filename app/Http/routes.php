@@ -27,7 +27,9 @@ Route::get('blog/{id}/{slug}', ['as' => 'blog', 'uses' => 'BlogController@getBlo
 Route::get('lang/{lang?}', 'PolicyController@switchLang');
 Route::post('queue/receive', 'PolicyController@queue');
 
-Route::resource('demo', 'DemoController');
+// Route::get('/{slug?}', ['as' => 'page', 'uses' => 'PageController@getSlug'])->where('slug', '(.*)');
+
+// Route::resource('demo', 'DemoController');
 
 /**
  * Guest only visit this section
@@ -117,11 +119,12 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@edit']);
     Route::patch('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@patch', 'before' => 'csrf']);
     Route::delete('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@delete', 'before' => 'csrf']);
+    Route::get('admin/products/{id}/clearcache', ['as' => 'admin.products.clearcache', 'uses' => 'Product\ProductController@clearCache']);
     Route::get('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@create']);
     Route::put('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@put', 'before' => 'csrf']);
 
     Route::post('admin/products/approve', ['as' => 'admin.products.approve', 'uses' => 'Product\ProductController@approve']);
-    Route::post('admin/products/clearcache', ['as' => 'admin.products.clearcache', 'uses' => 'Product\ProductController@clearCache']);
+
     Route::get('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@getBulkUpload']);
     Route::post('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@postBulkUpload']);
 
@@ -158,8 +161,30 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/reports', ['as' => 'admin.reports', 'uses' => 'Report\ReportController@getReports']);
     Route::get('admin/reports/data', ['as' => 'admin.reports.data', 'uses' => 'Report\ReportController@getData']);
     Route::get('admin/reports/{id}', ['as' => 'admin.reports.read', 'uses' => 'Report\ReportController@getReadReport']);
+
+// Pages
+    Route::get('admin/pages', ['as' => 'admin.pages', 'uses' => 'PageController@getIndex']);
+    Route::get('admin/pages/data', ['as' => 'admin.pages.data', 'uses' => 'PageController@getData']);
+
+    Route::get('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@edit']);
+    Route::patch('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@patch', 'before' => 'csrf']);
+    Route::delete('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@delete', 'before' => 'csrf']);
+    Route::get('admin/pages/{id}/clone', ['as' => 'admin.pages.clone', 'uses' => 'PageController@doClone']);
+    Route::get('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@create']);
+    Route::put('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@put', 'before' => 'csrf']);
+
 });
 
+
+// reb tiene que estar al final, porque si no entra al sitio por nada, se fija si existe una page creada con ese nombre
+// http://stackoverflow.com/questions/20870899/order-of-route-declarations-in-laravel-package
+Route::get('/{slug?}', ['as' => 'page', 'uses' => 'PageController@getSlug'])->where('slug', '(.*)');
+
+
+// Event::listen('404', function() {
+//     $page = URI::current();
+//     return Response::error('404');
+// });
 
 // REB Debuggear todos los querys que se ejecutan en un request dado
 // Event::listen('illuminate.query', function($query)

@@ -1,20 +1,23 @@
 @if(Session::has('flashSuccess'))
-    <div class="alert alert-success fade in flash_message">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>{{ Session::get('flashSuccess') }}</strong>
-    </div>
+    <script>
+        $(document).ready(function() {
+            toastr["success"]('{{ Session::get('flashSuccess') }}');
+        });
+    </script>
 @endif
 
 @if(Session::has('flashError'))
-    <div class="alert alert-danger fade in flash_message">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>{{ Session::get('flashError') }}</strong>
-    </div>
+    <script>
+        $(document).ready(function() {
+            toastr["error"]('{{ Session::get('flashError') }}');
+        });
+    </script>
 @endif
 
 @if(Session::has('errors'))
-    <div class="alert alert-danger fade in flash_message">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <strong>{{ Session::get('errors')->first() }}</strong>
-    </div>
+    <script>
+        $(document).ready(function() {
+            toastr["error"]('{{ Session::get('errors')->first() }}');
+        });
+    </script>
 @endif

@@ -49,15 +49,6 @@ function limitPerDay($int = 100)
     return siteSettings('limitPerDay');
 }
 
-function get_gravatar($email, $s = 80, $d = 'mm', $r = 'g')
-{
-    $url = '//www.gravatar.com/avatar/';
-    $url .= md5(strtolower(trim($email)));
-    $url .= "?s=$s&d=$d&r=$r";
-
-    return $url;
-}
-
 function checkFavorite($id)
 {
     if (auth()->check() == false) {
