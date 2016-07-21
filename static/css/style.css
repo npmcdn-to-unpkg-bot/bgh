@@ -587,3 +587,32 @@ ul.action-bar {
     display: block;
 
 }
+
+
+
+/* REB */
+
+
+.row.dynhtml {
+    background-color: #11e;
+}
+
+.row.dynhtml .column {
+    background-color: #1e1;
+    height: 300px;
+}
+
+.row.dynhtml .column.height-x2 {
+    height: 600px;
+}
+
+
+.row.dynhtml.nopadding {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.row.dynhtml.nopadding .column{
+    padding-left: 0px;
+    padding-right: 0px;
+}

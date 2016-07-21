@@ -5,7 +5,7 @@
       @if($notice->user)
          <div class="media">
             <a class="pull-left" href="#">
-               <img class="media-object" alt="{{ $notice->user->fullname }}" src="{{ Resize::avatar($notice->user, 'avatar') }}">
+               <img class="media-object" alt="{{ $notice->user->fullname }}" src="{{ Resize::img($notice->user->avatar, 'avatar') }}">
             </a>
             <div class="media-body">
                <h4 class="media-heading black"><a href="{{ route('user', ['username' => $notice->user->username]) }}">{{ $notice->user->fullname }}</a>

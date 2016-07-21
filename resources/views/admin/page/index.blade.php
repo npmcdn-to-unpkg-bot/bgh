@@ -14,6 +14,7 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Title</th>
+                                    <th>Slug</th>
                                     <th>Created At</th>
                                     <th>Updated At</th>
                                     <th>Actions</th>
@@ -44,6 +45,7 @@
                 columns: [
                     { data: 'id', name: 'pages.id'},
                     { data: 'title', name: 'pages.title' },
+                    { data: 'slug', name: 'pages.slug' },
                     { data: 'created_at', name: 'pages.created_at' },
                     { data: 'updated_at', name: 'pages.updated_at' },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },

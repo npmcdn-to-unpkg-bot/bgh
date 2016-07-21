@@ -215,7 +215,7 @@ a:hover {
     background-color: transparent;
     background-image: none;
     padding: 15px;
-    font-family: fontAwesome
+    font-family: fontAwesome;
 }
 .main-header .sidebar-toggle:before {
     content: "\f0c9"
@@ -225,7 +225,8 @@ a:hover {
 }
 .main-header .sidebar-toggle:active,
 .main-header .sidebar-toggle:focus {
-    background: 0 0
+    background: 0 0;
+    text-decoration: none;
 }
 .main-header .sidebar-toggle .icon-bar {
     display: none
@@ -3955,7 +3956,7 @@ table.text-center th {
     border-radius: 0
 }
 .skin-purple .main-header .navbar {
-    background-color: #605ca8
+    background-color: #1e73be
 }
 .skin-purple .main-header .navbar .nav>li>a {
     color: #fff
@@ -3968,18 +3969,21 @@ table.text-center th {
 .skin-purple .main-header .navbar .nav>li>a:focus,
 .skin-purple .main-header .navbar .nav>li>a:hover {
     background: rgba(0, 0, 0, .1);
-    color: #f6f6f6
+    color: #f6f6f6;
+    text-decoration:none;
 }
 .skin-purple .main-header .navbar .sidebar-toggle:hover {
     color: #f6f6f6;
     background: rgba(0, 0, 0, .1)
 }
 .skin-purple .main-header .navbar .sidebar-toggle {
-    color: #fff
+    color: #f1f1f1
 }
 .skin-purple .main-header .navbar .sidebar-toggle:hover {
-    background-color: #555299
+    background-color: #1e73be;
+    text-decoration:none;
 }
+
 @media (max-width: 767px) {
     .skin-purple .main-header .navbar .dropdown-menu li.divider {
         background-color: rgba(255, 255, 255, .1)
@@ -3992,13 +3996,13 @@ table.text-center th {
     }
 }
 .skin-purple .main-header .logo {
-    background-color: #555299;
+    background-color: #2e6da4;
     color: #fff;
     border-bottom: 0 solid transparent
 }
-.skin-purple .main-header .logo:hover {
+/*.skin-purple .main-header .logo:hover {
     background-color: #545096
-}
+}*/
 .skin-purple .main-header li.user-header {
     background-color: #605ca8
 }
@@ -4544,6 +4548,8 @@ table.text-center th {
 .form-inline .select2-container--bootstrap {
     display: inline-block
 }
+
+/*yy
 table.dataTable {
     clear: both;
     margin-top: 6px!important;
@@ -4804,7 +4810,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
     display: inline-block;
     min-width: 75px;
     font-weight: 700
-}
+}*/
 .ui-timepicker-wrapper {
     overflow-y: auto;
     height: 150px;

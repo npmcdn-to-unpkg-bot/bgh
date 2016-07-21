@@ -8,10 +8,6 @@
     {!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
     {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') !!}
     {!! HTML::style('static/admin/css/normalize.css') !!}
-    {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
-
-    {!! HTML::style('static/admin/css/AdminLTE.css') !!}
-    {!! HTML::style('static/admin/css/custom.css') !!}
 
     <!--[if lt IE 9]>
     {!! HTML::style('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js') !!}
@@ -38,12 +34,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
+    {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
+
+    {!! HTML::style('static/admin/plugins/datatables/css/jquery.dataTables.css') !!}
+    {!! HTML::script('static/admin/plugins/datatables/js/jquery.dataTables.min.js') !!}
+
+    {!! HTML::style('static/admin/css/AdminLTE.css') !!}
+    {!! HTML::style('static/admin/css/custom.css') !!}
+
+
     {!! HTML::script('static/admin/js/bootstrap-dialog.min.js') !!}
-    {!! HTML::script('static/admin/js/jquery.dataTables.min.js') !!}
+
     {!! HTML::script('static/admin/js/raphael.min.js') !!}
     {!! HTML::script('static/admin/js/morris.min.js') !!}
     {!! HTML::script('static/admin/js/adminLTE.js') !!}
     {!! HTML::script('static/admin/js/jquery.mjs.nestedSortable.js') !!}
+
+    {{-- http://jquery.malsup.com/form/#ajaxForm --}}
+    {!! HTML::script('static/admin/js/jquery.form.min.js') !!}
+
+    {!! HTML::script('static/admin/js/jquery-checktree.js') !!}
 
     {!! HTML::script('static/admin/main.js') !!}
 
@@ -207,12 +217,12 @@
                     </li>
                     <li class="dropdown user user-menu">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ Resize::avatar(auth()->user(),'mainAvatar') }}" class="user-image" alt="{{ auth()->user()->username }}">
+                        <img src="{{ Resize::img(auth()->user()->avatar,'mainAvatar') }}" class="user-image" alt="{{ auth()->user()->username }}">
                         <span class="hidden-xs">{{ auth()->user()->fullname }}</span>
                       </a>
                       <ul class="dropdown-menu">
                         <li class="user-header">
-                          <img src="{{ Resize::avatar(auth()->user(),'mainAvatar') }}" class="img-circle" alt="{{ auth()->user()->username }}">
+                          <img src="{{ Resize::img(auth()->user()->avatar,'mainAvatar') }}" class="img-circle" alt="{{ auth()->user()->username }}">
                           <p>
                             {{ auth()->user()->fullname }}
                             <small>{{ auth()->user()->permission }}</small>

@@ -10,9 +10,9 @@
                 <a href="#" class="list-group-item disabled">
                     Statics
                 </a>
-                <li class="list-group-item"><strong>Uploader</strong> <a href="{{ route('user', [$product->user->username]) }}">{{ $product->user->fullname }}</a></li>
+                <li class="list-group-item"><strong>User</strong> {{ $product->user->fullname }}</li>
                 <li class="list-group-item"><strong>Views</strong> {{ $product->views }}</li>
-                <li class="list-group-item"><strong>Downloads</strong>  {{ $product->downloads }}</li>
+                <li class="list-group-item"><strong>In Categories</strong> {{ $product->categories->count() }}</li>
                 <li class="list-group-item"><strong>Uploaded At</strong> {{ $product->created_at->diffForHumans() }} </li>
                 <li class="list-group-item"><strong>Last Updated</strong> {{ $product->updated_at->diffForHumans() }} </li>
                 <li class="list-group-item"><strong>Featured At</strong> {{ $product->featured_at  == null ? 'Not Featured' : $product->featured_at->diffForHumans() }} </li>
@@ -175,10 +175,6 @@
 
     </style>
 
-    {{-- http://jquery.malsup.com/form/#ajaxForm --}}
-    {!! HTML::script('static/admin/js/jquery.form.min.js') !!}
-
-    {!! HTML::script('static/admin/js/jquery-checktree.js') !!}
 
     <script>
 

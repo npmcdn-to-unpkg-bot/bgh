@@ -12,7 +12,7 @@
     @foreach($comments as $comment)
         <div class="media" id="comment-{{ $comment->id }}">
             <a class="pull-left" href="{{ route('user', ['user' => $comment->user->username]) }}">
-                <img class="media-object" src="{{ Resize::avatar($comment->user,'avatar') }}" alt="{{ $comment->user->fullname }}">
+                <img class="media-object" src="{{ Resize::img($comment->user->avatar,'avatar') }}" alt="{{ $comment->user->fullname }}">
             </a>
 
             <div class="media-body">
@@ -42,7 +42,7 @@
                     <hr/>
                     <div class="media" id="reply-{{ $reply->id }}">
                         <a class="pull-left" href="{{ route('user', ['user' => $reply->user->username]) }}">
-                            <img class="media-object" src="{{ Resize::avatar($reply->user, 'avatar') }}" alt="{{ $reply->user->fullname }}">
+                            <img class="media-object" src="{{ Resize::img($reply->user->avatar, 'avatar') }}" alt="{{ $reply->user->fullname }}">
                         </a>
 
                         <div class="media-body">

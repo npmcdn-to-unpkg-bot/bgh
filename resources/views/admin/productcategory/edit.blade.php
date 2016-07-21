@@ -18,23 +18,6 @@
                 </label>
                 {!! Form::text('slug',$category->slug,['class'=>'form-control','placeholder'=>'Slug','required'=>'required']) !!}
             </div>
-            @if($category->id == 1 || $category->name == 'Uncategorized')
-                <p>You can't delete this category, this is default category in which images will go, if not category selected</p>
-            @else
-                <div class="form-group">
-                    <label for="addnew">Delete
-                    </label><br/>
-                    {!! Form::checkbox('delete',true,false,['rel' => 'delete']) !!}
-                </div>
-            @endif
-            <div class="form-group">
-                <p><strong>Shift images to new</strong></p>
-                <select name="shiftCategory" class="form-control" disabled rel="shiftToCategory">
-                    @foreach(\App\Models\ProductCategory::whereNotIn('id', [$category->id])->orderBy('lft','asc')->get() as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <div class="form-group">
                 {!! Form::label('products', 'Products:') !!}

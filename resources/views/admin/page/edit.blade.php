@@ -2,7 +2,18 @@
 @section('content')
 
 
+
+
+    {!! HTML::style('static/admin/plugins/summernote/summernote.css') !!}
+    {!! HTML::script('static/admin/plugins/summernote/summernote.js') !!}
+
+
+    <!-- Ckeditor js -->
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js"></script-->
+
+
     {!! HTML::style('static/admin/plugins/grideditor/grideditor.css') !!}
+    {!! HTML::script('static/admin/plugins/grideditor/jquery.grideditor.js') !!}
 
     <style>
 
@@ -65,13 +76,7 @@
 @section('extra-js')
 
 
-    <!-- Ckeditor js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js"></script>
 
-
-    {!! HTML::script('static/admin/plugins/grideditor/jquery.grideditor.js') !!}
-
-    {!! HTML::script('static/admin/js/jquery.form.min.js') !!}
 
     <script>
 
@@ -81,7 +86,7 @@
             $('#myGrid').gridEditor({
                 new_row_layouts: [[12], [6,6], [9,3], [4,4,4]],
                 valid_col_sizes: [3, 4, 6, 9, 12],
-                content_types: ['ckeditor'],
+                content_types: ['summernote'],
                  row_tools: [{
                     title: 'Set background image',
                     iconClass: 'glyphicon-picture',
@@ -96,7 +101,10 @@
                     iconClass: 'glyphicon-picture',
                     on: {
                         click: function() {
-                            $(this).closest('.row').css('background-image', 'url(http://placekitten.com/g/300/300)');
+                            $(this).closest('.column').css({
+                                'background-image': 'url(http://placekitten.com/g/300/300)',
+                                'background-size': 'cover',
+                            });
                         }
                     }
                 }],

@@ -1,11 +1,18 @@
 @extends('admin/master/index')
 
 @section('content')
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreate">{{ t('Create') }}</button>
+        </div>
+    </div>
+
     <div class="row">
 
         <div class="col-md-8">
 
-            <div class='area' id='adminChannels'>
+            <div class='categories-sortable-list area' id='adminChannels'>
                 <ol class='sortable list channelList list-group'>
 
                     <?php
@@ -13,7 +20,7 @@
                     $curDepth = 0;
                     $counter = 0;
 
-                    foreach (\App\Models\ProductCategory::orderBy('lft', 'asc')->get() as $category):
+                    foreach ($categories as $category):
                     if ($category->depth == $curDepth)
                     {
                         if ($counter > 0) echo "</li>";
@@ -31,16 +38,14 @@
 
                     ?>
                     <li id='channel_{{ $category->id }}' data-id='{{ $category->id }}' class="list-group-item" style="cursor: move">
-                        <!-- <i class="fa fa-arrows-alt pull-left">&nbsp;</i> -->
-
-                        <a href="{{ route('admin.productcategories.order', ['id' => $category->id]) }}" class="pull-right">ITEMS&nbsp;({{ sizeof($category->products) }})</a>
-                        <span class="pull-right">&nbsp;|&nbsp;</span>
-                        <a href="" class="pull-right" data-toggle="modal" data-target="#categoryMode-{{ $category->id }}">QUICK</a>
-                        <span class="pull-right">&nbsp;|&nbsp;</span>
-                        <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="pull-right">EDIT</a>
-
                         <div class='info'>
-                            <span class='channel channel-1'>{{ $category->name }}</span>
+                            <span class='channel channel-1'>{{ $category->name }}<a href="{{ route('admin.productcategories.items', ['id' => $category->id]) }}"><small>&nbsp;({{ sizeof($category->products) }} items)</small></a></span>
+                            <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
+                            <a href="{{ route('products', ['category' =>  $category->link]) }}" target="_blank" class="btn btn-default" rel="view"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('admin.productcategories.items', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-cubes"></i></a>
+                                <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default" rel="delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
                         </div>
 
                     <?php $counter++; ?>
@@ -53,106 +58,105 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            {!! Form::open()  !!}
-            <div class="form-group">
-                <label for="addnew">Add Category</label>
-                {!! Form::text('addnew',null,['class'=>'form-control','placeholder'=>'Name'])  !!}
-            </div>
-            <div class="form-group">
-                {!! Form::submit('Add',['class'=>'btn btn-success'])  !!}
-            </div>
-            {!! Form::close()  !!}
+    </div>
 
-        </div>
+    {{ Form::open(['method' => 'DELETE', 'name' => 'delete']) }}
+    {{ Form::close() }}
 
-
-        @foreach (\App\Models\ProductCategory::orderBy('lft','asc')->get() as $category)
-            <div class="modal fade" id="categoryMode-{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Edit</h4>
+    <!-- Modal -->
+    <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {!! Form::open(['role' => 'form'])  !!}
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                           data-dismiss="modal">
+                               <span aria-hidden="true">&times;</span>
+                               <span class="sr-only">{{ t('Close') }}</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            {{ t('Create') }}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">{{ t('Name') }}</label>
+                            {!! Form::text('name',null,['class'=>'form-control','placeholder'=>t('Name')])  !!}
                         </div>
-                        <div class="modal-body">
-                            {!! Form::open(['url'=>'admin/productcategories/update']) !!}
-                            <div class="form-group">
-                                {!! Form::text('id',$category->id,['class'=>'hidden']) !!}
-                                <label for="addnew">Product Category Name</label>
-                                {!! Form::text('name',$category->name,['class'=>'form-control','placeholder'=>'Name of category','required'=>'required']) !!}
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="slug">Slug ( url of category )
-                                    <small>English characters are allowed in url, space is seperate by dash</small>
-                                </label>
-                                {!! Form::text('slug',$category->slug,['class'=>'form-control','placeholder'=>'Slug','required'=>'required']) !!}
-                            </div>
-                            @if($category->id == 1 || $category->name == 'Uncategorized')
-                                <p>You can't delete this category, this is default category in which images will go, if not category selected</p>
-                            @else
-                                <div class="form-group">
-                                    <label for="addnew">Delete this product category
-                                        <small> ( At your own risk )</small>
-                                    </label><br/>
-                                    {!! Form::checkbox('delete',true,false,['rel' => 'delete']) !!}
-                                </div>
-                            @endif
-                            <div class="form-group">
-                                <p><strong>Shift images from this product category to new product category</strong></p>
-                                <select name="shiftCategory" class="form-control" disabled rel="shiftToCategory">
-                                    @foreach(\App\Models\ProductCategory::whereNotIn('id', [$category->id])->orderBy('lft','asc')->get() as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                {!! Form::submit('Update',['class'=>'btn btn-success']) !!}
-                                {!! Form::close() !!}
-                            </div>
-
+                        <div class="form-group">
+                            <label for="slug">{{ t('Slug') }}</label>
+                            {!! Form::text('slug',null,['class'=>'form-control','placeholder'=>t('Slug')])  !!}
                         </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ t('Close') }}</button>
+                        {!! Form::submit(t('Accept'),['class'=>'btn btn-primary'])  !!}
+                    </div>
+                {!! Form::close() !!}
             </div>
+        </div>
+    </div>
 
-        @endforeach
 @endsection
 
 @section('extra-js')
-            <script type="text/javascript">
 
-                $(function () {
-                    $("[rel=delete]").click(function () {
-                        $("[rel=shiftToCategory]").attr("disabled", false);
-                    });
-                });
-                $("#adminChannels .channelList").nestedSortable({
-                    forcePlaceholderSize: true,
-                    disableNestingClass: 'mjs-nestedSortable-no-nesting',
-                    handle: 'div',
-                    helper: 'clone',
-                    items: 'li',
-                    maxLevels: 0,
-                    opacity: .6,
-                    placeholder: 'placeholder',
-                    revert: 250,
-                    tabSize: 25,
-                    tolerance: 'pointer',
-                    toleranceElement: '> div',
-                    update: function () {
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ url('admin/productcategories/reorder') }}",
-                            data: {tree: $("#adminChannels .channelList").nestedSortable("toArray", {startDepthCount: -1})},
-                            globalLoading: true
-                        });
-                    }
+    <script type="text/javascript">
+
+        $(function () {
+
+
+            $('.btn[rel="delete"]').on('click',function(e) {
+                e.preventDefault();
+
+                var $this = $(this);
+
+                $('form[name="delete"]').attr('action',$this.attr('href'));
+
+                BootstrapDialog.show({
+                    message: 'Confirm Delete?',
+                    buttons: [{
+                        label: 'Confirm',
+                        cssClass: 'btn-primary',
+                        action: function(){
+                            $('form[name="delete"]').attr('action',$this.attr('href')).submit();
+                        }
+                    }, {
+                        label: 'Close',
+                        action: function(dlg){
+                            dlg.close();
+                        }
+                    }]
                 });
 
-            </script>
+            });
+
+
+        });
+
+        $("#adminChannels .channelList").nestedSortable({
+            forcePlaceholderSize: true,
+            disableNestingClass: 'mjs-nestedSortable-no-nesting',
+            handle: 'div',
+            helper: 'clone',
+            items: 'li',
+            maxLevels: 0,
+            opacity: .6,
+            placeholder: 'placeholder',
+            revert: 250,
+            tabSize: 25,
+            tolerance: 'pointer',
+            toleranceElement: '> div',
+            update: function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ url('admin/productcategories/reorder') }}",
+                    data: {tree: $("#adminChannels .channelList").nestedSortable("toArray", {startDepthCount: -1})},
+                    globalLoading: true
+                });
+            }
+        });
+
+    </script>
+
 @endsection

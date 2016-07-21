@@ -2,14 +2,13 @@
 @section('content')
     <div class="row">
         <div class="col-md-3">
-            <a href="{{ route('user', ['username' => $user->username]) }}" target="_blank"><img src="{{ Resize::avatar($user,'mainAvatar') }}" class="thumbnail img-responsive"></a>
+            <a href="{{ route('user', ['username' => $user->username]) }}" target="_blank"><img src="{{ Resize::img($user->avatar,'mainAvatar') }}" class="thumbnail img-responsive"></a>
             <ul class="list-group">
                 <a href="#" class="list-group-item disabled">
                     User Statics
                 </a>
                 <li class="list-group-item"><strong>FullName</strong> <a href="{{ route('user', [$user->username]) }}">{{ $user->fullname }}</a></li>
                 <li class="list-group-item"><strong>Email</strong> {{ $user->email }}</li>
-                <li class="list-group-item"><strong>Comments</strong> {{ $user->comments->count() }}</li>
                 <li class="list-group-item"><strong>Favorites</strong> {{ $user->favorites->count() }}</li>
                 <li class="list-group-item"><strong>Products</strong> {{ $user->products->count() }}</li>
                 <li class="list-group-item"><strong>Uploaded At</strong> {{ $user->created_at->diffForHumans() }} </li>

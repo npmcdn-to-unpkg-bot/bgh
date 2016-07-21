@@ -13,31 +13,56 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use App\Helpers\Resize;
 
+
+
+use App\Repository\ProductCategoryRepositoryInterface;
+use App\Repository\ProductRepositoryInterface;
+
 class ProductCategoryController extends Controller
 {
+
+    public function __construct(ProductCategoryRepositoryInterface $category, ProductRepositoryInterface $products)
+    {
+        $this->products = $products;
+        $this->category = $category;
+    }
+
+
     public function index()
     {
-        $title = 'Product Categories';
+        $title = t('Categories');
 
-        return view('admin.productcategory.index', compact('title'));
+        $categories = ProductCategory::orderBy('lft', 'asc')->get();
+
+        foreach ($categories as &$category) {
+            $category->link = $this->category->getLink($category->slug);
+        }
+
+        return view('admin.productcategory.index', compact('title','categories'));
     }
 
 
     public function createCategory(Request $request)
     {
         $this->validate($request, [
-            'addnew' => 'required',
+            'name' => 'required',
+            'slug' => 'required',
         ]);
+
         $category = new ProductCategory();
-        $category->name = ucfirst($request->get('addnew'));
-        $slug = @str_slug($request->get('addnew'));
+
+        $category->name = $request->get('name');
+
+        $slug = @str_slug($request->get('slug'));
         if (!$slug) {
             $slug = str_random(9);
         }
         $category->slug = $slug;
+
         $category->save();
+
         Artisan::call('cache:clear');
-        return redirect()->back()->with('flashSuccess', 'New Product Category Is Added');
+        return redirect()->back()->with('flashSuccess', 'Category Is Added');
     }
 
     public function reorderCategory(Request $request)
@@ -61,39 +86,32 @@ class ProductCategoryController extends Controller
         Artisan::call('cache:clear');
     }
 
-    // se usa en el modal
-    public function updateCategory(Request $request)
+    // // se usa en el modal
+    // public function updateCategory(Request $request)
+    // {
+    //     $this->validate($request, [
+    //         'id'   => ['required'],
+    //         'slug' => ['required', 'alpha_dash'],
+    //         'name' => ['required']
+    //     ]);
+    //     $id = $request->get('id');
+    //     $category = ProductCategory::where('id', '=', $id)->with('images')->first();
+
+    //     $category->slug = $request->get('slug');
+    //     $category->name = $request->get('name');
+    //     $category->save();
+    //     Artisan::call('cache:clear');
+    //     return redirect()->back()->with('flashSuccess', 'Product Category is now updated');
+    // }
+
+
+    public function delete($id)
     {
-        $this->validate($request, [
-            'id'   => ['required'],
-            'slug' => ['required', 'alpha_dash'],
-            'name' => ['required']
-        ]);
-        $id = $request->get('id');
-        $category = ProductCategory::where('id', '=', $id)->with('images')->first();
-
-        $delete = $request->get('delete');
-        if ($delete) {
-            // if ($request->get('shiftCategory')) {
-            //     foreach ($category->images as $image) {
-            //         $image->category_id = $request->get('shiftCategory');
-            //         $image->save();
-            //     }
-            // }
-            $category->delete();
-
-            return redirect()->back()->with('flashSuccess', 'Product Category is now deleted');
-        }
-
-        $category->slug = $request->get('slug');
-        $category->name = $request->get('name');
-        $category->save();
-        Artisan::call('cache:clear');
-        return redirect()->back()->with('flashSuccess', 'Product Category is now updated');
+        $category = ProductCategory::findOrFail($id);
+        $category->delete();
+        // Artisan::call('cache:clear');
+        return redirect()->back()->with('flashSuccess', 'Product Category is now deleted');
     }
-
-
-    // REB
 
 
     public function productlist()
@@ -116,13 +134,13 @@ class ProductCategoryController extends Controller
 
     public function edit($id)
     {
-       $title = 'Edit Product Categories';
+       $title = t('Edit');
 
         $category = ProductCategory::where('id', '=', $id)->first();
 
-        $ix = 0;
 
         // para popular el select2 de productos
+        $ix = 0;
 
         // primero incluyo los que ya tiene incluidos el many to many con su respetivo orden
         $products = [];
@@ -136,7 +154,7 @@ class ProductCategoryController extends Controller
         $selectedproducts = $products;
 
         // luego incluyo el resto de los productos filtrando los que ya inclui como seleccionados
-        $allproducts = Product::where('id', '>', 0)->get();
+        $allproducts = Product::all();
         foreach ($allproducts as $p) {
 
             if(!$category->products->contains($p->id)){
@@ -148,8 +166,6 @@ class ProductCategoryController extends Controller
             $ix++;
         }
 
-
-
         return view('admin.productcategory.edit', compact('title','category','products','selectedproducts'));
 
     }
@@ -157,27 +173,9 @@ class ProductCategoryController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-            // 'id'   => ['required'],
             'slug' => ['required', 'alpha_dash'],
             'name' => ['required']
         ]);
-
-        // $id = $request->get('id');
-        $category = ProductCategory::where('id', '=', $id)->with('images')->first();
-        $delete = $request->get('delete');
-        if ($delete) {
-            // if ($request->get('shiftCategory')) {
-            //     foreach ($category->images as $image) {
-            //         $image->category_id = $request->get('shiftCategory');
-            //         $image->save();
-            //     }
-            // }
-            $category->delete();
-
-            return redirect()->back()->with('flashSuccess', 'Product Category is now deleted');
-        }
-
-        // $products = $request->get('products');
 
         $order = (array) $request->get('products');
         $pivotData = array_fill(0, count($order), ['order' => 0]);
@@ -197,22 +195,22 @@ class ProductCategoryController extends Controller
         return redirect()->back()->with('flashSuccess', 'Product Category is now updated');
     }
 
-    public function order($id)
+    public function items($id)
     {
 
         $category = ProductCategory::where('id', '=', $id)->first();
 
-        $title = 'Products of ' . $category->name;
+        $title = $category->name . ': ' . t('Items');
 
         $items = $category->products;
 
-        return view('admin.productcategory.order', compact('title','category','items'));
+        return view('admin.productcategory.items', compact('title','category','items'));
     }
 
-    public function reorder($id, Request $request)
+    public function itemsupdate($id, Request $request)
     {
 
-        $category = ProductCategory::where('id', '=', $id)->with('images')->first();
+        $category = ProductCategory::findOrFail($id);
 
         // levanto el array de ids por orden de esa categoria y los pongo como parametro extra en el many to many
         $order = (array) $request->get('order');
@@ -228,7 +226,7 @@ class ProductCategoryController extends Controller
         $category->save();
         Artisan::call('cache:clear');
 
-        echo 'Itemes ordered';
+        echo 'Itemes updated';
     }
 
 }

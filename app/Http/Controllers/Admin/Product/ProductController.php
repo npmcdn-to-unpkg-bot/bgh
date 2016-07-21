@@ -22,20 +22,20 @@ use App\Http\Requests\Admin\ProductRequest;
 class ProductController extends Controller
 {
 
-    public function getIndex(Request $request)
+    public function getList(Request $request)
     {
 
-        $title = sprintf('List of %s products', ucfirst($request->get('type')));
+        $title = t('List') . sprintf(': %s', ucfirst($request->get('type')));
         $type = $request->get('type');
 
-        return view('admin.product.index', compact('title', 'type'));
+        return view('admin.product.list', compact('title', 'type'));
     }
 
     public function getData(Request $request)
     {
         $products = Product::select([
             'products.*',
-            DB::raw('users.fullname as fullname'),
+            DB::raw('users.fullname as user'),
         ])->leftJoin('users', 'users.id', '=', 'products.user_id')
             ->groupBy('products.id');
 
@@ -57,14 +57,15 @@ class ProductController extends Controller
 
         if ($request->get('type') == 'approvalRequired') {
             $datatables->addColumn('actions', function ($product) {
-                return '<a href="#" class="product-approve btn btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i> Approve </a>
-                 <a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-info" target="_blank"><i class="fa fa-edit"></i> Edit </a>
-                <a href="#" class="product-disapprove btn btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i> Delete</a>';
+                return '<a href="#" class="product-approve btn btn-sm btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i></a>
+                 <a href="#" class="product-disapprove btn btn-sm btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i></a>
+                 <a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>';
+
             });
         } else {
             $datatables->addColumn('actions', function ($product) {
-                return '<a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-info" target="_blank"><i class="fa fa-edit"></i> Edit </a>
-                <a href="' . route('product', [$product->id, $product->slug]) . '" class="btn btn-success" target="_blank"><i class="fa fa-search"></i> View</a>';
+                return '<a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>
+                <a href="' . route('product', [$product->id, $product->slug]) . '" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>';
             });
         }
 
@@ -80,7 +81,7 @@ class ProductController extends Controller
                 return 'Not Featured';
             })
             ->editColumn('updated_at', '{!! $updated_at->diffForHumans() !!}')
-            ->editColumn('title', '{!! str_limit($title, 60) !!}')
+            ->addColumn('user', '{!! $user !!}')
             ->make(true);
     }
 
@@ -214,22 +215,12 @@ class ProductController extends Controller
 
         $delete = new ResizeHelper( $product->main_image, $product->type);
         $delete->delete();
-        // $product->favorites()->delete();
-        // $comments = $product->comments()->get();
-        // foreach ($comments as $comment) {
-        //     $comment->votes()->delete();
-        //     foreach ($comment->reply()->get() as $reply) {
-        //         $reply->votes()->delete();
-        //         $reply->delete();
-        //     }
-        //     $comment->delete();
-        // }
+
         $product->categories()->detach();
         $product->info()->delete();
         $product->delete();
 
         return redirect()->route('admin.products')->with('flashSuccess', 'deleted');
-
     }
 
 

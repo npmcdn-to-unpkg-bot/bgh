@@ -1,7 +1,5 @@
 <?php
-/**
- * @author Abhimanyu Sharma <abhimanyusharma003@gmail.com>
- */
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -9,13 +7,12 @@ use Illuminate\Support\ServiceProvider;
 class RepositoryServiceProvider extends ServiceProvider
 {
 
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
     public function register()
     {
+        $this->app->bind(
+            'App\Repository\ProfileRepositoryInterface',
+            'App\Repository\Eloquent\ProfileRepository'
+        );
 
         $this->app->bind(
             'App\Repository\ProductRepositoryInterface',

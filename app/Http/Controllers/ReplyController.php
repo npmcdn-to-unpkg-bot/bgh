@@ -40,7 +40,7 @@ class ReplyController extends Controller
         return response()->json([
             'fullname' => e($request->user()->fullname),
             'profile_link' => $request->user()->username,
-            'profile_avatar' => sprintf('%s', Resize::avatar($request->user(), 'avatar')),
+            'profile_avatar' => sprintf('%s', Resize::img($request->user()->avatar, 'avatar')),
             'description' => nl2br(e($reply->reply)),
             'time' => $reply->created_at->diffForHumans(),
             'comment_id' => $reply->comment_id,

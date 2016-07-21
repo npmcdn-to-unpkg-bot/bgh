@@ -1,6 +1,6 @@
 <div class="col-md-3">
     <a href="{{ route('user', ['username' => $user->username]) }}" class="thumbnail">
-        <img src="{{ Resize::avatar($user,'mainAvatar') }}" alt="{{ $user->username }}">
+        <img src="{{ Resize::img($user->avatar,'mainAvatar') }}" alt="{{ $user->username }}">
     </a>
 
     <h1 class="profile-fullname">

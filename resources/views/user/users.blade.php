@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="col-md-4 col-sm-3 pull-left">
-                    <a href="{{ route('user', ['username' => $user->username]) }}"><img class="thumbnail img-responsive" src="{{ Resize::avatar($user, 'listingAvatar') }}"></a>
+                    <a href="{{ route('user', ['username' => $user->username]) }}"><img class="thumbnail img-responsive" src="{{ Resize::img($user->avatar, 'listingAvatar') }}"></a>
                 </div>
                 <div class="col-md-8">
                     <h3 style="margin-top:0px">

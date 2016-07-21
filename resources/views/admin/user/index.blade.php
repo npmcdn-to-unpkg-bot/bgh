@@ -17,9 +17,7 @@
                                 <th>Username</th>
                                 <th>FullName</th>
                                 <th>Email</th>
-                                <th>No. Images</th>
-                                <th>No. Comments</th>
-                                <th>Featured At</th>
+                                <th>Products</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Actions</th>
@@ -55,15 +53,28 @@
                     {data: 'fullname', name: 'fullname',},
                     {data: 'email', name: 'users.email',},
                     {data: 'products', name: 'products', searchable: false},
-                    {data: 'comments', name: 'comments', searchable: false},
-                    {data: 'featured_at', name: 'users.featured_at'},
                     {data: 'created_at', name: 'users.created_at'},
                     {data: 'updated_at', name: 'users.updated_at'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false}
                 ],
-                "fnInitComplete": function () {
+                fnInitComplete: function () {
                     userApprove();
                     userDisapprove();
+                },
+                language: {
+                    processing: '<i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>',
+                    sSearch: '{{ t("Search") }} ',
+                    oPaginate: {
+                        sFirst: '{{ t("First") }}',
+                        sLast: '{{ t("Last") }}',
+                        sNext: '{{ t("Next") }}',
+                        sPrevious: '{{ t("Previous") }}'
+                    },
+                    sEmptyTable: '{{ t("Empty") }}',
+                    sZeroRecords: '{{ t("Empty") }}',
+                    sLengthMenu: '{{ t("Showing") }} _MENU_ {{ t("records") }}',
+                    info: '{{ t("Showing") }} {{ t("page") }} _PAGE_ {{ t("of") }} _PAGES_',
+                    infoEmpty: '{{ t("Empty") }}',
                 }
             });
         });

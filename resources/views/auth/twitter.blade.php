@@ -20,7 +20,7 @@
     @if(session('site_user'))
         <div class="col-md-2">
             <div class="row">
-                <img src="{{ Resize::avatar(session('site_user'),'mainAvatar') }}" class="img img-responsive thumbnail">
+                <img src="{{ Resize::img(session('site_user')->avatar,'mainAvatar') }}" class="img img-responsive thumbnail">
                 <h3 style="margin-top:-10px">
                     <a href="{{ route('user', [session('site_user')->username]) }}" target="_blank">{{ session('site_user')->fullname }}</a>
                 </h3>

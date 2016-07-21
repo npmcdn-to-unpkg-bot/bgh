@@ -14,111 +14,60 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
 
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+
     protected $table = 'users';
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
+
     protected $hidden = ['password', 'email_confirmation', 'remember_token'];
-    /**
-     * Get the unique identifier for the user.
-     *
-     * @return mixed
-     */
 
     protected $softDelete = true;
 
-    /**
-     * @var array
-     */
     protected $dates = ['deleted_at', 'featured_at'];
 
-    /**
-     * @return mixed
-     */
     public function getAuthIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
     public function getAuthPassword()
     {
         return $this->password;
     }
 
-    /**
-     * Get the e-mail address where password reminders are sent.
-     *
-     * @return string
-     */
     public function getReminderEmail()
     {
         return $this->email;
     }
 
-    /**
-     * @return mixed
-     */
     public function getRememberToken()
     {
         return $this->remember_token;
     }
 
-    /**
-     * @param string $value
-     */
     public function setRememberToken($value)
     {
         $this->remember_token = $value;
     }
 
-    /**
-     * @return string
-     */
     public function getRememberTokenName()
     {
         return 'remember_token';
     }
 
-    /**
-     * @return mixed
-     */
     public function scopeConfirmed()
     {
         return static::whereNotNull('confirmed_at');
     }
 
-    /**
-     * @param $value
-     * @return string
-     */
     public function getFullnameAttribute($value)
     {
         return ucfirst($value);
     }
 
-    /**
-     * @return mixed
-     */
     public function products()
     {
         return $this->hasMany(Product::class);
     }
 
-    /**
-     * @return mixed
-     */
     public function latestProducts()
     {
         return $this->hasMany(Product::class)->orderBy('approved_at', 'desc');
@@ -139,27 +88,32 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Follow::class, 'follow_id');
     }
 
-    /**
-     * @return mixed
-     */
     public function following()
     {
         return $this->hasMany(Follow::class, 'user_id');
     }
 
-    /**
-     * @return mixed
-     */
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'user_id');
     }
 
-    /**
-     * @return mixed
-     */
     public function votes()
     {
         return $this->hasMany('Votes', 'user_id');
     }
+
+
+    public function profiles()
+    {
+        return $this->belongsToMany('App\Models\Profile', 'user_x_profile', 'user_id', 'profile_id');
+    }
+
+    public function hasProfile($id){
+        return ! $this->profiles->filter(function($profile) use ($id)
+        {
+            return $profile->id == $id;
+        })->isEmpty();
+    }
+
 }

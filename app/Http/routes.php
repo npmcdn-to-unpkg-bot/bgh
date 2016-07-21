@@ -112,7 +112,7 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('admin/comments/{id}/edit', ['as' => 'admin.comments.edit', 'uses' => 'Comment\CommentController@postEdit']);
 
 // Product
-    Route::get('admin/products', ['as' => 'admin.products', 'uses' => 'Product\ProductController@getIndex']);
+    Route::get('admin/products', ['as' => 'admin.products', 'uses' => 'Product\ProductController@getList']);
     Route::get('admin/products/data', ['as' => 'admin.products.data', 'uses' => 'Product\ProductController@getData']);
 
     // mas cercano a REST con verbs
@@ -130,15 +130,21 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
 
 // Product Category
     Route::get('admin/productcategories', ['as' => 'admin.productcategories', 'uses' => 'ProductCategory\ProductCategoryController@index']);
-    Route::post('admin/productcategories', 'ProductCategory\ProductCategoryController@createCategory');
+    Route::post('admin/productcategories', 'ProductCategory\ProductCategoryController@createCategory'); // Add
     Route::post('admin/productcategories/reorder', 'ProductCategory\ProductCategoryController@reorderCategory');
-    Route::post('admin/productcategories/update', 'ProductCategory\ProductCategoryController@updateCategory');
-
     Route::get('admin/productcategories/{id}/edit', ['as' => 'admin.productcategories.edit', 'uses' => 'ProductCategory\ProductCategoryController@edit']);
     Route::post('admin/productcategories/{id}/update', ['as' => 'admin.productcategories.update', 'uses' => 'ProductCategory\ProductCategoryController@update']);
-    Route::get('admin/productcategories/{id}/order', ['as' => 'admin.productcategories.order', 'uses' => 'ProductCategory\ProductCategoryController@order']);
-    Route::post('admin/productcategories/{id}/reorder', ['as' => 'admin.productcategories.reorder', 'uses' => 'ProductCategory\ProductCategoryController@reorder']);
+    Route::delete('admin/productcategories/{id}/edit', ['as' => 'admin.productcategories.edit', 'uses' => 'ProductCategory\ProductCategoryController@delete']);
+    Route::get('admin/productcategories/{id}/items', ['as' => 'admin.productcategories.items', 'uses' => 'ProductCategory\ProductCategoryController@items']);
+    Route::post('admin/productcategories/{id}/items', ['as' => 'admin.productcategories.items', 'uses' => 'ProductCategory\ProductCategoryController@itemsupdate']);
     Route::get('admin/productcategories/productlist', ['as' => 'admin.productcategories.productlist', 'uses' => 'ProductCategory\ProductCategoryController@productlist']);
+
+// Profiles
+    Route::get('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@getList']);
+    Route::get('admin/profiles/data', ['as' => 'admin.profiles.data', 'uses' => 'ProfileController@getData']);
+    Route::put('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@create']); // Add
+    Route::get('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@edit']);
+    Route::patch('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@patch']);
 
 // Site Settings
     Route::get('admin/settings/details', ['as' => 'admin.settings.details', 'uses' => 'Settings\SettingsController@getSiteDetails']);

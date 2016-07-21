@@ -117,17 +117,7 @@ class Resize
         return self::$sizes;
     }
 
-    public static function avatar($user, $recipe = null)
-    {
-        if ($user->avatar == null || $user->avatar == 'user') {
-            $avatar = new Resize($user, $recipe);
 
-            return $avatar->process();
-        }
-        $image = new Resize($user->avatar, $recipe);
-
-        return $image->process();
-    }
 
     protected function process()
     {
@@ -146,6 +136,18 @@ class Resize
     // public static function image($image, $recipe = null)
     // {
     //     $image = new Resize(sprintf('%s.%s', $image->image_name, $image->type), $recipe);
+    //     return $image->process();
+    // }
+
+    // public static function avatar($user, $recipe = null)
+    // {
+    //     if ($user->avatar == null || $user->avatar == 'user') {
+    //         $avatar = new Resize($user, $recipe);
+
+    //         return $avatar->process();
+    //     }
+    //     $image = new Resize($user->avatar, $recipe);
+
     //     return $image->process();
     // }
 

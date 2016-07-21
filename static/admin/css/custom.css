@@ -1,3 +1,8 @@
+a:hover {
+    text-decoration: none;
+}
+
+
 .flash_message{
 	top:0;
 	width:100%;
@@ -47,19 +52,23 @@ ol.sortable{
 }
 ol.sortable li{
     list-style-type: none;
-    border: 1px solid rgba(0,0,0,.075);
+    border-bottom: 1px solid rgba(0,0,0,.075);
     cursor: move;
     padding: 4px;
     padding-left: 10px;
-    padding-right: 10px;
-    background-color: rgba(255,255,255,0.6);
+    padding-right: 5px;
+    background-color: #f8f8f8;
 }
 ol.sortable li:hover{
-    background-color: rgba(255,255,255,1);
+    background-color: #ffffff;
 }
 ol.sortable li > div > img{
     /*background-color: #fff;*/
 }
+ol.sortable span small{
+    color: #337ab7;
+}
+
 
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -76,4 +85,56 @@ ol.sortable li > div > img{
 
 .select2-container--default .select2-selection--multiple {
     height: auto;
+}
+
+
+
+.categories-sortable-list > ol li .info{
+    height: 30px;
+    line-height: 30px;
+}
+
+
+.categories-sortable-list  li{
+    background-color: #f8f8f8;
+}
+
+.categories-sortable-list > ol > li{
+    border-bottom: #555;
+}
+.categories-sortable-list > ol > li > div > span{
+    font-weight: bold;
+}
+.categories-sortable-list > ol > li > div > span > a > small{
+    font-weight: normal;
+}
+
+.categories-sortable-list  ol {
+    padding-left: 15px;
+}
+
+
+.categories-sortable-list  ol{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+
+.categories-sortable-list > ol{
+    padding: 0px;
+}
+
+
+
+
+
+/* sobreescritura de los datatable para no tocar el css original */
+
+.dataTables_wrapper .dataTables_processing {
+    top: 50px;
+    }
+
+table.dataTable.no-footer {
+    border-bottom: none;
 }
