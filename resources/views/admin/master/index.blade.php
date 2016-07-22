@@ -37,7 +37,10 @@
     {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
 
     {!! HTML::style('static/admin/plugins/datatables/css/jquery.dataTables.css') !!}
+    {{-- {!! HTML::style('static/admin/plugins/datatables/css/dataTables.jqueryui.css') !!} --}}
+    {{-- {!! HTML::style('static/admin/plugins/datatables/css/dataTables.bootstrap.css') !!} --}}
     {!! HTML::script('static/admin/plugins/datatables/js/jquery.dataTables.min.js') !!}
+
 
     {!! HTML::style('static/admin/css/AdminLTE.css') !!}
     {!! HTML::style('static/admin/css/custom.css') !!}
@@ -225,10 +228,10 @@
                           <img src="{{ Resize::img(auth()->user()->avatar,'mainAvatar') }}" class="img-circle" alt="{{ auth()->user()->username }}">
                           <p>
                             {{ auth()->user()->fullname }}
-                            <small>{{ auth()->user()->permission }}</small>
+                            <small>{{ auth()->user()->username }}</small>
                           </p>
                         </li>
-                        <li class="user-body">
+                      {{--   <li class="user-body">
                           <div class="row">
                             <div class="col-xs-4 text-center">
                               <a href="{{ route('user', ['username' => auth()->user()->username]) }}" target="_blank">View</a>
@@ -240,13 +243,13 @@
                               <a href="{{ route('user', ['username' => auth()->user()->username]) }}" target="_blank">View</a>
                             </div>
                           </div>
-                        </li>
+                        </li> --}}
                         <li class="user-footer">
                           <div class="pull-left">
                             <a href="{{ route('users.settings') }}" class="btn btn-default btn-flat">{{ t('Profile Settings') }}</a>
                           </div>
                           <div class="pull-right">
-                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat">{{ t('Logout') }}</a>
+                            <a href="{{ route('logout') }}" class="btn btn-info btn-flat">{{ t('Logout') }}</a>
                           </div>
                         </li>
                       </ul>

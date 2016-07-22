@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Logged out' => 'Sesion cerrada',
     'pages' => 'páginas',
     'page' => 'página',
     'of' => 'de',

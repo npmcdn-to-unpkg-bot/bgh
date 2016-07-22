@@ -96,7 +96,7 @@ class LoginController extends Controller
     {
         auth()->logout();
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('flashSuccess', t('Logged out'));;
     }
 
 

@@ -29,6 +29,14 @@
                 {!! Form::label('slug', 'Slug') !!}
                 {!! Form::text('slug', $product->slug, ['class' => 'form-control input-lg', 'placeholder' => 'Slug']) !!}
             </div>
+
+
+            <div class="form-group">
+                {!! Form::label('profile', 'Profile') !!}
+                {!! Form::select('profile', $profiles, $product->profile->id); !!}
+            </div>
+
+
             <div class="form-group">
                 {!! Form::label('description', 'Description') !!}
                 {!! Form::textarea('description', $product->description, ['class' => 'form-control input-lg', 'placeholder' => 'Description']) !!}

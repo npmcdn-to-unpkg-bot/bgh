@@ -1,37 +1,227 @@
+<?php
+
+    // $arr_a = [];
+    // $arr_b = [];
+    // $arr_c = [];
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 36';
+    // $obj->value = [36];
+    // array_push($arr_c, $obj);
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 6';
+    // $obj->value = [6];
+    // array_push($arr_c, $obj);
+
+    // array_push($arr_b, $arr_c);
+    // $arr_c = [];
+
+    // array_push($arr_a, $arr_b);
+    // $arr_b = [];
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 2';
+    // $obj->value = [2];
+    // array_push($arr_c, $obj);
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 6';
+    // $obj->value = [6];
+    // array_push($arr_c, $obj);
+
+    // array_push($arr_b, $arr_c);
+    // $arr_c = [];
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 47';
+    // $obj->value = [47];
+    // array_push($arr_c, $obj);
+
+    // $obj = new stdClass();
+    // $obj->name = 'name 6';
+    // $obj->value = [6];
+    // array_push($arr_c, $obj);
+
+    // array_push($arr_b, $arr_c);
+    // $arr_c = [];
+
+    // array_push($arr_a, $arr_b);
+    // $arr_b = [];
+
+    // var_dump($arr_a);
+
+
+
+
+    // function bus($arr,&$res){
+    //     foreach ($arr as $key => $obj) {
+    //         if(is_array($obj)){
+    //             bus($obj,$res);
+    //         }
+    //         else{
+    //             array_push($res, $obj->value[0]);
+    //         }
+    //     }
+    // }
+
+    // $res = [];
+
+    // bus($arr_a,$res);
+
+
+    // var_dump($res);
+
+    // print_r($arr_a);
+
+
+// Array
+// (
+//     [0] =&gt; Array
+//         (
+//             [0] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; producto_0[]
+//                     [value] =&gt; Array
+//                         (
+//                             [0] =&gt; 36
+//                         )
+
+//                 )
+
+//             [1] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; porcentaje_0[]
+//                     [value] =&gt; 6
+//                 )
+
+//         )
+
+// )
+// Array
+// (
+//     [0] =&gt; Array
+//         (
+//             [0] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; producto_0[]
+//                     [value] =&gt; Array
+//                         (
+//                             [0] =&gt; 2
+//                         )
+
+//                 )
+
+//             [1] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; porcentaje_0[]
+//                     [value] =&gt; 6
+//                 )
+
+//         )
+
+//     [1] =&gt; Array
+//         (
+//             [0] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; producto_1[]
+//                     [value] =&gt; Array
+//                         (
+//                             [0] =&gt; 47
+//                         )
+
+//                 )
+
+//             [1] =&gt; stdClass Object
+//                 (
+//                     [name] =&gt; porcentaje_1[]
+//                     [value] =&gt; 6
+//                 )
+
+//         )
+
+// )
+
+?>
 @extends('admin/master/index')
 @section('content')
-        <div class="box">
-            <div class="box-body">
-                <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                    <div class="row">
-                        <div class="col-sm-6"></div>
-                        <div class="col-sm-6"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-                            <table class="table table-bordered table-hover" id="products-table">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Id</th>
-                                    <th>{{ t('Title') }}</th>
-                                    <th>{{ t('Created At') }}</th>
-                                    <th>{{ t('Updated At') }}</th>
-                                    <th>{{ t('User') }}</th>
-                                    <th>{{ t('Actions') }}</th>
-                                </tr>
-                                </thead>
-                            </table>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreate">{{ t('Create') }}</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="box">
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                                <table class="table table-bordered table-hover" id="products-table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Id</th>
+                                        <th>{{ t('Title') }}</th>
+                                        <th>{{ t('Created At') }}</th>
+                                        <th>{{ t('Updated At') }}</th>
+                                        <th>{{ t('User') }}</th>
+                                        <th>{{ t('Profile') }}</th>
+                                        <th>{{ t('Actions') }}</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"></div>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {!! Form::open(['method' => 'PUT', 'route' => 'admin.products.create', 'role' => 'form'])  !!}
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                           data-dismiss="modal">
+                               <span aria-hidden="true">&times;</span>
+                               <span class="sr-only">{{ t('Close') }}</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            {{ t('Create') }}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title">{{ t('Title') }}</label>
+                            {!! Form::text('title',null,['class'=>'form-control','placeholder'=>t('Title')])  !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">{{ t('Slug') }}</label>
+                            {!! Form::text('slug',null,['class'=>'form-control','placeholder'=>t('Slug')])  !!}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ t('Close') }}</button>
+                        {!! Form::submit(t('Accept'),['class'=>'btn btn-primary'])  !!}
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('extra-js')
@@ -57,11 +247,14 @@
                     { data: 'created_at', name: 'products.created_at' },
                     { data: 'updated_at', name: 'products.updated_at' },
                     { data: 'user', name: 'user' },
+                    { data: 'profile', name: 'profile' },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },
                 ],
                 fnInitComplete: function () {
                     productApprove();
                     productDisapprove();
+                    $('div.dataTables_filter input').addClass('form-control');
+                    $('div.dataTables_length select').addClass('form-control');
                 },
                 language: {
                     processing: '<i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>',

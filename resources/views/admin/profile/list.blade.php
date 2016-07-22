@@ -8,19 +8,36 @@
         </div>
     </div>
 
-    <div class="row">
+  <div class="row">
         <div class="col-md-12">
-            <table class="table table-bordered table-hover" id="products-table">
-                <thead>
-                    <tr>
-                        <th>{{ t('Name') }}</th>
-                        <th>{{ t('Title') }}</th>
-                        <th>{{ t('Created At') }}</th>
-                        <th>{{ t('Updated At') }}</th>
-                        <th>{{ t('Actions') }}</th>
-                    </tr>
-                </thead>
-            </table>
+
+            <div class="box">
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                                <table class="table table-bordered table-hover" id="products-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ t('Name') }}</th>
+                                            <th>{{ t('Title') }}</th>
+                                            <th>{{ t('Created At') }}</th>
+                                            <th>{{ t('Updated At') }}</th>
+                                            <th>{{ t('Actions') }}</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -88,6 +105,8 @@
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },
                 ],
                 fnInitComplete: function () {
+                    $('div.dataTables_filter input').addClass('form-control');
+                    $('div.dataTables_length select').addClass('form-control');
                     // productApprove();
                     // productDisapprove();
                 },

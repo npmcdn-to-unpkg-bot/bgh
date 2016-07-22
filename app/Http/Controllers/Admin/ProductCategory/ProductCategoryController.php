@@ -86,24 +86,6 @@ class ProductCategoryController extends Controller
         Artisan::call('cache:clear');
     }
 
-    // // se usa en el modal
-    // public function updateCategory(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'id'   => ['required'],
-    //         'slug' => ['required', 'alpha_dash'],
-    //         'name' => ['required']
-    //     ]);
-    //     $id = $request->get('id');
-    //     $category = ProductCategory::where('id', '=', $id)->with('images')->first();
-
-    //     $category->slug = $request->get('slug');
-    //     $category->name = $request->get('name');
-    //     $category->save();
-    //     Artisan::call('cache:clear');
-    //     return redirect()->back()->with('flashSuccess', 'Product Category is now updated');
-    // }
-
 
     public function delete($id)
     {
@@ -117,7 +99,7 @@ class ProductCategoryController extends Controller
     public function productlist()
     {
 
-        $products = Product::where('id', '>', 0)->get();
+        $products = Product::all();
 
         $res =  [];
         $ix=0;
@@ -134,39 +116,11 @@ class ProductCategoryController extends Controller
 
     public function edit($id)
     {
-       $title = t('Edit');
+        $title = t('Edit');
 
-        $category = ProductCategory::where('id', '=', $id)->first();
+        $category = ProductCategory::findOrFail($id);
 
-
-        // para popular el select2 de productos
-        $ix = 0;
-
-        // primero incluyo los que ya tiene incluidos el many to many con su respetivo orden
-        $products = [];
-        foreach ($category->products as $p) {
-            $products[$ix]['id'] = $p->id;
-            $products[$ix]['text'] = $p->title;
-            $products[$ix]['value'] = true;
-            $ix++;
-        }
-
-        $selectedproducts = $products;
-
-        // luego incluyo el resto de los productos filtrando los que ya inclui como seleccionados
-        $allproducts = Product::all();
-        foreach ($allproducts as $p) {
-
-            if(!$category->products->contains($p->id)){
-                $products[$ix]['id'] = $p->id;
-                $products[$ix]['text'] = $p->title;
-                $products[$ix]['value'] = false;
-            }
-
-            $ix++;
-        }
-
-        return view('admin.productcategory.edit', compact('title','category','products','selectedproducts'));
+        return view('admin.productcategory.edit', compact('title','category'));
 
     }
 
@@ -177,19 +131,14 @@ class ProductCategoryController extends Controller
             'name' => ['required']
         ]);
 
-        $order = (array) $request->get('products');
-        $pivotData = array_fill(0, count($order), ['order' => 0]);
-        $syncData  = array_combine($order, $pivotData);
-        $ix = 0;
-        foreach ($syncData as &$sd) {
-            $ix++;
-            $sd['order'] = $ix;
-        }
-        $category->products()->sync($syncData); // print_r($syncData);
+
+        $category = ProductCategory::findOrFail($id);
 
         $category->slug = $request->get('slug');
         $category->name = $request->get('name');
+
         $category->save();
+
         Artisan::call('cache:clear');
 
         return redirect()->back()->with('flashSuccess', 'Product Category is now updated');
@@ -198,7 +147,7 @@ class ProductCategoryController extends Controller
     public function items($id)
     {
 
-        $category = ProductCategory::where('id', '=', $id)->first();
+        $category = ProductCategory::findOrFail($id);
 
         $title = $category->name . ': ' . t('Items');
 

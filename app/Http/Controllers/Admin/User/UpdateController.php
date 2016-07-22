@@ -3,21 +3,51 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Helpers\ResizeHelper;
+
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\Profile;
+
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+use App\Repository\ProfileRepositoryInterface;
+use App\Repository\UsersRepositoryInterface;
+
+
 class UpdateController extends Controller
 {
+
+    public function __construct(ProfileRepositoryInterface $profile, UsersRepositoryInterface $user)
+    {
+        $this->user = $user;
+        $this->profile = $profile;
+    }
+
 
     public function getEdit($id)
     {
         $user = User::whereId($id)->with('products', 'favorites')->firstOrFail();
-        $title = sprintf('Editing User %s (%s)', $user->fullname, $user->username);
+        $title = t('Edit');
 
-        return view('admin.user.edit', compact('user', 'title'));
+        $field_profiles = [];
+        foreach (Profile::all() as $p) {
+
+            $arr['id'] = $p->id;
+            $arr['title'] = $p->title;
+
+            if($user->profiles->contains($p->id)){
+                $arr['value'] = true;
+            }
+            else{
+                $arr['value'] = false;
+            }
+
+            array_push($field_profiles, $arr);
+        }
+
+        return view('admin.user.edit', compact('user', 'title','field_profiles'));
     }
 
     public function postAddUser(Request $request)
@@ -50,7 +80,9 @@ class UpdateController extends Controller
             'country'    => 'max:3',
             'delete'     => 'boolean',
         ]);
+
         $user = User::whereId($request->route('id'))->firstOrFail();
+
         if ($request->get('delete')) {
             // foreach ($user->products()->get() as $product) {
             //     $product->favorites()->delete();
@@ -94,6 +126,9 @@ class UpdateController extends Controller
         $user->fb_link = $request->get('fb_link');
         $user->tw_link = $request->get('tw_link');
         $user->permission = $request->get('permission');
+
+        $profiles = (array) $request->get('profiles');
+        $user->profiles()->sync($profiles);
 
         if ($request->get('country') == 'null') {
             $user->country = null;

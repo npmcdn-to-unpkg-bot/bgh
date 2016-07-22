@@ -109,11 +109,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsToMany('App\Models\Profile', 'user_x_profile', 'user_id', 'profile_id');
     }
 
-    public function hasProfile($id){
-        return ! $this->profiles->filter(function($profile) use ($id)
-        {
-            return $profile->id == $id;
-        })->isEmpty();
+    // public function hasProfile($id){
+
+    //     return ! $this->profiles->filter(function($profile) use ($id)
+    //     {
+    //         return $profile->id == $id;
+    //     })->isEmpty();
+
+    // }
+
+    public function isSuper()
+    {
+        return $this->profiles()->where('profile_id', 0)->first();
     }
+
+    public function isAdmin()
+    {
+        // var_dump($this->profiles->pluck('profile_id')->all());
+        // exit();
+        return $this->profiles()->where('profile_id', 1)->first();
+    }
+
+
+
 
 }

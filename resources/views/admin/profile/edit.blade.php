@@ -42,10 +42,6 @@
                 </div>
             @endif
 
-            <?php
-            // var_dump($profile->users;
-            ?>
-
             <div class="form-group">
                 {!! Form::label('users', 'Users:') !!}
                 <select id="users" class="form-control input-lg tagging" multiple="multiple" name="users[]">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Product;
 
 use App\Helpers\Resize;
 use App\Helpers\ResizeHelper;
+use App\Models\Profile;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductInfo;
@@ -35,13 +36,21 @@ class ProductController extends Controller
     {
         $products = Product::select([
             'products.*',
-            DB::raw('users.fullname as user'),
-        ])->leftJoin('users', 'users.id', '=', 'products.user_id')
-            ->groupBy('products.id');
+            DB::raw('users.fullname as user_fullname'),
+            DB::raw('profiles.title as profile_name'),
+        ])
+        ->leftJoin('users', 'users.id', '=', 'products.user_id')
+        ->leftJoin('profiles', 'profiles.id', '=', 'products.profile_id')
+        ->groupBy('products.id');
+
+        // si no es superamdin, filtro el lote por los perfiles que el usuario posea
+        if(!auth()->user()->isSuper()){
+            $products->whereIn('profile_id', auth()->user()->profiles()->lists('id')); // lo segundo es un array de ids
+        }
 
         switch ($request->get('type')) {
             case 'approved':
-                $products->approved();
+                $products->approved(); // es del scopeApproved en el Model
                 break;
             case 'featured':
                 $products->whereNotNull('products.featured_at');
@@ -53,19 +62,29 @@ class ProductController extends Controller
                 $products->approved();
         }
 
+
+
+        // $products->profiled();
+
         $datatables = app('datatables')->of($products);
 
         if ($request->get('type') == 'approvalRequired') {
             $datatables->addColumn('actions', function ($product) {
-                return '<a href="#" class="product-approve btn btn-sm btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i></a>
-                 <a href="#" class="product-disapprove btn btn-sm btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i></a>
-                 <a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>';
+                return '
+                <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
+                    <a href="#" class="product-approve btn btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i></a>
+                    <a href="#" class="product-disapprove btn btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i></a>
+                </div>';
 
             });
         } else {
             $datatables->addColumn('actions', function ($product) {
-                return '<a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>
-                <a href="' . route('product', [$product->id, $product->slug]) . '" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>';
+                return '
+                <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
+                    <a href="' . route('admin.products.edit', [$product->id]) . '" class="btn btn-default"><i class="fa fa-edit"></i> Edit </a>
+                    <a href="' . route('product', [$product->id, $product->slug]) . '" class="btn btn-default" target="_blank"><i class="fa fa-eye"></i> View</a>
+                    <a href="' . route('admin.products.clone', [$product->id]) . '" class="btn btn-default"><i class="fa fa-clone"></i> Clone </a>
+                </div>';
             });
         }
 
@@ -81,7 +100,8 @@ class ProductController extends Controller
                 return 'Not Featured';
             })
             ->editColumn('updated_at', '{!! $updated_at->diffForHumans() !!}')
-            ->addColumn('user', '{!! $user !!}')
+            ->addColumn('user', '{!! $user_fullname !!}')
+            ->addColumn('profile', '{!! $profile_name !!}')
             ->make(true);
     }
 
@@ -106,7 +126,16 @@ class ProductController extends Controller
             }
         }
 
-        return view('admin.product.edit', compact('product', 'title', 'categories'));
+        if(auth()->user()->isSuper()){
+            // si es Super levanto todos los perfiles disponibles
+            $profiles = Profile::all()->lists('title','id');
+        }
+        else{
+            // levanto todos los perfiles del usuario para que pueda seleccionar el que corresponda al producto en SELECT
+            $profiles = auth()->user()->profiles()->lists('title','id');
+        }
+
+        return view('admin.product.edit', compact('product', 'title', 'categories', 'profiles'));
     }
 
 
@@ -135,6 +164,8 @@ class ProductController extends Controller
         $product->title = $request->get('title');
         $product->description = $request->get('description');
         $product->is_microsite = $request->get('is_microsite');
+
+        $product->profile()->associate($request->get('profile'));
 
         if ($request->get('featured_at') && $product->featured_at == null) {
             $product->featured_at = Carbon::now();
@@ -168,22 +199,12 @@ class ProductController extends Controller
     }
 
 
-    public function create()
-    {
-
-        $title = 'Creating new product';
-
-        // $categories = ProductCategory::items();
-        // return view('admin.product.create', compact('title', 'categories'));
-        return view('admin.product.create', compact('title'));
-    }
-
     public function put(Request $request)
     {
         $item = new Product();
         $item->title = $request->get('title');
 
-        $slug = @str_slug($request->get('title'));
+        $slug = @str_slug($request->get('slug'));
         if (!$slug) {
             $slug = str_random(7);
         }
@@ -329,6 +350,38 @@ class ProductController extends Controller
         ];
     }
 
+
+    public function doClone($id)
+    {
+
+        $source = Product::findOrFail($id);
+        $product = $source->replicate();
+
+        $product->title = $product->title . ' (clon)';
+        $product->slug = $product->slug . '-clon';
+
+        $product->push();
+
+        // replicar el 1:1 con info
+        $new_info = $source->info->replicate();
+        $product->info()->save($new_info);
+
+        // insertar clon en las mismas categorias que el master
+        foreach($source->categories as $category){
+            $product->categories()->attach($category);
+        }
+
+        $title = t('Edit the Clone');
+
+        $categories = ProductCategory::items();
+        foreach ($categories as $c) {
+            if($product->hasCategory($c->id)){
+                $c->checked = 'checked';
+            }
+        }
+
+        return redirect()->route('admin.products.edit',['id' => $product->id])->with('flashSuccess', 'Clonado');
+    }
 
 
 

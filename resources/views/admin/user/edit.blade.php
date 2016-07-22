@@ -2,18 +2,13 @@
 @section('content')
     <div class="row">
         <div class="col-md-3">
-            <a href="{{ route('user', ['username' => $user->username]) }}" target="_blank"><img src="{{ Resize::img($user->avatar,'mainAvatar') }}" class="thumbnail img-responsive"></a>
+            <img src="{{ Resize::img($user->avatar,'mainAvatar') }}" class="thumbnail img-responsive">
             <ul class="list-group">
-                <a href="#" class="list-group-item disabled">
-                    User Statics
-                </a>
-                <li class="list-group-item"><strong>FullName</strong> <a href="{{ route('user', [$user->username]) }}">{{ $user->fullname }}</a></li>
-                <li class="list-group-item"><strong>Email</strong> {{ $user->email }}</li>
-                <li class="list-group-item"><strong>Favorites</strong> {{ $user->favorites->count() }}</li>
+                <a href="#" class="list-group-item disabled">Statics</a>
+                {{-- <li class="list-group-item"><strong>Favorites</strong> {{ $user->favorites->count() }}</li> --}}
                 <li class="list-group-item"><strong>Products</strong> {{ $user->products->count() }}</li>
-                <li class="list-group-item"><strong>Uploaded At</strong> {{ $user->created_at->diffForHumans() }} </li>
-                <li class="list-group-item"><strong>Last Updated</strong> {{ $user->updated_at->diffForHumans() }} </li>
-                <li class="list-group-item"><strong>Featured At</strong> {{ $user->featured_at  == null ? 'Not Featured' : $user->featured_at->diffForHumans() }} </li>
+                <li class="list-group-item"><strong>Added</strong> {{ $user->created_at->diffForHumans() }} </li>
+                <li class="list-group-item"><strong>Updated</strong> {{ $user->updated_at->diffForHumans() }} </li>
             </ul>
         </div>
         <div class="col-md-9">
@@ -307,8 +302,12 @@
             </div>
 
             <div class="form-group">
-                <label for="featured_at">Is Featured User</label>
-                {!! Form::checkbox('featured_at', 1, (bool)$user->featured_at) !!}
+                {!! Form::label('profiles', 'Profiles') !!}
+                <select id="profiles" class="form-control input-lg tagging" multiple="multiple" name="profiles[]">
+                    @foreach($field_profiles as $p)
+                        <option value="{{ $p['id'] }}" {{ $p['value'] ? "selected=\"selected\"" : "" }}>{{ $p['title'] }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="form-group">

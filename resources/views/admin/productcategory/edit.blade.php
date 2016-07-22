@@ -1,41 +1,39 @@
 @extends('admin/master/index')
 
 @section('content')
-     <div class="row">
-        <div class="col-md-10">
 
+     <div class="row">
+
+      <div class="col-md-3">
+            <ul class="list-group">
+                <a href="#" class="list-group-item disabled">
+                    Statics
+                </a>
+                <li class="list-group-item"><strong>Products</strong> {{ $category->products->count() }}</li>
+                <li class="list-group-item"><strong>Uploaded At</strong> {{ $category->created_at->diffForHumans() }} </li>
+                <li class="list-group-item"><strong>Last Updated</strong> {{ $category->updated_at->diffForHumans() }} </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
             {!! Form::open(array('action' => array('Admin\ProductCategory\ProductCategoryController@update', $category->id))) !!}
 
-            <div class="form-group">
-                {!! Form::text('id',$category->id,['class'=>'hidden']) !!}
-                <label for="addnew">Product Category Name</label>
-                {!! Form::text('name',$category->name,['class'=>'form-control','placeholder'=>'Name of category','required'=>'required']) !!}
-            </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    {!! Form::text('name',$category->name,['class'=>'form-control','placeholder'=>'Name of category','required'=>'required']) !!}
+                </div>
 
-            <div class="form-group">
-                <label for="slug">Slug ( url of category )
-                    <small>English characters are allowed in url, space is seperate by dash</small>
-                </label>
-                {!! Form::text('slug',$category->slug,['class'=>'form-control','placeholder'=>'Slug','required'=>'required']) !!}
-            </div>
+                <div class="form-group">
+                    <label for="slug">Slug<small>English characters are allowed in url, space is seperate by dash</small></label>
+                    {!! Form::text('slug',$category->slug,['class'=>'form-control','placeholder'=>'Slug','required'=>'required']) !!}
+                </div>
 
-            <div class="form-group">
-                {!! Form::label('products', 'Products:') !!}
-                <select id="products" class="form-control input-lg tagging" multiple="multiple" name="products[]">
-                    @foreach($products as $p)
-                        <option value="{{ $p['id'] }}" {{ $p['value'] ? "selected=\"selected\"" : "" }}>{{ $p['text'] }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            {!! Form::submit('Update',['class'=>'btn btn-success']) !!}
-            <button type="button" class="btn btn-default" rel="close">Close</button>
+                {!! Form::submit('Update',['class'=>'btn btn-success']) !!}
+                <button type="button" class="btn btn-default" rel="close">Close</button>
 
             {!! Form::close() !!}
         </div>
-
     </div>
-
 
 @endsection
 
@@ -68,18 +66,9 @@
 
         $(function () {
 
-            $("[rel=delete]").click(function () {
-                $("[rel=shiftToCategory]").attr("disabled", false);
-            });
-
             $("[rel=close]").click(function () {
                 location.href='{{ url('admin/productcategories/') }}';
             });
-
-            $('#products').select2({
-                placeholder: 'product name..'
-            });
-
 
         });
 

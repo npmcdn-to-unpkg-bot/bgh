@@ -52,18 +52,21 @@ class UserController extends Controller
 
         if ($request->get('type') == 'approvalRequired') {
             $datatables->addColumn('actions', function ($product) {
-                return '<a href="#" class="image-approve btn btn-sm btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i> Approve </a>
-                <a href="#" class="image-disapprove btn btn-sm btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i> Delete</a>
-                 <a href="' . route('admin.users.edit', [$product->id]) . '" class="btn btn-sm btn-default" target="_blank"><i class="fa fa-edit"></i> Edit </a>';
+                return '
+                <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
+                    <a href="#" class="image-approve btn btn-sm btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i> Approve </a>
+                    <a href="#" class="image-disapprove btn btn-sm btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i> Delete</a>
+                    <a href="' . route('admin.users.edit', [$product->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>
+                </div>';
             });
         } else {
             $datatables->addColumn('actions', function ($user) {
-                return '<a href="' . route('admin.users.edit', [$user->id]) . '" class="btn btn-sm btn-default" target="_blank"><i class="fa fa-edit"></i> Edit </a>';
+                return '<a href="' . route('admin.users.edit', [$user->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>';
             });
         }
 
         $datatables->addColumn('thumbnail', function ($image) {
-            return '<img src="' . Resize::img($image->avatar, 'avatar') . '" style="width:80px"/>';
+            return '<img src="' . Resize::img($image->avatar, 'avatar') . '" style="width:40px"/>';
         });
 
         return $datatables->editColumn('created_at', '{!! $created_at->diffForHumans() !!}')

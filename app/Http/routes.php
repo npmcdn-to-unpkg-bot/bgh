@@ -27,10 +27,6 @@ Route::get('blog/{id}/{slug}', ['as' => 'blog', 'uses' => 'BlogController@getBlo
 Route::get('lang/{lang?}', 'PolicyController@switchLang');
 Route::post('queue/receive', 'PolicyController@queue');
 
-// Route::get('/{slug?}', ['as' => 'page', 'uses' => 'PageController@getSlug'])->where('slug', '(.*)');
-
-// Route::resource('demo', 'DemoController');
-
 /**
  * Guest only visit this section
  */
@@ -60,7 +56,8 @@ Route::group(['middleware' => 'csrf:guest'], function () {
  * Ajax post
  */
 Route::group(['middleware' => 'auth'], function () {
-//    Ajax Routes
+
+    //    Ajax Routes
     Route::post('favorite', 'ImageController@postFavorite');
     Route::post('follow', 'UserController@follow');
     Route::post('reply', 'ReplyController@postReply');
@@ -69,13 +66,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('deletecomment', 'CommentController@postDeleteComment');
     Route::post('deletereply', 'ReplyController@delete');
 
-//    Non-Ajax Routes
+    //    Non-Ajax Routes
     Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@getLogout']);
     Route::get('feeds', ['as' => 'users.feeds', 'uses' => 'UserController@getFeeds']);
     Route::get('user/{username}/following', ['as' => 'users.following', 'uses' => 'UserController@getFollowing']);
     Route::get('product/{any}/download', ['as' => 'products.download', 'uses' => 'ProductController@download']);
     Route::get('settings', ['as' => 'users.settings', 'uses' => 'UserController@getSettings']);
     Route::get('user/{username}/report', ['as' => 'user.report', 'uses' => 'ReportController@getReport']);
+
 });
 
 /**
@@ -90,28 +88,18 @@ Route::group(['middleware' => 'csrf:auth'], function () {
     Route::post('user/{username}/report', 'ReportController@postReportUser');
 });
 
-/**
- * Admin section users with admin privileges can access this area
- */
+
 Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
+
     Route::get('admin', ['as' => 'admin', 'uses' => 'IndexController@getIndex']);
 
-// User Manager
-    Route::get('admin/users', ['as' => 'admin.users', 'uses' => 'User\UserController@getIndex']);
-    Route::get('admin/users/data', ['as' => 'admin.users.data', 'uses' => 'User\UserController@getData']);
-    Route::get('admin/users/{id}/edit', ['as' => 'admin.users.edit', 'uses' => 'User\UpdateController@getEdit']);
-    Route::get('admin/users/add', ['as' => 'admin.users.add', 'uses' => 'User\UserController@getAddUser']);
-    Route::post('admin/users/add', ['as' => 'admin.users.add', 'uses' => 'User\UpdateController@postAddUser']);
-    Route::post('admin/users/{id}/edit', ['as' => 'admin.users.edit', 'uses' => 'User\UpdateController@postEdit']);
-    Route::post('admin/users/approve', ['as' => 'admin.users.approve', 'uses' => 'User\UpdateController@postApprove']);
-
-// Comment Manger
+    // Comment Manger
     Route::get('admin/comments', ['as' => 'admin.comments', 'uses' => 'Comment\CommentController@getIndex']);
     Route::get('admin/comments/data', ['as' => 'admin.comments.data', 'uses' => 'Comment\CommentController@getData']);
     Route::get('admin/comments/{id}/edit', ['as' => 'admin.comments.edit', 'uses' => 'Comment\CommentController@getEdit']);
     Route::post('admin/comments/{id}/edit', ['as' => 'admin.comments.edit', 'uses' => 'Comment\CommentController@postEdit']);
 
-// Product
+    // Product
     Route::get('admin/products', ['as' => 'admin.products', 'uses' => 'Product\ProductController@getList']);
     Route::get('admin/products/data', ['as' => 'admin.products.data', 'uses' => 'Product\ProductController@getData']);
 
@@ -120,15 +108,13 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::patch('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@patch', 'before' => 'csrf']);
     Route::delete('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@delete', 'before' => 'csrf']);
     Route::get('admin/products/{id}/clearcache', ['as' => 'admin.products.clearcache', 'uses' => 'Product\ProductController@clearCache']);
-    Route::get('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@create']);
     Route::put('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@put', 'before' => 'csrf']);
-
     Route::post('admin/products/approve', ['as' => 'admin.products.approve', 'uses' => 'Product\ProductController@approve']);
-
     Route::get('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@getBulkUpload']);
     Route::post('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@postBulkUpload']);
+    Route::get('admin/products/{id}/clone', ['as' => 'admin.products.clone', 'uses' => 'Product\ProductController@doClone']);
 
-// Product Category
+    // Product Category
     Route::get('admin/productcategories', ['as' => 'admin.productcategories', 'uses' => 'ProductCategory\ProductCategoryController@index']);
     Route::post('admin/productcategories', 'ProductCategory\ProductCategoryController@createCategory'); // Add
     Route::post('admin/productcategories/reorder', 'ProductCategory\ProductCategoryController@reorderCategory');
@@ -139,23 +125,7 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('admin/productcategories/{id}/items', ['as' => 'admin.productcategories.items', 'uses' => 'ProductCategory\ProductCategoryController@itemsupdate']);
     Route::get('admin/productcategories/productlist', ['as' => 'admin.productcategories.productlist', 'uses' => 'ProductCategory\ProductCategoryController@productlist']);
 
-// Profiles
-    Route::get('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@getList']);
-    Route::get('admin/profiles/data', ['as' => 'admin.profiles.data', 'uses' => 'ProfileController@getData']);
-    Route::put('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@create']); // Add
-    Route::get('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@edit']);
-    Route::patch('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@patch']);
-
-// Site Settings
-    Route::get('admin/settings/details', ['as' => 'admin.settings.details', 'uses' => 'Settings\SettingsController@getSiteDetails']);
-    Route::post('admin/settings/details', ['as' => 'admin.settings.details', 'uses' => 'Settings\UpdateController@postSiteDetails']);
-    Route::get('admin/settings/limits', ['as' => 'admin.settings.limits', 'uses' => 'Settings\SettingsController@getLimitSettings']);
-    Route::post('admin/settings/limits', ['as' => 'admin.settings.limits', 'uses' => 'Settings\UpdateController@postLimitSettings']);
-    Route::get('admin/settings/cache', ['as' => 'admin.settings.cache', 'uses' => 'Settings\SettingsController@getCacheSettings']);
-    Route::post('admin/settings/cache', ['as' => 'admin.settings.cache', 'uses' => 'Settings\UpdateController@postCacheSettings']);
-    Route::get('admin/settings/sitemap', ['as' => 'admin.settings.sitemap', 'uses' => 'Settings\UpdateController@updateSiteMap']);
-
-// Blogs
+    // Blogs
     Route::get('admin/blogs', ['as' => 'admin.blogs', 'uses' => 'Blog\BlogController@getIndex']);
     Route::get('admin/blogs/data', ['as' => 'admin.blogs.data', 'uses' => 'Blog\BlogController@getData']);
     Route::get('admin/blogs/create', ['as' => 'admin.blogs.create', 'uses' => 'Blog\BlogController@getCreate']);
@@ -163,21 +133,50 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/blogs/{id}', ['as' => 'admin.blogs.edit', 'uses' => 'Blog\BlogController@getEdit']);
     Route::post('admin/blogs/{id}', ['as' => 'admin.blogs.edit', 'uses' => 'Blog\BlogController@postEdit']);
 
-// Reports
-    Route::get('admin/reports', ['as' => 'admin.reports', 'uses' => 'Report\ReportController@getReports']);
-    Route::get('admin/reports/data', ['as' => 'admin.reports.data', 'uses' => 'Report\ReportController@getData']);
-    Route::get('admin/reports/{id}', ['as' => 'admin.reports.read', 'uses' => 'Report\ReportController@getReadReport']);
 
-// Pages
-    Route::get('admin/pages', ['as' => 'admin.pages', 'uses' => 'PageController@getIndex']);
-    Route::get('admin/pages/data', ['as' => 'admin.pages.data', 'uses' => 'PageController@getData']);
+    Route::group(['middleware' => 'superadmin'], function () {
 
-    Route::get('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@edit']);
-    Route::patch('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@patch', 'before' => 'csrf']);
-    Route::delete('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@delete', 'before' => 'csrf']);
-    Route::get('admin/pages/{id}/clone', ['as' => 'admin.pages.clone', 'uses' => 'PageController@doClone']);
-    Route::get('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@create']);
-    Route::put('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@put', 'before' => 'csrf']);
+        // User Manager
+        Route::get('admin/users', ['as' => 'admin.users', 'uses' => 'User\UserController@getIndex']);
+        Route::get('admin/users/data', ['as' => 'admin.users.data', 'uses' => 'User\UserController@getData']);
+        Route::get('admin/users/{id}/edit', ['as' => 'admin.users.edit', 'uses' => 'User\UpdateController@getEdit']);
+        Route::get('admin/users/add', ['as' => 'admin.users.add', 'uses' => 'User\UserController@getAddUser']);
+        Route::post('admin/users/add', ['as' => 'admin.users.add', 'uses' => 'User\UpdateController@postAddUser']);
+        Route::post('admin/users/{id}/edit', ['as' => 'admin.users.edit', 'uses' => 'User\UpdateController@postEdit']);
+        Route::post('admin/users/approve', ['as' => 'admin.users.approve', 'uses' => 'User\UpdateController@postApprove']);
+
+        // Profiles
+        Route::get('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@getList']);
+        Route::get('admin/profiles/data', ['as' => 'admin.profiles.data', 'uses' => 'ProfileController@getData']);
+        Route::put('admin/profiles', ['as' => 'admin.profiles', 'uses' => 'ProfileController@create']); // Add
+        Route::get('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@edit']);
+        Route::patch('admin/profiles/{id}/edit', ['as' => 'admin.profiles.edit', 'uses' => 'ProfileController@patch']);
+
+        // Site Settings
+        Route::get('admin/settings/details', ['as' => 'admin.settings.details', 'uses' => 'Settings\SettingsController@getSiteDetails']);
+        Route::post('admin/settings/details', ['as' => 'admin.settings.details', 'uses' => 'Settings\UpdateController@postSiteDetails']);
+        Route::get('admin/settings/limits', ['as' => 'admin.settings.limits', 'uses' => 'Settings\SettingsController@getLimitSettings']);
+        Route::post('admin/settings/limits', ['as' => 'admin.settings.limits', 'uses' => 'Settings\UpdateController@postLimitSettings']);
+        Route::get('admin/settings/cache', ['as' => 'admin.settings.cache', 'uses' => 'Settings\SettingsController@getCacheSettings']);
+        Route::post('admin/settings/cache', ['as' => 'admin.settings.cache', 'uses' => 'Settings\UpdateController@postCacheSettings']);
+        Route::get('admin/settings/sitemap', ['as' => 'admin.settings.sitemap', 'uses' => 'Settings\UpdateController@updateSiteMap']);
+
+       // Reports
+        Route::get('admin/reports', ['as' => 'admin.reports', 'uses' => 'Report\ReportController@getReports']);
+        Route::get('admin/reports/data', ['as' => 'admin.reports.data', 'uses' => 'Report\ReportController@getData']);
+        Route::get('admin/reports/{id}', ['as' => 'admin.reports.read', 'uses' => 'Report\ReportController@getReadReport']);
+
+        // Pages
+        Route::get('admin/pages', ['as' => 'admin.pages', 'uses' => 'PageController@getIndex']);
+        Route::get('admin/pages/data', ['as' => 'admin.pages.data', 'uses' => 'PageController@getData']);
+        Route::get('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@edit']);
+        Route::patch('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@patch', 'before' => 'csrf']);
+        Route::delete('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@delete', 'before' => 'csrf']);
+        Route::get('admin/pages/{id}/clone', ['as' => 'admin.pages.clone', 'uses' => 'PageController@doClone']);
+        Route::get('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@create']);
+        Route::put('admin/pages/create', ['as' => 'admin.pages.create', 'uses' => 'PageController@put', 'before' => 'csrf']);
+
+    });
 
 });
 

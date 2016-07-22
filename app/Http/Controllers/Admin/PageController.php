@@ -40,9 +40,12 @@ class PageController extends Controller
         $datatables = app('datatables')->of($pages);
 
         $datatables->addColumn('actions', function ($page) {
-            return '<a href="' . route('page', [$page->slug]) . '" class="btn btn-sm btn-default" target="_blank"><i class="fa fa-eye"></i> View </a>
-                    <a href="' . route('admin.pages.edit', [$page->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>
-                    <a href="' . route('admin.pages.clone', [$page->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-clone"></i> Clone </a>';
+            return '
+                    <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
+                        <a href="' . route('page', [$page->slug]) . '" class="btn btn-sm btn-default" target="_blank"><i class="fa fa-eye"></i> View </a>
+                        <a href="' . route('admin.pages.edit', [$page->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-edit"></i> Edit </a>
+                        <a href="' . route('admin.pages.clone', [$page->id]) . '" class="btn btn-sm btn-default"><i class="fa fa-clone"></i> Clone </a>
+                    </div>';
         });
 
         return $datatables->editColumn('created_at', '{!! $created_at->diffForHumans() !!}')
@@ -155,7 +158,8 @@ class PageController extends Controller
 
         $title = t('Edit the Clone');
 
-        return view('admin.page.edit', compact('page', 'title'));
+        // return view('admin.page.edit', compact('page', 'title'));
+        return redirect()->route('admin.pages.edit',['id' => $page->id])->with('flashSuccess', 'Clonado');
     }
 
 

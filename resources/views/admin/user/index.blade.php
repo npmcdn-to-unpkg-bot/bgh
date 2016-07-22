@@ -4,12 +4,8 @@
         <div class="box-body">
             <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                 <div class="row">
-                    <div class="col-sm-6"></div>
-                    <div class="col-sm-6"></div>
-                </div>
-                <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-                        <table class="table table-bordered table-hover" id="images-table">
+                        <table class="table table-bordered table-striped table-hover" id="images-table">
                             <thead>
                             <tr>
                                 <th>User Id</th>
@@ -39,6 +35,10 @@
 @section('extra-js')
     <script>
         $(function () {
+
+
+
+
             @if(env('APP_DEBUG') == false)$.fn.dataTable.ext.errMode = 'none';@endif
             $('#images-table').DataTable({
                 processing: true,
@@ -60,6 +60,8 @@
                 fnInitComplete: function () {
                     userApprove();
                     userDisapprove();
+                    $('div.dataTables_filter input').addClass('form-control');
+                    $('div.dataTables_length select').addClass('form-control');
                 },
                 language: {
                     processing: '<i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>',

@@ -138,3 +138,8 @@ ol.sortable span small{
 table.dataTable.no-footer {
     border-bottom: none;
 }
+
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 6px 6px;
+    vertical-align: middle;
+}

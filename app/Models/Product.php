@@ -27,6 +27,12 @@ class product extends Model
         return static::whereNotNull('approved_at');
     }
 
+    public static function scopeProfiled()
+    {
+        return static::whereIn('profile_id', [1, 2]);
+    }
+
+
     public function getTitleAttribute($value)
     {
         return ucfirst($value);
@@ -35,6 +41,11 @@ class product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
     }
 
     // public function comments()

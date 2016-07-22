@@ -32,6 +32,7 @@ class Kernel extends HttpKernel
         'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'csrf'       => \App\Http\Middleware\VerifyCsrfToken::class,
         'admin'       => \App\Http\Middleware\AdminMiddleware::class,
+        'superadmin'       => \App\Http\Middleware\SuperadminMiddleware::class,
         // 'multisite'       => \App\Http\Middleware\MultisiteMiddleware::class,
     ];
 }

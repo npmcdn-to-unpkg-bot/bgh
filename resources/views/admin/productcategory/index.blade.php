@@ -3,14 +3,20 @@
 @section('content')
 
     <div class="row">
-        <div class="col-md-12">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreate">{{ t('Create') }}</button>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreate">{{ t('Create') }}</button>
+            </div>
+            <ul class="list-group">
+                <a href="#" class="list-group-item disabled">
+                    Statics
+                </a>
+                <li class="list-group-item"><strong>Categories</strong> {{ $categories->count() }}</li>
+            </ul>
         </div>
-    </div>
 
-    <div class="row">
-
-        <div class="col-md-8">
+        <div class="col-md-9">
 
             <div class='categories-sortable-list area' id='adminChannels'>
                 <ol class='sortable list channelList list-group'>
@@ -41,7 +47,7 @@
                         <div class='info'>
                             <span class='channel channel-1'>{{ $category->name }}<a href="{{ route('admin.productcategories.items', ['id' => $category->id]) }}"><small>&nbsp;({{ sizeof($category->products) }} items)</small></a></span>
                             <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
-                            <a href="{{ route('products', ['category' =>  $category->link]) }}" target="_blank" class="btn btn-default" rel="view"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('products', ['category' =>  $category->link]) }}" target="_blank" class="btn btn-default" rel="view"><i class="fa fa-eye"></i></a>
                                 <a href="{{ route('admin.productcategories.items', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-cubes"></i></a>
                                 <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
                                 <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default" rel="delete"><i class="fa fa-trash-o"></i></a>

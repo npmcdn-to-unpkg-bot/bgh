@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Logged out' => 'Logged out',
     'pages' => 'pages',
     'page' => 'page',
     'of' => 'of',
