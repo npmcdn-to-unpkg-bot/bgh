@@ -1,7 +1,5 @@
 <?php
-/**
- * @author Abhimanyu Sharma <abhimanyusharma003@gmail.com>
- */
+
 namespace App\Notifier;
 
 use App\Models\Notification;

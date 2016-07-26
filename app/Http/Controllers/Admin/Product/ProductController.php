@@ -34,14 +34,22 @@ class ProductController extends Controller
 
     public function getData(Request $request)
     {
+        // $products = Product::select([
+        //     'products.*',
+        //     DB::raw('users.fullname as user_fullname'),
+        //     DB::raw('profiles.title as profile_name'),
+        // ])
+        // ->leftJoin('users', 'users.id', '=', 'products.user_id')
+        // ->leftJoin('profiles', 'profiles.id', '=', 'products.profile_id')
+        // ->groupBy('products.id');
+        //
+
         $products = Product::select([
-            'products.*',
-            DB::raw('users.fullname as user_fullname'),
-            DB::raw('profiles.title as profile_name'),
+            'products.*','users.fullname as user_fullname','profiles.title as profile_name'
         ])
         ->leftJoin('users', 'users.id', '=', 'products.user_id')
-        ->leftJoin('profiles', 'profiles.id', '=', 'products.profile_id')
-        ->groupBy('products.id');
+        ->leftJoin('profiles', 'profiles.id', '=', 'products.profile_id');
+
 
         // si no es superamdin, filtro el lote por los perfiles que el usuario posea
         if(!auth()->user()->isSuper()){
@@ -62,9 +70,6 @@ class ProductController extends Controller
                 $products->approved();
         }
 
-
-
-        // $products->profiled();
 
         $datatables = app('datatables')->of($products);
 
@@ -117,6 +122,10 @@ class ProductController extends Controller
     {
         $product = Product::whereId($id)->with('user', 'info')->firstOrFail();
 
+        if(!$product->canHandle()){
+            return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
+        }
+
         $title = t('Edit');
 
         $categories = ProductCategory::items();
@@ -141,7 +150,12 @@ class ProductController extends Controller
 
     public function patch(ProductRequest $request)
     {
-        $product = Product::whereId($request->route('id'))->firstOrFail();
+        // $product = Product::whereId($request->route('id'))->firstOrFail();
+        $product = Product::findOrFail($request->route('id'));
+
+        if(!$product->canHandle()){
+            return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
+        }
 
         if ($request->get('categories')) {
             $categories = $request->get('categories');
@@ -228,11 +242,15 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-
         // if (Request::ajax()) {
         // if (Request::isMethod('delete')){
 
         $product = Product::findOrFail($id);
+
+        if(!$product->canHandle()){
+            return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
+        }
+
 
         $delete = new ResizeHelper( $product->main_image, $product->type);
         $delete->delete();
@@ -382,7 +400,6 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.edit',['id' => $product->id])->with('flashSuccess', 'Clonado');
     }
-
 
 
 

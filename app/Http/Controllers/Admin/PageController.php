@@ -30,12 +30,18 @@ class PageController extends Controller
     public function getData(Request $request)
     {
         $pages = Page::select([
-            'pages.*',
-            DB::raw('users.fullname as fullname'),
-        ])->leftJoin('users', 'users.id', '=', 'pages.user_id')
-            ->groupBy('pages.id');
+            'pages.id',
+            'pages.slug',
+            'pages.title',
+            'pages.created_at',
+            'pages.updated_at',
+            'pages.id',
+            'users.fullname as user_fullname',
+            'profiles.title as profile_name'
+        ])
+        ->leftJoin('users', 'users.id', '=', 'pages.user_id')
+        ->leftJoin('profiles', 'profiles.id', '=', 'pages.profile_id');
 
-        // $pages->approved();
 
         $datatables = app('datatables')->of($pages);
 
@@ -51,12 +57,11 @@ class PageController extends Controller
         return $datatables->editColumn('created_at', '{!! $created_at->diffForHumans() !!}')
             ->editColumn('updated_at', '{!! $updated_at->diffForHumans() !!}')
             ->editColumn('title', '{!! str_limit($title, 60) !!}')
+            ->addColumn('user', '{!! $user_fullname !!}')
+            ->addColumn('profile', '{!! $profile_name !!}')
             ->make(true);
 
     }
-
-
-
 
 
     // #################################

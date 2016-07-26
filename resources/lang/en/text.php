@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Visits' => 'Visits',
     'Logged out' => 'Logged out',
     'pages' => 'pages',
     'page' => 'page',

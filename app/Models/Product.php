@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class product extends Model
+class Product extends Profiled
 {
     // use SoftDeletes;
 
@@ -13,39 +13,14 @@ class product extends Model
     protected $dates = ['deleted_at', 'featured_at'];
 
 
-    // protected $connection = 'mysql2';
-
-    // public function changeConnection($conn)
-    // {
-    //     $this->connection = $conn;
-    // }
-
-
-
     public static function scopeApproved()
     {
         return static::whereNotNull('approved_at');
     }
 
-    public static function scopeProfiled()
-    {
-        return static::whereIn('profile_id', [1, 2]);
-    }
-
-
     public function getTitleAttribute($value)
     {
         return ucfirst($value);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function profile()
-    {
-        return $this->belongsTo(Profile::class);
     }
 
     // public function comments()

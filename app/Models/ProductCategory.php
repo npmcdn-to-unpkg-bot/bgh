@@ -5,16 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class ProductCategory extends Model
+class ProductCategory extends Profiled
 {
 
     protected $table = 'product_categories';
-
-    // public function images()
-    // {
-    //     return $this->hasMany(Image::class, 'category_id');
-    // }
-
 
     public function getPath()
     {
@@ -31,7 +25,6 @@ class ProductCategory extends Model
         $res = $c->slug . "/" . $res;
 
         return $res;
-
     }
 
     public function getLink()
@@ -57,7 +50,6 @@ class ProductCategory extends Model
     {
         return $this->belongsToMany('App\Models\Product', 'product_x_category', 'product_category_id', 'product_id')->orderBy('order', 'asc'); // orden de campos chequeado
     }
-
 
     public static function items()
     {

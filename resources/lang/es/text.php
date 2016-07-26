@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Visits' => 'Visitas',
     'Logged out' => 'Sesion cerrada',
     'pages' => 'páginas',
     'page' => 'página',
@@ -75,8 +76,8 @@ return [
     'Change Password'                                                             => 'Change Password',
     'Color Palette'                                                               => 'Color Palette',
     'Comment'                                                                     => 'Comment',
-    'comments'                                                                    => 'comments',
-    'Comments'                                                                    => 'Comments',
+    'comments'                                                                    => 'comentarios',
+    'Comments'                                                                    => 'Comentarios',
     'Confirm Password'                                                            => 'Confirm Password',
     'Congratulations your account is created and activated'                       => 'Congratulations your account is created and activated',
     'Country'                                                                     => 'Country',

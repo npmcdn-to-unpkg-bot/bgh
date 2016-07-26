@@ -18,7 +18,7 @@
                 <li class="list-group-item"><strong>Featured At</strong> {{ $product->featured_at  == null ? 'Not Featured' : $product->featured_at->diffForHumans() }} </li>
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6">
         {!! Form::open(['method' => 'PATCH', 'files' => true, 'id' => 'mainForm']) !!}
 
             <div class="form-group">
@@ -29,24 +29,14 @@
                 {!! Form::label('slug', 'Slug') !!}
                 {!! Form::text('slug', $product->slug, ['class' => 'form-control input-lg', 'placeholder' => 'Slug']) !!}
             </div>
-
-
-            <div class="form-group">
-                {!! Form::label('profile', 'Profile') !!}
-                {!! Form::select('profile', $profiles, $product->profile->id); !!}
-            </div>
-
-
             <div class="form-group">
                 {!! Form::label('description', 'Description') !!}
                 {!! Form::textarea('description', $product->description, ['class' => 'form-control input-lg', 'placeholder' => 'Description']) !!}
             </div>
-
             <div class="form-group">
                 {!! Form::label('is_microsite', 'Is Microsite Product') !!}
                 {!! Form::select('is_microsite',['1' => 'Yes', '0' => 'No'],$product->is_microsite,['class' => 'form-control']) !!}
             </div>
-
             <div class="form-group form-input-file">
                 {!! Form::label('cover', 'cover') !!}
                 <div class="form-input-file-hide">
@@ -58,7 +48,6 @@
                 <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
                 <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
             </div>
-
             <div class="form-group form-group-lg">
                 {!! Form::label('tags', 'Tags') !!}
                 <select class="form-control input-lg tagging" multiple="multiple" name="tags[]">
@@ -69,7 +58,6 @@
                     @endforeach
                 </select>
             </div>
-
             <div class="form-group form-group-lg">
                 {!! Form::label('categories', 'Categories') !!}
                 <ul id="categories" class="tree">
@@ -105,21 +93,37 @@
                 </ul>
             </div>
 
-            <div class="form-group">
-                {!! Form::label('featured_at', 'Is Featured Product') !!}
-                {!! Form::checkbox('featured_at', 1, (bool)$product->featured_at) !!}
-            </div>
 
-            {!! Form::submit('Update', ['class' => 'btn btn-success btn-lg']) !!}
-            {!! Form::button('Delete', ['class' => 'btn btn-danger btn-lg', 'id' => 'btn_delete']) !!}
-
-            <i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>
-            <div class="progress progress-striped active" style="display:none;">
-                <div class="progress-bar progress-bar-success" style="width:0%"></div>
-            </div>
-
-        {!! Form::close() !!}
         </div>
+        <div class="col-md-3">
+
+            <div class="box">
+                <div class="box-body">
+
+                    <div class="form-group">
+                        {!! Form::label('featured_at', t('Featured')) !!}
+                        {!! Form::checkbox('featured_at', 1, (bool)$product->featured_at) !!}
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('profile', t('Profile')) !!}
+                        {!! Form::select('profile', $profiles, $product->profile->id,['class' => 'form-control']); !!}
+                    </div>
+
+
+                    {!! Form::submit('Update', ['class' => 'btn btn-success btn-lg']) !!}
+                    {!! Form::button('Delete', ['class' => 'btn btn-danger btn-lg', 'id' => 'btn_delete']) !!}
+
+                    <i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>
+                    <div class="progress progress-striped active" style="display:none;">
+                        <div class="progress-bar progress-bar-success" style="width:0%"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {!! Form::close() !!}
     </div>
 
     {{ Form::open(['method' => 'DELETE', 'route' => ['admin.products.edit', $product->id], 'name' => 'delete']) }}

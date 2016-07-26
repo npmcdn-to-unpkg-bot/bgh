@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Page extends Model
+class Page extends Profiled
 {
     use SoftDeletes;
 
@@ -16,11 +16,5 @@ class Page extends Model
     {
         return ucfirst($value);
     }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
 
 }

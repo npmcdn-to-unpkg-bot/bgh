@@ -17,7 +17,9 @@
                                     <th>Slug</th>
                                     <th>Created At</th>
                                     <th>Updated At</th>
-                                    <th>Actions</th>
+                                    <th>{{ t('User') }}</th>
+                                    <th>{{ t('Profile') }}</th>
+                                    <th>{{ t('Actions') }}</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -48,6 +50,8 @@
                     { data: 'slug', name: 'pages.slug' },
                     { data: 'created_at', name: 'pages.created_at' },
                     { data: 'updated_at', name: 'pages.updated_at' },
+                    { data: 'user', name: 'user' },
+                    { data: 'profile', name: 'profile' },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },
                 ],
                 "fnInitComplete": function () {
