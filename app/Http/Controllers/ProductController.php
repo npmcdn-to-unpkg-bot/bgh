@@ -21,13 +21,10 @@ class ProductController extends Controller
 
     public function getIndex($id, $slug = null)
     {
+
         $product = $this->product->getById($id);
 
         $categories = $product->categories;
-
-        // foreach ($product->categories as $cat) {
-        //     var_dump($cat->name);
-        // }
 
         if (empty($slug) or $slug != $product->slug) {
             return redirect()->route('product', ['id' => $product->id, 'slug' => $product->slug], 301);
@@ -37,17 +34,14 @@ class ProductController extends Controller
 
         // $comments = $product->comments()->with('user', 'replies')->orderBy('created_at', 'desc')->paginate(10);
 
-        // $previous = $this->product->findPreviousProduct($product);
-        // $next = $this->product->findNextProduct($product);
         $title = ucfirst($product->title);
-
 
         foreach ($product->categories as $cat) {
             $cat->link = $this->category->getLink($cat->slug);
         }
 
-        return view('product.view', compact('product', 'previous', 'next', 'title'));
-        // return view('product.view', compact('product', 'comments', 'previous', 'next', 'title'));
+        return view('product.view', compact('product', 'previous', 'title'));
+        // return view('product.view', compact('product', 'comments', 'previous'));
     }
 
     public function download($id)

@@ -20,7 +20,7 @@ class ProductRepository implements ProductRepositoryInterface
     // public function __construct(Product $products, ProductNotifier $notice, Category $category, FavoriteRepositoryInterface $favorite)
     public function __construct(Product $products, ProductNotifier $notice, ProductCategory $category)
     {
-        $this->model = $products;
+        $this->products = $products;
         $this->category = $category;
         $this->notification = $notice;
         // $this->favorite = $favorite;
@@ -28,18 +28,19 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getById($id)
     {
-        // var_dump($id);
         // return $this->posts()->where('id', $id)->with('user', 'comments', 'comments.replies', 'favorites', 'info')->firstOrFail();
         return $this->posts()->where('id', $id)->with('user', 'info')->firstOrFail();
     }
 
     private function posts($category = null, $timeframe = null)
     {
-        $posts = $this->model->approved();
+
+        $posts = $this->products->approved();
 
         if ($category = $this->category->whereSlug($category)->first()) {
             $posts = $posts->whereCategoryId($category->id);
         }
+
         if ($this->resolveTime($timeframe)) {
             $posts = $posts->whereBetween('approved_at', $this->resolveTime($timeframe));
         }

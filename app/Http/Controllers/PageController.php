@@ -16,6 +16,11 @@ class PageController extends Controller
     public function getSlug($slug = null)
     {
 
+        // si no viene parametro (root) asumo que es la page home
+        if($slug==null){
+            $slug='home';
+        }
+
         // var_dump($slug);
         $page = $this->page->getBySlug($slug);
 

@@ -74,32 +74,36 @@ class PageController extends Controller
 
         $title = t('Edit');
 
-        return view('admin.page.edit', compact('page', 'title'));
+
+        $profiles = selectableProfiles()->lists('title','id');
+
+        return view('admin.page.edit', compact('page', 'title', 'profiles'));
     }
 
 
     public function patch(PageRequest $request)
     {
-        $page = Page::whereId($request->route('id'))->firstOrFail();
-
+        $item = Page::whereId($request->route('id'))->firstOrFail();
 
         if ($request->get('tags')) {
             $tags = implode(',', $request->get('tags'));
         } else {
             $tags = null;
         }
-        $page->tags = $tags;
+        $item->tags = $tags;
 
         $slug = @str_slug($request->get('slug'));
         if (!$slug) {
             $slug = str_random(8);
         }
-        $page->slug = $slug;
+        $item->slug = $slug;
 
-        $page->title = $request->get('title');
-        $page->html = $request->get('html');
+        $item->title = $request->get('title');
+        $item->html = $request->get('html');
 
-        $page->save();
+        $item->profile()->associate($request->get('profile'));
+
+        $item->save();
 
         if ($request->ajax() || $request->wantsJson()) {
             // return response()->json(['dato' => 'valor', 'otrodato' => 'otrovalor']);

@@ -1,5 +1,6 @@
 <?php
 use App\Models\Favorite;
+use App\Models\Profile;
 use App\Models\Follow;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -1157,6 +1158,23 @@ function query_params($except = [])
 
     return (http_build_query($query));
 }
+
+
+
+
+function selectableProfiles(){
+
+    if(auth()->user()->isSuper()){
+        // si es Super levanto todos los perfiles disponibles
+        return Profile::all();
+    }
+    else{
+        // levanto todos los perfiles del usuario para que pueda seleccionar el que corresponda al producto en SELECT
+        return auth()->user()->profiles();
+    }
+
+}
+
 
 
 

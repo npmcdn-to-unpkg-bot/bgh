@@ -12,9 +12,9 @@ class Page extends Profiled
     protected $softDelete = true;
     protected $dates = ['deleted_at'];
 
-    public function getTitleAttribute($value)
-    {
-        return ucfirst($value);
-    }
+    // public function getTitleAttribute($value)
+    // {
+    //     return ucfirst($value);
+    // }
 
 }

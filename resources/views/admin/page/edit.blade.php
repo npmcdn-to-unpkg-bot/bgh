@@ -1,16 +1,11 @@
 @extends('admin.master.index')
 @section('content')
 
-
-
-
     {!! HTML::style('static/admin/plugins/summernote/summernote.css') !!}
     {!! HTML::script('static/admin/plugins/summernote/summernote.js') !!}
 
-
     <!-- Ckeditor js -->
     <!--script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js"></script-->
-
 
     {!! HTML::style('static/admin/plugins/grideditor/grideditor.css') !!}
     {!! HTML::script('static/admin/plugins/grideditor/jquery.grideditor.js') !!}
@@ -28,9 +23,11 @@
 
     </style>
 
+    {!! Form::open(['method' => 'PATCH', 'files' => true, 'id' => 'mainForm']) !!}
 
+    <div class="row">
 
-        {!! Form::open(['method' => 'PATCH', 'files' => true, 'id' => 'mainForm']) !!}
+        <div class="col-md-9">
 
             <div class="form-group">
                 {!! Form::label('title', 'Title') !!}
@@ -56,27 +53,42 @@
                 <?php echo $page->html ?>
             </div>
 
-            {!! Form::button('Update', ['class' => 'btn btn-success btn-lg', 'id' => 'btn_submit']) !!}
-            {!! Form::button('Delete', ['class' => 'btn btn-danger btn-lg', 'id' => 'btn_delete']) !!}
+        </div>
+        <div class="col-md-3">
 
-            <i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>
-            <div class="progress progress-striped active" style="display:none;">
-                <div class="progress-bar progress-bar-success" style="width:0%"></div>
+            <div class="box">
+                <div class="box-body">
+
+                    <div class="form-group">
+                        {!! Form::label('profile', t('Profile')) !!}
+                        {!! Form::select('profile', $profiles, $page->profile->id,['class' => 'form-control']); !!}
+                    </div>
+
+                    {!! Form::button('Update', ['class' => 'btn btn-success btn-lg', 'id' => 'btn_submit']) !!}
+                    {!! Form::button('Delete', ['class' => 'btn btn-danger btn-lg', 'id' => 'btn_delete']) !!}
+
+                    <i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>
+                    <div class="progress progress-striped active" style="display:none;">
+                        <div class="progress-bar progress-bar-success" style="width:0%"></div>
+                    </div>
+
+                </div>
             </div>
 
-        {!! Form::close() !!}
+        </div>
+
+    </row>
+
+    {!! Form::close() !!}
 
 
-        {{ Form::open(['method' => 'DELETE', 'route' => ['admin.pages.edit', $page->id], 'name' => 'delete']) }}
-        {{ Form::close() }}
+    {{ Form::open(['method' => 'DELETE', 'route' => ['admin.pages.edit', $page->id], 'name' => 'delete']) }}
+    {{ Form::close() }}
 
 
 @endsection
 
 @section('extra-js')
-
-
-
 
     <script>
 
@@ -174,7 +186,6 @@
 
 
             $('#btn_submit').on('click',function() {
-
 
                 var html = $('#myGrid').gridEditor('getHtml');
 

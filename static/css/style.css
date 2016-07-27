@@ -594,11 +594,11 @@ ul.action-bar {
 
 
 .row.dynhtml {
-    background-color: #11e;
+    /*background-color: #11e;*/
 }
 
 .row.dynhtml .column {
-    background-color: #1e1;
+    /*background-color: #1e1;*/
     height: 300px;
 }
 

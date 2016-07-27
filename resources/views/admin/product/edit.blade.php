@@ -38,6 +38,17 @@
                 {!! Form::select('is_microsite',['1' => 'Yes', '0' => 'No'],$product->is_microsite,['class' => 'form-control']) !!}
             </div>
             <div class="form-group form-input-file">
+                {!! Form::label('main', 'main') !!}
+                <div class="form-input-file-hide">
+                    {!! Form::file('main_image') !!}
+                </div>
+                <img class="form-input-file-image-original" src="{{ Resize::img($product->main_image,'featuredProduct') }}"  width="280"/>
+                <img class="form-input-file-image-new" src=""  width="280"/>
+                <span class="form-input-file-label"></span>
+                <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
+                <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
+            </div>
+            <div class="form-group form-input-file">
                 {!! Form::label('cover', 'cover') !!}
                 <div class="form-input-file-hide">
                     {!! Form::file('cover_image') !!}

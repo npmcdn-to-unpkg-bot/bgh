@@ -3,7 +3,6 @@
 // Patterns
 Route::pattern('id', '[0-9]+');
 
-Route::get('/', ['as' => 'home', 'middleware' => 'guest', 'uses' => 'HomeController@getIndex']);
 Route::get('user/{username}', ['as' => 'user', 'uses' => 'UserController@getUser']);
 Route::get('user/{username}/favorites', ['as' => 'users.favorites', 'uses' => 'UserController@getFavorites']);
 Route::get('user/{username}/followers', ['as' => 'users.followers', 'uses' => 'UserController@getFollowers']);
@@ -180,6 +179,9 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
 
 });
 
+// reb redirecciono el index para que vaya al home que es un Page
+// Route::get('/', ['as' => 'home', 'middleware' => 'guest', 'uses' => 'HomeController@getIndex']);
+Route::get('/', ['as' => 'home', 'middleware' => 'guest', 'uses' => 'PageController@getSlug']);
 
 // reb tiene que estar al final, porque si no entra al sitio por nada, se fija si existe una page creada con ese nombre
 // http://stackoverflow.com/questions/20870899/order-of-route-declarations-in-laravel-package

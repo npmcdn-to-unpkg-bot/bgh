@@ -33,8 +33,5 @@ interface ProductRepositoryInterface
 
     public function search($input, $category = null);
 
-    // public function findNextProduct(Product $product);
-
-    // public function findPreviousProduct(Product $product);
 
 }

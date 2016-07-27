@@ -135,14 +135,7 @@ class ProductController extends Controller
             }
         }
 
-        if(auth()->user()->isSuper()){
-            // si es Super levanto todos los perfiles disponibles
-            $profiles = Profile::all()->lists('title','id');
-        }
-        else{
-            // levanto todos los perfiles del usuario para que pueda seleccionar el que corresponda al producto en SELECT
-            $profiles = auth()->user()->profiles()->lists('title','id');
-        }
+        $profiles = selectableProfiles()->lists('title','id');
 
         return view('admin.product.edit', compact('product', 'title', 'categories', 'profiles'));
     }
@@ -151,15 +144,15 @@ class ProductController extends Controller
     public function patch(ProductRequest $request)
     {
         // $product = Product::whereId($request->route('id'))->firstOrFail();
-        $product = Product::findOrFail($request->route('id'));
+        $item = Product::findOrFail($request->route('id'));
 
-        if(!$product->canHandle()){
+        if(!$item->canHandle()){
             return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
         }
 
         if ($request->get('categories')) {
             $categories = $request->get('categories');
-            $product->categories()->sync($categories);
+            $item->categories()->sync($categories);
         }
 
         if ($request->get('tags')) {
@@ -167,39 +160,48 @@ class ProductController extends Controller
         } else {
             $tags = null;
         }
-        $product->tags = $tags;
+        $item->tags = $tags;
 
         $slug = @str_slug($request->get('slug'));
         if (!$slug) {
             $slug = str_random(8);
         }
-        $product->slug = $slug;
+        $item->slug = $slug;
 
-        $product->title = $request->get('title');
-        $product->description = $request->get('description');
-        $product->is_microsite = $request->get('is_microsite');
+        $item->title = $request->get('title');
+        $item->description = $request->get('description');
+        $item->is_microsite = $request->get('is_microsite');
 
-        $product->profile()->associate($request->get('profile'));
+        $item->profile()->associate($request->get('profile'));
 
-        if ($request->get('featured_at') && $product->featured_at == null) {
-            $product->featured_at = Carbon::now();
-        } elseif ($request->get('featured_at') == null && $product->featured_at) {
-            $product->featured_at = null;
+        if ($request->get('featured_at') && $item->featured_at == null) {
+            $item->featured_at = Carbon::now();
+        } elseif ($request->get('featured_at') == null && $item->featured_at) {
+            $item->featured_at = null;
         }
 
-        $product->save();
+        if ($request->hasFile('main_image')){
+            if ($request->file('main_image')->isValid()){
+                $save = new ResizeHelper($request->file('main_image'), 'uploads/products');
+                list($fName, $fType) = $save->saveOriginal();
+                $item->main_image = $fName . "." . $fType;
+                // $request->file('main_image')->move($destinationPath, $fileName);
+            }
+        }
+
+        $item->save();
 
 
         if ($request->hasFile('cover_image')){
             if ($request->file('cover_image')->isValid()){
                 $save = new ResizeHelper($request->file('cover_image'), 'uploads/products');
                 list($fName, $fType) = $save->saveOriginal();
-                $product->info->cover_image = $fName . "." . $fType;
+                $item->info->cover_image = $fName . "." . $fType;
                 // $request->file('cover_image')->move($destinationPath, $fileName);
             }
         }
 
-        $product->info->save();
+        $item->info->save();
 
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -245,19 +247,19 @@ class ProductController extends Controller
         // if (Request::ajax()) {
         // if (Request::isMethod('delete')){
 
-        $product = Product::findOrFail($id);
+        $item = Product::findOrFail($id);
 
-        if(!$product->canHandle()){
+        if(!$item->canHandle()){
             return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
         }
 
 
-        $delete = new ResizeHelper( $product->main_image, $product->type);
+        $delete = new ResizeHelper( $item->main_image, $item->type);
         $delete->delete();
 
-        $product->categories()->detach();
-        $product->info()->delete();
-        $product->delete();
+        $item->categories()->detach();
+        $item->info()->delete();
+        $item->delete();
 
         return redirect()->route('admin.products')->with('flashSuccess', 'deleted');
     }
@@ -265,20 +267,20 @@ class ProductController extends Controller
 
     public function approve(Request $request)
     {
-        $product = Product::whereId($request->get('id'))->first();
-        if (!$product) {
+        $item = Product::whereId($request->get('id'))->first();
+        if (!$item) {
             return 'Error';
         }
         if ($request->get('approve') == 1) {
-            $product->approved_at = Carbon::now();
-            $product->save();
+            $item->approved_at = Carbon::now();
+            $item->save();
 
             return 'Approved';
         }
         if ($request->get('approve') == 0) {
-            $delete = new ResizeHelper($product->main_image, $product->type);
+            $delete = new ResizeHelper($item->main_image, $item->type);
             $delete->delete();
-            $product->delete();
+            $item->delete();
 
             return 'Deleted';
         }

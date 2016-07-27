@@ -18,10 +18,10 @@ class Product extends Profiled
         return static::whereNotNull('approved_at');
     }
 
-    public function getTitleAttribute($value)
-    {
-        return ucfirst($value);
-    }
+    // public function getTitleAttribute($value)
+    // {
+    //     return ucfirst($value);
+    // }
 
     // public function comments()
     // {
