@@ -87,6 +87,15 @@ class Resize
             'watermark' => false,
             'bnw' => false,
         ],
+        'listingMedia'  => [
+            'recipe'    => 'listing',
+            'dir'       => 'uploads/medias',
+            'width'     => 117,
+            'height'    => 117,
+            'method'    => 'fit',
+            'watermark' => false,
+            'bnw' => false,
+        ],
     ];
 
 

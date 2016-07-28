@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
+
     <!-- BOOTSTRAP -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -34,6 +35,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
+
+    {!! HTML::style('static/admin/css/animate.css') !!}
+
     {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
 
     {!! HTML::style('static/admin/plugins/datatables/css/jquery.dataTables.css') !!}
@@ -41,67 +45,59 @@
     {{-- {!! HTML::style('static/admin/plugins/datatables/css/dataTables.bootstrap.css') !!} --}}
     {!! HTML::script('static/admin/plugins/datatables/js/jquery.dataTables.min.js') !!}
 
-
     {!! HTML::style('static/admin/css/AdminLTE.css') !!}
     {!! HTML::style('static/admin/css/custom.css') !!}
 
-
     {!! HTML::script('static/admin/js/bootstrap-dialog.min.js') !!}
-
     {!! HTML::script('static/admin/js/raphael.min.js') !!}
     {!! HTML::script('static/admin/js/morris.min.js') !!}
     {!! HTML::script('static/admin/js/adminLTE.js') !!}
     {!! HTML::script('static/admin/js/jquery.mjs.nestedSortable.js') !!}
+    {!! HTML::script('static/admin/js/jquery-checktree.js') !!}
+
+    {{-- https://github.com/webpop/jquery.pin --}}
+    {!! HTML::script('static/admin/plugins/jquery.pin/jquery.pin.js') !!}
+
+    {{-- https://github.com/WickyNilliams/headroom.js  --}}
+    {!! HTML::script('static/admin/plugins/headroom/headroom.js') !!}
 
     {{-- http://jquery.malsup.com/form/#ajaxForm --}}
     {!! HTML::script('static/admin/js/jquery.form.min.js') !!}
 
-    {!! HTML::script('static/admin/js/jquery-checktree.js') !!}
-
     {!! HTML::script('static/admin/main.js') !!}
 
-    <script type="text/javascript">
+    @yield('extra-css')
 
-        // notificaciones
-        toastr.options = {
-          "closeButton": true,
-          "debug": false,
-          "newestOnTop": false,
-          "progressBar": true,
-          "positionClass": "toast-bottom-right",
-          "preventDuplicates": false,
-          "onclick": null,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "3000",
-          "extendedTimeOut": "1000",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut"
-        }
+    <style type="text/css">
+  /*
+      body{
+        padding-top: 50px;
+      }*/
 
-    </script>
+      .fixed {
+          position: fixed;
+          z-index: 10;
+          right: 0;
+          left: 0;
+          top: 0;
+      }
+
+    </style>
 
 </head>
 <body class="skin-purple sidebar-mini">
 @include('admin.master.notices')
 <div class="wrapper">
 
-    <!-- Main Header -->
-    <header class="main-header">
+    <header id="header" class="main-header">
 
-        <!-- Logo -->
-        <a href="{{ url("admin") }}" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
+        <a href="{{ url("admin") }}" class="logo ">
             <span class="logo-mini"><b><?=substr(t('Admin'),0,1) ?></b></span>
-            <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>{{ t('Admin') }}</b></span>
         </a>
 
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Sidebar toggle button-->
+        <nav class="navbar navbar-static-top " role="navigation">
+
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
@@ -114,7 +110,6 @@
                   </button>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                   <ul class="nav navbar-nav">
                     <li class="active222"><a href="#">Link <span class="sr-only">(current)</span></a></li>
@@ -269,13 +264,9 @@
         <section class="content-header">
             <h1>{{ $title }} @if(Request::is('admin')) <small>Version {{ config('version.version') }}</small>@endif</h1>
         </section>
-        <!-- Main content -->
         <section class="content">
-
             @yield('content')
-
         </section>
-        <!-- /.content -->
     </div>
 
     <footer class="main-footer">
@@ -284,6 +275,52 @@
     </footer>
     <div class="control-sidebar-bg"></div>
 </div>
+
+
+
+<script type="text/javascript">
+
+  // notificaciones
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "3000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  $(document).ready(function() {
+
+
+  });
+
+
+  // (function() {
+
+  //     var header = new Headroom(document.querySelector(".navbar"), {
+  //         tolerance: 5,
+  //         offset : 20,
+  //         classes: {
+  //           initial: "animated",
+  //           pinned: "swingInX",
+  //           unpinned: "swingOutX"
+  //         }
+  //     });
+  //     header.init();
+
+  // }());
+
+</script>
 
 
 @yield('extra-js')

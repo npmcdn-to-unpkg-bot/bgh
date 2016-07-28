@@ -9,6 +9,7 @@ Route::get('user/{username}/followers', ['as' => 'users.followers', 'uses' => 'U
 Route::get('users', ['as' => 'users', 'uses' => 'UserController@getAll']);
 Route::get('productos/{category?}', ['as' => 'products', 'uses' => 'ProductCategoryController@getCategory'])->where('category', '(.*)');
 Route::get('producto/{id}/{slug?}', ['as' => 'product', 'uses' => 'ProductController@getIndex']);
+Route::get('media/{id}/{slug?}', ['as' => 'media', 'uses' => 'MediaController@getIndex']);
 Route::get('tag/{tag}', ['as' => 'tags', 'uses' => 'TagsController@getIndex']);
 Route::get('notifications', ['as' => 'notifications', 'uses' => 'UserController@getNotifications']);
 Route::get('tos', ['as' => 'tos', 'uses' => 'PolicyController@getTos']);
@@ -70,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('feeds', ['as' => 'users.feeds', 'uses' => 'UserController@getFeeds']);
     Route::get('user/{username}/following', ['as' => 'users.following', 'uses' => 'UserController@getFollowing']);
     Route::get('product/{any}/download', ['as' => 'products.download', 'uses' => 'ProductController@download']);
+    Route::get('media/{any}/download', ['as' => 'media.download', 'uses' => 'MediaController@download']);
     Route::get('settings', ['as' => 'users.settings', 'uses' => 'UserController@getSettings']);
     Route::get('user/{username}/report', ['as' => 'user.report', 'uses' => 'ReportController@getReport']);
 
@@ -101,7 +103,6 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     // Product
     Route::get('admin/products', ['as' => 'admin.products', 'uses' => 'Product\ProductController@getList']);
     Route::get('admin/products/data', ['as' => 'admin.products.data', 'uses' => 'Product\ProductController@getData']);
-
     // mas cercano a REST con verbs
     Route::get('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@edit']);
     Route::patch('admin/products/{id}/edit', ['as' => 'admin.products.edit', 'uses' => 'Product\ProductController@patch', 'before' => 'csrf']);
@@ -123,6 +124,20 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/productcategories/{id}/items', ['as' => 'admin.productcategories.items', 'uses' => 'ProductCategory\ProductCategoryController@items']);
     Route::post('admin/productcategories/{id}/items', ['as' => 'admin.productcategories.items', 'uses' => 'ProductCategory\ProductCategoryController@itemsupdate']);
     Route::get('admin/productcategories/productlist', ['as' => 'admin.productcategories.productlist', 'uses' => 'ProductCategory\ProductCategoryController@productlist']);
+
+
+    // Media
+    Route::get('admin/media', ['as' => 'admin.media', 'uses' => 'MediaController@getList']);
+    Route::get('admin/media/data', ['as' => 'admin.media.data', 'uses' => 'MediaController@getData']);
+    // mas cercano a REST con verbs
+    Route::get('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
+    Route::patch('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@patch', 'before' => 'csrf']);
+    Route::delete('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@delete', 'before' => 'csrf']);
+    Route::get('admin/media/{id}/clearcache', ['as' => 'admin.media.clearcache', 'uses' => 'MediaController@clearCache']);
+    Route::put('admin/media/create', ['as' => 'admin.media.create', 'uses' => 'MediaController@put', 'before' => 'csrf']);
+    Route::get('admin/media/bulkupload', ['as' => 'admin.media.bulkupload', 'uses' => 'MediaController@getBulkUpload']);
+    Route::post('admin/media/bulkupload', ['as' => 'admin.media.bulkupload', 'uses' => 'MediaController@postBulkUpload']);
+
 
     // Blogs
     Route::get('admin/blogs', ['as' => 'admin.blogs', 'uses' => 'Blog\BlogController@getIndex']);

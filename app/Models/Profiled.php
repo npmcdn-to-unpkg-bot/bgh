@@ -21,17 +21,10 @@ class Profiled extends Model
 
     // se fija si el usuario auth tiene como perfiles disponibles el perfil del objeto en cuestion
     public function canHandle(){
-
-        if(!auth()->user()->isSuper()){
-            if(!auth()->user()->profiles->contains($this->profile->id)){
-                return false;
-            }
+        if( auth()->check() && (auth()->user()->isSuper() || auth()->user()->profiles->contains($this->profile->id)) ){
+            return true;
         }
-
-        return true;
+        return false;
     }
-
-
-
 
 }

@@ -16,8 +16,9 @@ a:hover {
 
 ul.tree {
 	list-style: none;
-	font-size: 18px;
-    padding: 20px;
+    padding: 16px;
+    padding-top: 5px;
+    padding-top: 6px;
 	background-color: #fff;
 	line-height: 1.2;
     color: #555;

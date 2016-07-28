@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'Yes' => 'Si',
+    'No' => 'No',
+    'Save' => 'Guardar',
+    'Published' => 'Publicado',
     'Visits' => 'Visitas',
     'Logged out' => 'Sesion cerrada',
     'pages' => 'páginas',
@@ -84,7 +88,7 @@ return [
     'Create New Account'                                                          => 'Create New Account',
     'Current Password'                                                            => 'Current Password',
     'Date Of Birth'                                                               => 'Date Of Birth',
-    'Delete'                                                                      => 'Delete',
+    'Delete'                                                                      => 'Eliminar',
     'Description'                                                                 => 'Descripción',
     'Download Original'                                                           => 'Download Original',
     'Downloads'                                                                   => 'Downloads',

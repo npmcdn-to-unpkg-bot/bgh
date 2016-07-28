@@ -13,25 +13,19 @@ interface ProductRepositoryInterface
 
     public function getById($id);
 
-    public function getLatest($category = null, $timeframe = null);
+    public function getLatest($timeframe = null);
 
-    public function getFeatured($category = null, $timeframe = null);
+    public function getFeatured($timeframe = null);
 
     public function getByTags($tag);
 
     public function incrementViews($product);
 
-    // public function mostCommented($category = null, $timeframe = null);
+    public function popular($timeframe = null);
 
-    public function popular($category = null, $timeframe = null);
+    public function mostViewed($timeframe = null);
 
-    // public function mostFavorited($category = null, $timeframe = null);
-
-    public function mostDownloaded($category = null, $timeframe = null);
-
-    public function mostViewed($category = null, $timeframe = null);
-
-    public function search($input, $category = null);
+    public function search($input);
 
 
 }

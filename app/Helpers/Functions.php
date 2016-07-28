@@ -1164,7 +1164,7 @@ function query_params($except = [])
 
 function selectableProfiles(){
 
-    if(auth()->user()->isSuper()){
+    if(auth()->check() && auth()->user()->isSuper()){
         // si es Super levanto todos los perfiles disponibles
         return Profile::all();
     }

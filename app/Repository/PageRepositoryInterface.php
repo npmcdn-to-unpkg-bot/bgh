@@ -17,11 +17,11 @@ interface PageRepositoryInterface
 
     public function getByTags($tag);
 
-    public function incrementViews($product);
+    public function incrementViews($page);
 
-    public function mostViewed($category = null, $timeframe = null);
+    public function mostViewed($timeframe = null);
 
-    public function search($input, $category = null);
+    public function search($input);
 
 }
 

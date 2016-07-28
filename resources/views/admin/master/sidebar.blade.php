@@ -1,13 +1,25 @@
 <section class="sidebar">
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu pin">
 
-        <li class="header">{{ Carbon\Carbon::now()->formatLocalized('%A %d %B %Y') }}</li>
+        <li class="header">{{ Carbon\Carbon::now()->formatLocalized('%d %B %Y') }}</li>
 
         <li class="treeview">
             <a href="{{ url('admin') }}">
                 <i class="fa fa-suitcase"></i>
                 <span>{{ t('Dashboard') }}</span>
             </a>
+        </li>
+
+         <li class="treeview">
+            <a href="#">
+                <i class="ion ion-cube"></i>
+                <span>{{ t('Media') }}</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="{{ route('admin.media', ['type' => 'image']) }}"><i class="fa fa-reorder"></i> {{ t('List') }}</a></li>
+                <li><a href="{{ route('admin.media.bulkupload', ['type' => 'image']) }}"><i class="fa fa-upload"></i> {{ t('Bulk Create') }}</a></li>
+            </ul>
         </li>
 
         <li class="treeview">

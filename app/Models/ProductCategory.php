@@ -29,8 +29,8 @@ class ProductCategory extends Profiled
 
     public function getLink()
     {
-    	$res = '';
 
+        $res = '';
         $c = $this;
         if($c->parent_id>0){
             while ($c->parent_id > 0) {

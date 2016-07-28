@@ -19,6 +19,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repository\Eloquent\ProductRepository'
         );
 
+            $this->app->bind(
+            'App\Repository\MediaRepositoryInterface',
+            'App\Repository\Eloquent\MediaRepository'
+        );
+
         $this->app->bind(
             'App\Repository\PageRepositoryInterface',
             'App\Repository\Eloquent\PageRepository'

@@ -4,6 +4,19 @@
     {!! HTML::style('static/admin/plugins/summernote/summernote.css') !!}
     {!! HTML::script('static/admin/plugins/summernote/summernote.js') !!}
 
+
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/trumbowyg.min.js') !!}
+
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/base64/trumbowyg.base64.min.js') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/colors/trumbowyg.colors.min.js') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/noembed/trumbowyg.noembed.min.js') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/pasteimage/trumbowyg.pasteimage.min.js') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/preformatted/trumbowyg.preformatted.min.js') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/plugins/upload/trumbowyg.upload.min.js') !!}
+
+    {!! HTML::style('static/admin/plugins/Trumbowyg-master/dist/ui/trumbowyg.css') !!}
+    {!! HTML::script('static/admin/plugins/Trumbowyg-master/dist/langs/es_ar.min.js') !!}
+
     <!-- Ckeditor js -->
     <!--script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js"></script-->
 
@@ -77,7 +90,26 @@
 
         </div>
 
-    </row>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div id="editor">
+                <h2>This editor is the default build of Trumbowyg.</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, aliquam, minima fugiat placeat provident optio nam reiciendis eius beatae quibusdam!
+                </p>
+                <p>
+                    The text is derived from Cicero's De Finibus Bonorum et Malorum (On the Ends of Goods and Evils, or alternatively [About] The Purposes of Good and Evil ). The original passage began: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit (Translation: &quot;Neither is there anyone who loves grief itself since it is grief and thus wants to obtain it&quot;).
+                </p>
+            </div>
+
+        </div>
+
+    </div>
 
     {!! Form::close() !!}
 
@@ -92,7 +124,78 @@
 
     <script>
 
+
+        $.trumbowyg.svgPath = '{{ url('/static/admin/plugins/Trumbowyg-master/dist/ui/icons.svg') }}';
+
+
+
         $(document).ready(function() {
+
+            $('#editor').trumbowyg({
+                lang: 'es_ar',
+                btnsDef: {
+                    // Customizables dropdowns
+                    image: {
+                        dropdown: ['insertImage', 'upload', 'base64', 'noEmbed'],
+                        ico: 'insertImage'
+                    }
+                },
+                btns: [
+                    ['viewHTML'],
+                    ['undo', 'redo'],
+                    ['formatting'],
+                    'btnGrp-design',
+                    ['link'],
+                    ['image'],
+                    'btnGrp-justify',
+                    'btnGrp-lists',
+                    ['foreColor', 'backColor'],
+                    ['preformatted'],
+                    ['horizontalRule'],
+                    ['fullscreen']
+                ],
+                plugins: {
+                    // Add imagur parameters to upload plugin
+                    upload: {
+                        serverPath: 'https://api.imgur.com/3/image',
+                        fileFieldName: 'image',
+                        headers: {
+                            'Authorization': 'Client-ID 9e57cb1c4791cea'
+                        },
+                        urlPropertyName: 'data.link'
+                    }
+                }
+            });
+
+
+// {
+//     "data": {
+//         "id": "ERRruQW",
+//         "title": null,
+//         "description": null,
+//         "datetime": 1469719583,
+//         "type": "image\/jpeg",
+//         "animated": false,
+//         "width": 528,
+//         "height": 960,
+//         "size": 86375,
+//         "views": 0,
+//         "bandwidth": 0,
+//         "vote": null,
+//         "favorite": false,
+//         "nsfw": null,
+//         "section": null,
+//         "account_url": null,
+//         "account_id": 0,
+//         "in_gallery": false,
+//         "deletehash": "akcCj3QjdOqHg2N",
+//         "name": "",
+//         "link": "http:\/\/i.imgur.com\/ERRruQW.jpg",
+//         "is_ad": false
+//     },
+//     "success": true,
+//     "status": 200
+// }
 
 
             $('#myGrid').gridEditor({

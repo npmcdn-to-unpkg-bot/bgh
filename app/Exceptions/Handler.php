@@ -53,24 +53,21 @@ class Handler extends ExceptionHandler
     {
 
         // reb si es debug, imprimí el por que me voy al 404 o 500, suele ser un ModelNotFoundException de un FirstOrFail
+        // if (config('app.debug') == true) {
 
-        if (config('app.debug') == true) {
+        //     if ($request->ajax()) {
+        //         return response()->json(['error' => 'Exceptions/Handler.php', 'message' => $e->getMessage(), 'model' => $e->getModel()]);
+        //     }
+        //     else{
+        //         var_dump($e->getMessage());
+        //         var_dump(get_class($e));
+        //     }
 
-            if ($request->ajax()) {
-                return response()->json(['error' => 'Exceptions/Handler.php', 'message' => $e->getMessage(), 'model' => $e->getModel()]);
-            }
-            else{
-                var_dump($e->getMessage());
-                var_dump($e->getModel());
-                var_dump(get_class($e));
-            }
+        // }
+        // else{
 
-            // var_dump(get_class_methods($e));
-        }
-        else{
-
+        if (config('app.debug') == false) {
             if ($e instanceof ModelNotFoundException) {
-
                 return response()->view('errors.404', [], 404);
             }
             if ($e instanceof TokenMismatchException) {
@@ -84,6 +81,9 @@ class Handler extends ExceptionHandler
             }
 
         }
+
+        var_dump($e->getMessage());
+        var_dump(get_class($e));
 
         return parent::render($request, $e);
     }

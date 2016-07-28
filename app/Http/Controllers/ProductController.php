@@ -49,11 +49,6 @@ class ProductController extends Controller
         $id = Crypt::decrypt($id);
         $product = $this->product->getById($id);
 
-        // if (!$product or (siteSettings('allowDownloadOriginal') == 'leaveToUser' and $product->allow_download != 1)) {
-        //     return redirect()->route('gallery')->with('flashError', t('You are not allowed to download this product'));
-        // }
-
-
         if (auth()->user()->id != $product->user_id) {
             $product->downloads = $product->downloads + 1;
             $product->save();
@@ -69,8 +64,7 @@ class ProductController extends Controller
         return $this->favorite->favorite($request);
     }
 
-
-       public function featured(Request $request)
+    public function featured(Request $request)
     {
         $products = $this->products->getFeatured($request->get('category'), $request->get('timeframe'));
         $title = t('Featured Images');
@@ -78,65 +72,23 @@ class ProductController extends Controller
         return view('gallery.index', compact('products', 'title'));
     }
 
-    /**
-     * @return mixed
-     */
-    public function mostCommented(Request $request)
-    {
-        $products = $this->products->mostCommented($request->get('category'), $request->get('timeframe'));
-        $title = t('Most Commented');
 
-        return view('gallery.index', compact('products', 'title'));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function mostFavorited(Request $request)
-    {
-        $products = $this->products->mostFavorited($request->get('category'), $request->get('timeframe'));
-        $title = t('Most Favorites');
-
-        return view('gallery.index', compact('products', 'title'));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function mostDownloaded(Request $request)
-    {
-        $products = $this->products->mostDownloaded($request->get('category'), $request->get('timeframe'));
-        $title = t('Popular');
-
-        return view('gallery.index', compact('products', 'title'));
-    }
-
-    /**
-     * @return mixed
-     */
     public function mostPopular(Request $request)
     {
-        $products = $this->products->popular($request->get('category'), $request->get('timeframe'));
+        $products = $this->products->popular($request->get('timeframe'));
         $title = t('Popular');
 
         return view('gallery.index', compact('products', 'title'));
     }
 
-    /**
-     * @return mixed
-     */
     public function mostViewed(Request $request)
     {
-        $products = $this->products->mostViewed($request->get('category'), $request->get('timeframe'));
+        $products = $this->products->mostViewed($request->get('timeframe'));
         $title = t('Most Viewed');
 
         return view('gallery.index', compact('products', 'title'));
     }
 
-    /**
-     * @param $tag
-     * @return mixed
-     */
     public function getByTags($tag)
     {
         $products = $this->products->getByTags($tag);
@@ -145,10 +97,6 @@ class ProductController extends Controller
         return view('gallery.index', compact('products', 'title'));
     }
 
-
-    /**
-     * @return mixed
-     */
     public function search(Request $request)
     {
         $this->validate($request, ['q' => 'required']);

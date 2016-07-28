@@ -26,13 +26,10 @@ class PageRepository implements PageRepositoryInterface
         return $this->pages->where('id', $id)->with('user', 'info')->firstOrFail();
     }
 
-
     public function getBySlug($slug)
     {
         return $this->pages->where('slug', $slug)->with('user')->firstOrFail();
     }
-
-
 
     private function resolveTime($time)
     {
@@ -56,65 +53,50 @@ class PageRepository implements PageRepositoryInterface
         return $time;
     }
 
-    public function getLatest($category = null, $timeframe = null)
+    public function getLatest($timeframe = null)
     {
-        $pages = $this->posts($category, $timeframe)->orderBy('approved_at', 'desc')->with('user');
-        // $pages = $this->posts($category, $timeframe)->orderBy('approved_at', 'desc')->with('user', 'comments', 'favorites');
-
+        $pages = $this->posts($timeframe)->orderBy('approved_at', 'desc')->with('user');
         return $pages->paginate(perPage());
     }
-
-
 
     public function getByTags($tag)
     {
         $pages = $this->posts()->where('tags', 'LIKE', '%' . $tag . '%')->orderBy('approved_at', 'desc')->with('user');
-
         return $pages->paginate(perPage());
     }
 
-    public function incrementViews($page)
+    public function incrementViews($item)
     {
-        $page->views = $page->views + 1;
-        $page->timestamps = false;
-        $page->save(['updated_at' => false]);
+        $item->views = $item->views + 1;
+        $item->timestamps = false;
+        $item->save(['updated_at' => false]);
 
-        return $page;
+        return $item;
     }
 
-
-    public function mostViewed($category = null, $timeframe = null)
+    public function mostViewed($timeframe = null)
     {
-        // $pages = $this->posts($category, $timeframe)->orderBy('views', 'desc')->with('user', 'comments', 'favorites')->paginate(perPage());
-        $pages = $this->posts($category, $timeframe)->orderBy('views', 'desc')->with('user')->paginate(perPage());
-
+        $pages = $this->posts($timeframe)->orderBy('views', 'desc')->with('user')->paginate(perPage());
         return $pages;
     }
 
-    public function search($search, $category = null, $timeframe = null)
+    public function search($search, $timeframe = null)
     {
         $extends = explode(' ', $search);
-        if ($category) {
-            $categoryId = $this->category->whereSlug($category)->first();
-        }
-        $pages = $this->posts($category, $timeframe)->where('title', 'LIKE', '%' . $search . '%')
+
+        $pages = $this->posts($timeframe)->where('title', 'LIKE', '%' . $search . '%')
             ->orWhere('tags', 'LIKE', '%' . $search . '%')
             ->whereNull('deleted_at')->whereNotNull('approved_at')->orderBy('approved_at', 'desc');
 
         foreach ($extends as $extend) {
-            if (isset($categoryId)) {
-                $pages->whereCategoryId($categoryId)->Where('tags', 'LIKE', '%' . $extend . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
-                    ->whereCategoryId($categoryId)->orWhere('title', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
-                    ->whereCategoryId($categoryId)->orWhere('description', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at');
-            } else {
-                $pages->orWhere('tags', 'LIKE', '%' . $extend . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
-                    ->orWhere('title', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
-                    ->orWhere('description', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at');
-            }
+
+            $pages->orWhere('tags', 'LIKE', '%' . $extend . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
+                ->orWhere('title', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
+                ->orWhere('description', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at');
+
         }
 
         return $pages = $pages->with('user')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
-        // return $pages = $pages->with('user', 'comments', 'favorites')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
     }
 
 }

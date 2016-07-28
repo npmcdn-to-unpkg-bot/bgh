@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Yes' => 'Yes',
+    'No' => 'No',
+    'Save' => 'Save',
     'Visits' => 'Visits',
     'Logged out' => 'Logged out',
     'pages' => 'pages',

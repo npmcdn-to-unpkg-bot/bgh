@@ -52,7 +52,7 @@
         <ul class="product-list">
         @foreach($items as $item)
             <li>
-                <a href="{{ route('product', ['id' => $item->id, 'slug' => $item->slug]) }}" id="{{ $item->slug }}">
+                <a href="{{ $item->getLink()->url }}" target="{{ $item->getLink()->target }}" id="{{ $item->slug }}">
                     <img class="display-image image" data-original="{{ Resize::img($item->main_image, 'featuredProduct')  }}" alt="{{ $item->title }}">
                     <h3 class="title">{{ str_limit($item->title,80) }}</h3>
                 </a>

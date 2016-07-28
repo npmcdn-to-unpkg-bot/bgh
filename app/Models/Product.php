@@ -18,25 +18,10 @@ class Product extends Profiled
         return static::whereNotNull('approved_at');
     }
 
-    // public function getTitleAttribute($value)
-    // {
-    //     return ucfirst($value);
-    // }
-
-    // public function comments()
-    // {
-    //     return $this->hasMany(Comment::class, 'product_id');
-    // }
-
-    // public function favorites()
-    // {
-    //     return $this->hasMany(Favorite::class, 'product_id');
-    // }
-
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class, 'category_id');
-    // }
+    public static function scopePublished()
+    {
+        return static::where('published',1);
+    }
 
     public function info()
     {
@@ -54,5 +39,22 @@ class Product extends Profiled
             return $category->id == $id;
         })->isEmpty();
     }
+
+    public function getLink()
+    {
+        $res = new \stdClass();
+
+        if($this->is_microsite==1){
+            $res->url = $this->microsite;
+            $res->target = '_blank';
+        }
+        else{
+            $res->url = route('product', ['id' => $this->id, 'slug' => $this->slug]);;
+            $res->target = '_self';
+        }
+
+        return $res;
+    }
+
 
 }

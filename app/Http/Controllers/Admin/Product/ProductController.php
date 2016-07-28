@@ -51,7 +51,7 @@ class ProductController extends Controller
         ->leftJoin('profiles', 'profiles.id', '=', 'products.profile_id');
 
 
-        // si no es superamdin, filtro el lote por los perfiles que el usuario posea
+        // si no es superadmin, filtro el lote por los perfiles que el usuario posea
         if(!auth()->user()->isSuper()){
             $products->whereIn('profile_id', auth()->user()->profiles()->lists('id')); // lo segundo es un array de ids
         }
@@ -80,7 +80,6 @@ class ProductController extends Controller
                     <a href="#" class="product-approve btn btn-success" data-approve="' . $product->id . '"><i class="fa fa-check"></i></a>
                     <a href="#" class="product-disapprove btn btn-danger" data-disapprove="' . $product->id . '"><i class="fa fa-times"></i></a>
                 </div>';
-
             });
         } else {
             $datatables->addColumn('actions', function ($product) {
@@ -109,10 +108,6 @@ class ProductController extends Controller
             ->addColumn('profile', '{!! $profile_name !!}')
             ->make(true);
     }
-
-
-
-
 
     // #################################
     // REB metodos que responden al routes en modo REST con verbs (PUT, PATCH, DELETE) para no usar el post en distitnas rutas y ser mas organico
@@ -171,6 +166,8 @@ class ProductController extends Controller
         $item->title = $request->get('title');
         $item->description = $request->get('description');
         $item->is_microsite = $request->get('is_microsite');
+        $item->microsite = $request->get('microsite');
+        $item->published = $request->get('published');
 
         $item->profile()->associate($request->get('profile'));
 
@@ -237,7 +234,6 @@ class ProductController extends Controller
         $info = new ProductInfo($info_data);
         $item->info()->create($info_data);
 
-
         return redirect()->route('admin.products.edit', ['id' => $item->id])->with('flashSuccess', 'Product is now crated');
     }
 
@@ -252,7 +248,6 @@ class ProductController extends Controller
         if(!$item->canHandle()){
             return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este producto');
         }
-
 
         $delete = new ResizeHelper( $item->main_image, $item->type);
         $delete->delete();
@@ -303,8 +298,6 @@ class ProductController extends Controller
 
     }
 
-
-
     public function getBulkUpload()
     {
         $title = sprintf('Bulkupload');
@@ -342,7 +335,6 @@ class ProductController extends Controller
         // $product->name = $productName;
         $product->title = $title;
         $product->slug = $slug;
-        // $product->category_id = $request->get('category_id');
         // $product->type = $mimetype;
         $product->tags = $tags;
         $product->description = $description;
