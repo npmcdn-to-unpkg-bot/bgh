@@ -1,12 +1,12 @@
 @extends('admin/master/index')
 @section('content')
 
-    <div class="row">
+  {{--   <div class="row">
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle="modal" data-target="#modalCreate">{{ t('Create') }}</button>
         </div>
     </div>
-
+ --}}
     <div class="row">
         <div class="col-md-12">
 
@@ -21,8 +21,8 @@
                                         <th></th>
                                         <th>Id</th>
                                         <th>{{ t('Title') }}</th>
+                                        <th>{{ t('Type') }}</th>
                                         <th>{{ t('Created At') }}</th>
-                                        <th>{{ t('Updated At') }}</th>
                                         <th>{{ t('User') }}</th>
                                         <th>{{ t('Profile') }}</th>
                                         <th>{{ t('Actions') }}</th>
@@ -88,9 +88,6 @@
     <script>
         $(function() {
 
-
-
-
             $('#media-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -106,8 +103,8 @@
                     { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false },
                     { data: 'id', name: 'media.id'},
                     { data: 'title', name: 'media.title' },
+                    { data: 'type', name: 'media.type' },
                     { data: 'created_at', name: 'media.created_at' },
-                    { data: 'updated_at', name: 'media.updated_at' },
                     { data: 'user', name: 'user' },
                     { data: 'profile', name: 'profile' },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },

@@ -33,18 +33,4 @@ class Media extends Profiled
         return $res;
     }
 
-    // public function getThumb()
-    // {
-
-    //     if($this->type='image'){
-    //         Resize::img($media->name, 'listingMedia')
-    //     }
-    //     else{
-
-    //     }
-
-    //     return $res;
-    // }
-
-
 }

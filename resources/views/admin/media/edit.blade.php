@@ -6,10 +6,35 @@
 
         <div class="col-md-3">
 
-            <a href="{{ route('media',['id' => $media->id, 'slug' => $media->slug]) }}" target="_blank"><img src="{{ Resize::img($media->name,'featuredMedia') }}" class="thumbnail img-responsive"></a>
+            <a href="{{ route('media',['id' => $media->id, 'slug' => $media->slug]) }}" target="_blank"><img src="{{ Resize::img($media->thumbnail,'featuredMedia') }}" class="thumbnail img-responsive"></a>
             <div class="form-group">
                 {{-- <button type="button" class="btn btn-danger clearMediaCache" data-media="{{ $media->id }}"><i class="ion ion-nuclear"></i> Clear Cache</button> --}}
             </div>
+
+            <ul class="list-group pin">
+                <a href="#" class="list-group-item disabled">
+                    Information
+                </a>
+                <li class="list-group-item"><strong>Type</strong> {{ $media->type }}</li>
+                <li class="list-group-item"><strong>Extensión</strong> {{ $media->extension }}</li>
+                <li class="list-group-item"><strong>mime_type</strong> {{ $media->info->mime_type }}</li>
+                <li class="list-group-item"><strong>original</strong> {{ $media->info->original }}</li>
+                <li class="list-group-item"><strong>width</strong> {{ $media->info->width }}</li>
+                <li class="list-group-item"><strong>height</strong> {{ $media->info->height }}</li>
+                <li class="list-group-item"><strong>orientation</strong> {{ $media->info->orientation }}</li>
+                <li class="list-group-item"><strong>resolution</strong> {{ $media->info->resolution }}</li>
+                <a href="#" class="list-group-item disabled">
+                    EXIF
+                </a>
+                <li class="list-group-item"><strong>focal_length</strong> {{ $media->info->focal_length }}</li>
+                <li class="list-group-item"><strong>iso</strong> {{ $media->info->iso }}</li>
+                <li class="list-group-item"><strong>shutter_speed</strong> {{ $media->info->shutter_speed }}</li>
+                <li class="list-group-item"><strong>aperture</strong> {{ $media->info->aperture }}</li>
+                <li class="list-group-item"><strong>copyright</strong> {{ $media->info->copyright }}</li>
+                <li class="list-group-item"><strong>software</strong> {{ $media->info->software }}</li>
+                <li class="list-group-item"><strong>taken_at</strong> {{ $media->info->taken_at }}</li>
+
+            </ul>
 
         </div>
         <div class="col-md-6">
@@ -29,17 +54,32 @@
                         {!! Form::label('description', 'Description') !!}
                         {!! Form::textarea('description', $media->description, ['class' => 'form-control', 'placeholder' => 'Description']) !!}
                     </div>
-                    <div class="form-group form-input-file">
+
+                  {{--   <div class="form-group form-input-file">
                         {!! Form::label('main', 'main') !!}
                         <div class="form-input-file-hide">
                             {!! Form::file('name') !!}
                         </div>
-                        <img class="form-input-file-image-original" src="{{ Resize::img($media->name,'featuredMedia') }}"  width="280"/>
+                        <img class="form-input-file-image-original" src="{{ Resize::img($media->thumbnail,'featuredMedia') }}"  width="280"/>
                         <img class="form-input-file-image-new" src=""  width="280"/>
                         <span class="form-input-file-label"></span>
                         <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
                         <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
-                    </div>
+                    </div> --}}
+
+                    @if($media->type!='image')
+                        <div class="form-group form-input-file">
+                            {!! Form::label('thumbnail', 'thumbnail') !!}
+                            <div class="form-input-file-hide">
+                                {!! Form::file('thumbnail') !!}
+                            </div>
+                            <img class="form-input-file-image-original" src="{{ Resize::img($media->thumbnail,'featuredMedia') }}"  width="280"/>
+                            <img class="form-input-file-image-new" src=""  width="280"/>
+                            <span class="form-input-file-label"></span>
+                            <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
+                            <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         {!! Form::label('tags', 'Tags') !!}
@@ -51,7 +91,6 @@
                             @endforeach
                         </select>
                     </div>
-
 
                 </div>
             </div>

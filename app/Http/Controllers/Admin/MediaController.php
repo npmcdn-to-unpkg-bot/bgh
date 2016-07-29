@@ -129,14 +129,22 @@ class MediaController extends Controller
         $item->profile()->associate($request->get('profile'));
 
 
-        if ($request->hasFile('name')){
-            if ($request->file('name')->isValid()){
-                $save = new ResizeHelper($request->file('name'), 'uploads/media');
+        // if ($request->hasFile('name')){
+        //     if ($request->file('name')->isValid()){
+        //         $save = new ResizeHelper($request->file('name'), 'uploads/media');
+        //         list($fName, $fType) = $save->saveOriginal();
+        //         $item->name = $fName . "." . $fType;
+        //     }
+        // }
+
+        if ($request->hasFile('thumbnail')){
+            if ($request->file('thumbnail')->isValid()){
+                $save = new ResizeHelper($request->file('thumbnail'), 'uploads/media');
                 list($fName, $fType) = $save->saveOriginal();
-                $item->name = $fName . "." . $fType;
-                // $request->file('name')->move($destinationPath, $fileName);
+                $item->thumbnail = $fName . "." . $fType;
             }
         }
+
 
         $item->save();
 
@@ -324,7 +332,7 @@ class MediaController extends Controller
             $info['software'] = (isset($exif['IFD0']['Software']) && strlen($exif['IFD0']['Software']) > 0 ? $exif['IFD0']['Software'] : null);
             $info['taken_at'] = $taken_at;
 
-            $thumbnail = $media->name;
+            $thumbnail = $newname;
 
         }
         else if($type=="video"){
@@ -339,6 +347,7 @@ class MediaController extends Controller
             $thumbnail_path = base_path() . '/uploads/media/';
             $thumbnail_image = $fileName . '.png';
 
+            // https://github.com/lakshmajim/Thumbnail#installation
             // $thumbnail_status = Thumbnail::getThumbnail($video_path,$thumbnail_path,$thumbnail_image,160,128,2,$water_mark,true);
             $thumbnail_status = Thumbnail::getThumbnail($video_path,$thumbnail_path,$thumbnail_image);
             if($thumbnail_status){
@@ -364,11 +373,7 @@ class MediaController extends Controller
         $media->description = $description;
         $media->save();
 
-
-        // $obj_info = new MediaInfo($info);
-
         $media->info()->create($info);
-
 
         return [
             'files' => [
