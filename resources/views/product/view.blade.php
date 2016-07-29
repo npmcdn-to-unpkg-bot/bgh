@@ -29,21 +29,6 @@
          <div class="col-md-8">
             <h3 class="content-heading">
                {{ t('Description') }}
-               <span class="pull-right">
-               <div class="btn-group  btn-group-xs">
-
-                  <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">
-                     <i class="fa fa-plus fa-fw"></i> {{ t('More') }}
-                     <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                     <li>
-                        <a href="{{ route('products.download', ['any' => Crypt::encrypt($product->id)]) }}"><i class="fa fa-download fa-fw"></i> {{ t('Download Original') }}</a>
-                     </li>
-                  </ul>
-                  <!-- end of dropdown menu-->
-               </div>
-            </span>
             </h3>
             <p>{!! nl2br(\App\Helpers\Smilies::parse($product->description))  !!}</p>
          </div>
@@ -52,7 +37,6 @@
             <div class="product-status">
                <ul class="list-inline">
                   <li><i class="fa fa-eye"></i> {{ $product->views }}</li>
-                  <li><i class="fa fa-download"></i> {{ $product->downloads }}</li>
                </ul>
             </div>
          </div>

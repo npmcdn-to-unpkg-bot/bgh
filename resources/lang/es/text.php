@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Media' => 'Media',
     'Yes' => 'Si',
     'No' => 'No',
     'Save' => 'Guardar',

@@ -44,21 +44,6 @@ class ProductController extends Controller
         // return view('product.view', compact('product', 'comments', 'previous'));
     }
 
-    public function download($id)
-    {
-        $id = Crypt::decrypt($id);
-        $product = $this->product->getById($id);
-
-        if (auth()->user()->id != $product->user_id) {
-            $product->downloads = $product->downloads + 1;
-            $product->save();
-        }
-        $file = new ResizeHelper($product->main_image, 'uploads/products');
-        $file = $file->download();
-
-        return response()->download($file, $product->slug . '.' . $product->type, ['content-type' => 'image/jpg'])->deleteFileAfterSend(true);
-    }
-
     public function postFavorite(Favorite $request)
     {
         return $this->favorite->favorite($request);

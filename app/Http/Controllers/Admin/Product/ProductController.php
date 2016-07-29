@@ -231,7 +231,7 @@ class ProductController extends Controller
             'cover_image' => '',
         ];
 
-        $info = new ProductInfo($info_data);
+        // $info = new ProductInfo($info_data);
         $item->info()->create($info_data);
 
         return redirect()->route('admin.products.edit', ['id' => $item->id])->with('flashSuccess', 'Product is now crated');
@@ -296,70 +296,6 @@ class ProductController extends Controller
         return 'Cache is cleared, reload the page';
 
 
-    }
-
-    public function getBulkUpload()
-    {
-        $title = sprintf('Bulkupload');
-
-        return view('admin.product.bulkupload', compact('title'));
-    }
-
-    public function postBulkUpload(Request $request)
-    {
-        $file = $request->file('files')[0];
-        $info = $request->get('photo');
-
-        $save = new ResizeHelper($file, 'uploads/products');
-        list($productName, $mimetype) = $save->saveOriginal();
-
-        $tags = null;
-        if ($request->get('tags')) {
-            $tags = implode(',', $request->get('tags'));
-        }
-
-        $description = null;
-
-        $title = str_replace(['.jpg', '.jpeg', '.png', '.gif'], '', $file->getClientOriginalName());
-
-        $slug = @str_slug($title);
-        if (!$slug) {
-            $slug = str_random(9);
-        }
-
-        sleep(1);
-        $approved_at = Carbon::now();
-        $product = new Product();
-        $product->user_id = $request->user()->id;
-        $product->main_image = $productName . "." . $mimetype;
-        // $product->name = $productName;
-        $product->title = $title;
-        $product->slug = $slug;
-        // $product->type = $mimetype;
-        $product->tags = $tags;
-        $product->description = $description;
-        $product->is_microsite = $request->get('is_microsite');
-        $product->approved_at = $approved_at;
-        $product->save();
-
-
-        $info_data = [
-            'cover_image' => '',
-        ];
-
-        $info = new ProductInfo($info_data);
-        $product->info()->create($info_data);
-
-
-        return [
-            'files' => [
-                0 => ['success'      => 'Uploaded',
-                      'successSlug'  => route('product', ['id' => $product->id, 'slug' => $product->slug]),
-                      'successTitle' => ucfirst($product->title),
-                      'thumbnail'    => Resize::img($product->main_image, 'listingProduct')
-                ]
-            ]
-        ];
     }
 
 

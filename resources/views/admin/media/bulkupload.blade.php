@@ -23,33 +23,38 @@
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
+                    <span>{{ t('Add files...') }}</span>
                     <input type="file" name="files[]" multiple>
                 </span>
                 <button type="submit" class="btn btn-primary start">
                     <i class="glyphicon glyphicon-upload"></i>
-                    <span>Start upload</span>
+                    <span>{{ t('Start upload') }}</span>
                 </button>
                 <button type="reset" class="btn btn-warning cancel">
                     <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span>Cancel upload</span>
+                    <span>{{ t('Cancel upload') }}</span>
                 </button>
 
-                <!-- The global file processing state -->
-                <span class="fileupload-process"></span>
-            </div>
-            <!-- The global progress state -->
-            <div class="col-lg-5 fileupload-progress fade">
-                <!-- The global progress bar -->
-                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                <div class="form-group">
+                    {!! Form::label('tags', 'Tags') !!}
+                    <select name="tags[]" class="form-control tagging" placeholder="Tag to make your photo easier to find..." multiple="multiple"></select>
                 </div>
-                <!-- The extended global progress state -->
-                <div class="progress-extended">&nbsp;</div>
+                <div class="form-group">
+                    {!! Form::label('description', 'Description') !!}
+                    {!! Form::textarea('description', null,['class' => 'form-control', 'placeholder' => 'Description']) !!}
+                </div>
+
+                <div class="col-md-12 fileupload-progress fade">
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                    </div>
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+
             </div>
-        </div>
-        <!-- The table listing the files available for upload/download -->
-        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+
+            <div role="presentation"><div class="row files"></div></div>
+
     </form>
 
 
@@ -132,7 +137,7 @@
         <p>{%=file.error%}</p>
         {% } %}
         {% if (file.success) { %}
-        <p>{{ t('Your Product is uploaded successfully') }}</p>
+        <p>{{ t('uploaded successful') }}</p>
         <p><a href="{%=file.successSlug%}">{%=file.successTitle%}</a></p>
         {% } %}
         </div>
@@ -184,42 +189,54 @@
 
         $(function () {
             'use strict';
-            // Change this to the location of your server-side upload handler:
-            // var url = window.location.hostname === 'blueimp.github.io' ?
-            //             '//jquery-file-upload.appspot.com/' : 'server/php/',
 
-                var uploadButton = $('<button/>')
-                    .addClass('btn btn-primary')
-                    .prop('disabled', true)
-                    .text('Processing...')
-                    .on('click', function () {
-                        var $this = $(this),
-                            data = $this.data();
-                        $this
-                            .off('click')
-                            .text('Abort')
-                            .on('click', function () {
-                                $this.remove();
-                                data.abort();
-                            });
-                        data.submit().always(function () {
+            var uploadButton = $('<button/>')
+                .addClass('btn btn-primary')
+                .prop('disabled', true)
+                .text('Processing...')
+                .on('click', function () {
+                    var $this = $(this),
+                        data = $this.data();
+                    $this
+                        .off('click')
+                        .text('Abort')
+                        .on('click', function () {
                             $this.remove();
+                            data.abort();
                         });
+                    data.submit().always(function () {
+                        $this.remove();
                     });
+                });
+
+
+
+            // $("#fileupload").fileupload({
+            //     type: "POST",
+            //     previewMaxHeight: 210,
+            //     previewMaxWidth: 210,
+            //     limitConcurrentUploads:1,
+            //     limitMultiFileUploads: 1,
+            //     sequentialUploads: true,
+            //     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+            // });
+            //
+            //
             $('#fileupload').fileupload({
                 // url: url,
-                dataType: 'json',
+                type: "POST",
+                // previewMaxHeight: 210,
+                // previewMaxWidth: 210,
+                limitConcurrentUploads:1,
+                limitMultiFileUploads: 1,
+                sequentialUploads: true,
+                // dataType: 'json',
                 autoUpload: false,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 999000,
-                // Enable image resizing, except for Android and Opera,
-                // which actually support image resizing, but fail to
-                // send Blob objects via XHR requests:
-                disableImageResize: /Android(?!.*Chrome)|Opera/
-                    .test(window.navigator.userAgent),
-                previewMaxWidth: 100,
-                previewMaxHeight: 100,
-                previewCrop: true
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|mov|mp4)$/i,
+                maxFileSize: 99999000,
+                // disableImageResize: /Android(?!.*Chrome)|Opera/
+                //     .test(window.navigator.userAgent),
+                // previewCrop: true
             }).on('fileuploadadd', function (e, data) {
                 data.context = $('<div/>').appendTo('#files');
                 $.each(data.files, function (index, file) {
@@ -284,92 +301,17 @@
         });
 
 
-        // $(function () {
-        //     'use strict';
-
-        //     // Initialize the jQuery File Upload widget:
-        //     $('#fileupload').fileupload({
-        //         // Uncomment the following to send cross-domain cookies:
-        //         //xhrFields: {withCredentials: true},
-        //         // url: 'server/php/'
-        //     });
-
-        //     // Enable iframe cross-domain access via redirect option:
-        //     $('#fileupload').fileupload(
-        //         'option',
-        //         'redirect',
-        //         window.location.href.replace(
-        //             /\/[^\/]*$/,
-        //             '/cors/result.html?%s'
-        //         )
-        //     );
-
-        //     if (window.location.hostname === 'blueimp.github.io') {
-        //         // Demo settings:
-        //         $('#fileupload').fileupload('option', {
-        //             url: '//jquery-file-upload.appspot.com/',
-        //             // Enable image resizing, except for Android and Opera,
-        //             // which actually support image resizing, but fail to
-        //             // send Blob objects via XHR requests:
-        //             disableImageResize: /Android(?!.*Chrome)|Opera/
-        //                 .test(window.navigator.userAgent),
-        //             maxFileSize: 999000,
-        //             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
-        //         });
-        //         // Upload server status check for browsers with CORS support:
-        //         if ($.support.cors) {
-        //             $.ajax({
-        //                 url: '//jquery-file-upload.appspot.com/',
-        //                 type: 'HEAD'
-        //             }).fail(function () {
-        //                 $('<div class="alert alert-danger"/>')
-        //                     .text('Upload server currently unavailable - ' +
-        //                             new Date())
-        //                     .appendTo('#fileupload');
-        //             });
-        //         }
-        //     } else {
-
-        //         // Load existing files:
-        //         $('#fileupload').addClass('fileupload-processing');
-        //         $.ajax({
-        //             // Uncomment the following to send cross-domain cookies:
-        //             //xhrFields: {withCredentials: true},
-        //             url: $('#fileupload').fileupload('option', 'url'),
-        //             dataType: 'json',
-        //             context: $('#fileupload')[0]
-        //         }).always(function () {
-        //             $(this).removeClass('fileupload-processing');
-        //         }).done(function (result) {
-        //             $(this).fileupload('option', 'done')
-        //                 .call(this, $.Event('done'), {result: result});
-        //         });
-
-        //     }
-
-        // });
-
-
 
         $(function(){
 
-            // $('.tagging').select2({
-            //     theme: "bootstrap",
-            //     minimumInputLength: 3,
-            //     maximumSelectionLength: {{ (int)siteSettings('tagsLimit') }},
-            //     tags: true,
-            //     tokenSeparators: [","]
-            // });
+            $('.tagging').select2({
+                theme: "bootstrap",
+                minimumInputLength: 3,
+                maximumSelectionLength: {{ (int)siteSettings('tagsLimit') }},
+                tags: true,
+                tokenSeparators: [","]
+            });
 
-            // $("#fileupload").fileupload({
-            //     type: "POST",
-            //     previewMaxHeight: 210,
-            //     previewMaxWidth: 210,
-            //     limitConcurrentUploads:1,
-            //     limitMultiFileUploads: 1,
-            //     sequentialUploads: true,
-            //     acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
-            // });
 
         });
     </script>

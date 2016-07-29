@@ -15,7 +15,7 @@
                     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-                                <table class="table table-bordered table-hover" id="medias-table">
+                                <table class="table table-bordered table-hover" id="media-table">
                                     <thead>
                                     <tr>
                                         <th></th>
@@ -42,6 +42,10 @@
 
         </div>
     </div>
+
+
+    {{ Form::open(['method' => 'DELETE', 'name' => 'delete']) }}
+    {{ Form::close() }}
 
     <!-- Modal -->
     <div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -84,7 +88,10 @@
     <script>
         $(function() {
 
-            $('#medias-table').DataTable({
+
+
+
+            $('#media-table').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -97,10 +104,10 @@
                 ajax: '{!! route('admin.media.data', ['type' => $type]) !!}',
                 columns: [
                     { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false },
-                    { data: 'id', name: 'medias.id'},
-                    { data: 'title', name: 'medias.title' },
-                    { data: 'created_at', name: 'medias.created_at' },
-                    { data: 'updated_at', name: 'medias.updated_at' },
+                    { data: 'id', name: 'media.id'},
+                    { data: 'title', name: 'media.title' },
+                    { data: 'created_at', name: 'media.created_at' },
+                    { data: 'updated_at', name: 'media.updated_at' },
                     { data: 'user', name: 'user' },
                     { data: 'profile', name: 'profile' },
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },
@@ -108,6 +115,7 @@
                 fnInitComplete: function () {
                     $('div.dataTables_filter input').addClass('form-control');
                     $('div.dataTables_length select').addClass('form-control');
+                    bindDeleteButtons();
                 },
                 language: {
                     processing: '<i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>',
@@ -126,6 +134,34 @@
 
         });
 
+        function bindDeleteButtons(){
+
+            $('.btn[rel="delete"]').on('click',function(e) {
+                e.preventDefault();
+
+                var $this = $(this);
+
+                $('form[name="delete"]').attr('action',$this.attr('href'));
+
+                BootstrapDialog.show({
+                    message: 'Confirm Delete?',
+                    buttons: [{
+                        label: 'Confirm',
+                        cssClass: 'btn-primary',
+                        action: function(){
+                            $('form[name="delete"]').attr('action',$this.attr('href')).submit();
+                        }
+                    }, {
+                        label: 'Close',
+                        action: function(dlg){
+                            dlg.close();
+                        }
+                    }]
+                });
+
+            });
+
+        }
 
 
     </script>

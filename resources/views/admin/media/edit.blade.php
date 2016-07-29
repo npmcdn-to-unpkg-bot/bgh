@@ -6,19 +6,10 @@
 
         <div class="col-md-3">
 
-            <a href="{{ route('media',['id' => $media->id, 'slug' => $media->slug]) }}" target="_blank"><img src="{{ Resize::img($media->main_image,'featuredMedia') }}" class="thumbnail img-responsive"></a>
+            <a href="{{ route('media',['id' => $media->id, 'slug' => $media->slug]) }}" target="_blank"><img src="{{ Resize::img($media->name,'featuredMedia') }}" class="thumbnail img-responsive"></a>
             <div class="form-group">
                 {{-- <button type="button" class="btn btn-danger clearMediaCache" data-media="{{ $media->id }}"><i class="ion ion-nuclear"></i> Clear Cache</button> --}}
             </div>
-
-            <ul class="list-group pin">
-                <a href="#" class="list-group-item disabled">
-                    Statics
-                </a>
-                <li class="list-group-item"><strong>Views</strong> {{ $media->views }}</li>
-                <li class="list-group-item"><strong>In Categories</strong> {{ $media->categories->count() }}</li>
-                <li class="list-group-item"><strong>Featured At</strong> {{ $media->featured_at  == null ? 'Not Featured' : $media->featured_at->diffForHumans() }} </li>
-            </ul>
 
         </div>
         <div class="col-md-6">
@@ -38,40 +29,18 @@
                         {!! Form::label('description', 'Description') !!}
                         {!! Form::textarea('description', $media->description, ['class' => 'form-control', 'placeholder' => 'Description']) !!}
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('featured_at', t('Featured')) !!}
-                        {!! Form::checkbox('featured_at', 1, (bool)$media->featured_at) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('is_microsite', 'Is Microsite') !!}
-                        {!! Form::select('is_microsite',['1' => t('Yes'), '0' => t('No')],$media->is_microsite,['class' => 'form-control']) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('microsite', 'Microsite Url') !!}
-                        {!! Form::text('microsite', $media->microsite, ['class' => 'form-control ', 'placeholder' => 'http://']) !!}
-                    </div>
                     <div class="form-group form-input-file">
                         {!! Form::label('main', 'main') !!}
                         <div class="form-input-file-hide">
-                            {!! Form::file('main_image') !!}
+                            {!! Form::file('name') !!}
                         </div>
-                        <img class="form-input-file-image-original" src="{{ Resize::img($media->main_image,'featuredMedia') }}"  width="280"/>
+                        <img class="form-input-file-image-original" src="{{ Resize::img($media->name,'featuredMedia') }}"  width="280"/>
                         <img class="form-input-file-image-new" src=""  width="280"/>
                         <span class="form-input-file-label"></span>
                         <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
                         <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
                     </div>
-                    <div class="form-group form-input-file">
-                        {!! Form::label('cover', 'cover') !!}
-                        <div class="form-input-file-hide">
-                            {!! Form::file('cover_image') !!}
-                        </div>
-                        <img class="form-input-file-image-original" src="{{ Resize::img($media->info->cover_image,'coverMedia') }}"  width="300"/>
-                        <img class="form-input-file-image-new" src=""  width="300"/>
-                        <span class="form-input-file-label"></span>
-                        <button type="button" class="btn btn-default form-input-file-btn-change"><i class="fa fa-folder-open"></i></button>
-                        <button type="button" class="btn btn-default form-input-file-btn-back"><i class="fa fa-close"></i></button>
-                    </div>
+
                     <div class="form-group">
                         {!! Form::label('tags', 'Tags') !!}
                         <select class="form-control  tagging" multiple="multiple" name="tags[]">
@@ -82,40 +51,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('categories', 'Categories') !!}
-                        <ul id="categories" class="tree">
-                            <?php
 
-                            $curDepth = 0;
-                            $counter = 0;
-                            foreach ($categories as $category){
-
-                                if ($category->depth == $curDepth){
-                                    if ($counter > 0) echo "</li>";
-                                }
-                                elseif ($category->depth > $curDepth){
-                                    echo "<ul>";
-                                    $curDepth = $category->depth;
-                                }
-                                elseif ($category->depth < $curDepth){
-                                    echo str_repeat("</li></ul>", $curDepth - $category->depth), "</li>";
-                                    $curDepth = $category->depth;
-                                }
-
-                                ?>
-                                <li>
-                                    <label><input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ $category->checked }}/>{{ $category->name }}</label>
-                                <?php
-
-                                $counter++;
-                            }
-
-                            echo str_repeat("</li></ol>", $curDepth), "</li>";
-
-                            ?>
-                        </ul>
-                    </div>
 
                 </div>
             </div>
@@ -170,7 +106,7 @@
     {!! Form::close() !!}
     </div>
 
-    {{ Form::open(['method' => 'DELETE', 'route' => ['admin.medias.edit', $media->id], 'name' => 'delete']) }}
+    {{ Form::open(['method' => 'DELETE', 'route' => ['admin.media.edit', $media->id], 'name' => 'delete']) }}
     {{ Form::close() }}
 
     {{--
@@ -252,7 +188,7 @@
                 var $this = $(this);
 
                 $(this).ajaxSubmit({
-                    url: '{{ route('admin.medias.edit',['id' => $media->id]) }}',
+                    url: '{{ route('admin.media.edit',['id' => $media->id]) }}',
                     type: 'post',
                     dataType: 'json',
                     beforeSubmit: function() {

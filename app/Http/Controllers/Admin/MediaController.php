@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Thumbnail;
+
 use Illuminate\Http\JsonResponse;
 
 use App\Repository\MediaRepositoryInterface;
@@ -34,42 +36,43 @@ class MediaController extends Controller
     public function getData(Request $request)
     {
 
-        $medias = Media::select([
-            'medias.*','users.fullname as user_fullname','profiles.title as profile_name'
+        $media = Media::select([
+            'media.*','users.fullname as user_fullname','profiles.title as profile_name'
         ])
-        ->leftJoin('users', 'users.id', '=', 'medias.user_id')
-        ->leftJoin('profiles', 'profiles.id', '=', 'medias.profile_id');
+        ->leftJoin('users', 'users.id', '=', 'media.user_id')
+        ->leftJoin('profiles', 'profiles.id', '=', 'media.profile_id');
 
 
         // si no es superadmin, filtro el lote por los perfiles que el usuario posea
         if(!auth()->user()->isSuper()){
-            $medias->whereIn('profile_id', auth()->user()->profiles()->lists('id')); // lo segundo es un array de ids
+            $media->whereIn('profile_id', auth()->user()->profiles()->lists('id')); // lo segundo es un array de ids
         }
 
         // switch ($request->get('type')) {
         //     case 'approved':
-        //         $medias->approved(); // es del scopeApproved en el Model
+        //         $media->approved(); // es del scopeApproved en el Model
         //         break;
         //     case 'approvalRequired':
-        //         $medias->whereNull('medias.approved_at');
+        //         $media->whereNull('media.approved_at');
         //         break;
         //     default:
-        //         $medias->approved();
+        //         $media->approved();
         // }
 
 
-        $datatables = app('datatables')->of($medias);
+        $datatables = app('datatables')->of($media);
 
         $datatables->addColumn('actions', function ($media) {
             return '
             <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
                 <a href="' . route('admin.media.edit', [$media->id]) . '" class="btn btn-default"><i class="fa fa-edit"></i> Edit </a>
                 <a href="' . route('media', [$media->id, $media->slug]) . '" class="btn btn-default" target="_blank"><i class="fa fa-eye"></i> View</a>
+                <a href="' . route('admin.media.edit', [$media->id]) . '" class="btn btn-danger" rel="delete"><i class="fa fa-trash"></i> Delete</a>
             </div>';
         });
 
         return $datatables->addColumn('thumbnail', function ($media) {
-            return '<img src="' . Resize::img($media->main_image, 'listingMedia') . '" style="width:80px"/>';
+            return '<img src="' . Resize::img($media->thumbnail, 'listingMedia') . '"/>';
         })
             ->editColumn('created_at', '{!! $created_at->diffForHumans() !!}')
             ->editColumn('updated_at', '{!! $updated_at->diffForHumans() !!}')
@@ -126,26 +129,26 @@ class MediaController extends Controller
         $item->profile()->associate($request->get('profile'));
 
 
-        if ($request->hasFile('main_image')){
-            if ($request->file('main_image')->isValid()){
-                $save = new ResizeHelper($request->file('main_image'), 'uploads/medias');
+        if ($request->hasFile('name')){
+            if ($request->file('name')->isValid()){
+                $save = new ResizeHelper($request->file('name'), 'uploads/media');
                 list($fName, $fType) = $save->saveOriginal();
-                $item->main_image = $fName . "." . $fType;
-                // $request->file('main_image')->move($destinationPath, $fileName);
+                $item->name = $fName . "." . $fType;
+                // $request->file('name')->move($destinationPath, $fileName);
             }
         }
 
         $item->save();
 
 
-        if ($request->hasFile('cover_image')){
-            if ($request->file('cover_image')->isValid()){
-                $save = new ResizeHelper($request->file('cover_image'), 'uploads/medias');
-                list($fName, $fType) = $save->saveOriginal();
-                $item->info->cover_image = $fName . "." . $fType;
-                // $request->file('cover_image')->move($destinationPath, $fileName);
-            }
-        }
+        // if ($request->hasFile('cover_image')){
+        //     if ($request->file('cover_image')->isValid()){
+        //         $save = new ResizeHelper($request->file('cover_image'), 'uploads/media');
+        //         list($fName, $fType) = $save->saveOriginal();
+        //         $item->info->cover_image = $fName . "." . $fType;
+        //         // $request->file('cover_image')->move($destinationPath, $fileName);
+        //     }
+        // }
 
         $item->info->save();
 
@@ -161,36 +164,34 @@ class MediaController extends Controller
     }
 
 
-    public function put(Request $request)
-    {
-        $item = new Media();
-        $item->title = $request->get('title');
+    // public function put(Request $request)
+    // {
+    //     $item = new Media();
+    //     $item->title = $request->get('title');
 
-        $slug = @str_slug($request->get('slug'));
-        if (!$slug) {
-            $slug = str_random(7);
-        }
-        $item->slug = $slug;
+    //     $slug = @str_slug($request->get('slug'));
+    //     if (!$slug) {
+    //         $slug = str_random(7);
+    //     }
+    //     $item->slug = $slug;
 
-        $item->user_id = auth()->user()->id;
+    //     $item->user_id = auth()->user()->id;
 
-        $item->save();
+    //     $item->save();
 
-        $info_data = [
-            'cover_image' => '',
-        ];
+    //     $info = [
+    //         'cover_image' => '',
+    //     ];
 
-        $info = new MediaInfo($info_data);
-        $item->info()->create($info_data);
+    //     $info = new MediaInfo($info);
+    //     $item->info()->create($info);
 
-        return redirect()->route('admin.media.edit', ['id' => $item->id])->with('flashSuccess', 'Media is now crated');
-    }
+    //     return redirect()->route('admin.media.edit', ['id' => $item->id])->with('flashSuccess', 'Media is now crated');
+    // }
 
 
     public function delete($id)
     {
-        // if (Request::ajax()) {
-        // if (Request::isMethod('delete')){
 
         $item = Media::findOrFail($id);
 
@@ -198,10 +199,9 @@ class MediaController extends Controller
             return redirect()->route('admin')->with('flashSuccess', 'sin acceso a editar este mediao');
         }
 
-        $delete = new ResizeHelper( $item->main_image, $item->type);
+        $delete = new ResizeHelper( $item->name );
         $delete->delete();
 
-        $item->categories()->detach();
         $item->info()->delete();
         $item->delete();
 
@@ -209,26 +209,6 @@ class MediaController extends Controller
     }
 
 
-    public function approve(Request $request)
-    {
-        $item = Media::whereId($request->get('id'))->first();
-        if (!$item) {
-            return 'Error';
-        }
-        if ($request->get('approve') == 1) {
-            $item->approved_at = Carbon::now();
-            $item->save();
-
-            return 'Approved';
-        }
-        if ($request->get('approve') == 0) {
-            $delete = new ResizeHelper($item->main_image, $item->type);
-            $delete->delete();
-            $item->delete();
-
-            return 'Deleted';
-        }
-    }
 
 
     public function clearCache($id)
@@ -236,11 +216,11 @@ class MediaController extends Controller
 
         $media = Media::whereId($id);
 
-        if(!isset($media->main_image)){
-           $media->main_image = 'default.png';
+        if(!isset($media->name)){
+           $media->name = 'default.png';
         }
 
-        $cache = new ResizeHelper($media->main_image);
+        $cache = new ResizeHelper($media->name);
         $cache->clearCache();
         return 'Cache is cleared, reload the page';
 
@@ -257,46 +237,137 @@ class MediaController extends Controller
     public function postBulkUpload(Request $request)
     {
         $file = $request->file('files')[0];
-        $info = $request->get('photo');
-
-        $save = new ResizeHelper($file, 'uploads/medias');
-        list($mediaName, $mimetype) = $save->saveOriginal();
 
         $tags = null;
         if ($request->get('tags')) {
             $tags = implode(',', $request->get('tags'));
         }
 
-        $description = null;
+        $description = $request->get('description');
 
-        $title = str_replace(['.jpg', '.jpeg', '.png', '.gif'], '', $file->getClientOriginalName());
+        $original = $file->getClientOriginalName();
+
+        $tmp = @explode('.', $original);
+        $title = $tmp[0];
+        $ext = $tmp[1];
+
 
         $slug = @str_slug($title);
         if (!$slug) {
             $slug = str_random(9);
         }
 
+        $mimetype = $file->getClientMimeType();
+
+        $type = $this->getTypeOfExtension($ext);
+
+        // var_dump($title);
+        // var_dump($ext);
+        // var_dump($mimetype);
+        // var_dump($type);
+        // exit();
+
+
+        $info = [
+            'mime_type'     => $mimetype,
+            'original'      => $original,
+        ];
+
+        if($type=="image"){
+
+            $save = new ResizeHelper($file, 'uploads/media');
+            list($mediaName, $extension, $real) = $save->saveOriginal();
+            $newname = $mediaName . "." . $extension;
+            $real = base_path() . $real;
+            $exif = exif_read_data($real, 0, true);
+
+            $resolution = (isset($exif['IFD0']['XResolution']) && strlen($exif['IFD0']['XResolution']) > 0 ? $exif['IFD0']['XResolution'] : null);
+            if($resolution!=null){
+                $tmp = @explode('/', $resolution);
+                $resolution = intval($tmp[0]) / intval($tmp[1]);
+            }
+
+            $focal = (isset($exif['EXIF']['FocalLength']) && strlen($exif['EXIF']['FocalLength']) > 0 ? $exif['EXIF']['FocalLength'] : null);
+            if($focal!=null){
+                $tmp = @explode('/', $focal);
+                $focal = intval($tmp[0]);
+            }
+
+            $taken_at = (isset($exif['EXIF']['DateTimeOriginal']) && strlen($exif['EXIF']['DateTimeOriginal']) > 0 ? $exif['EXIF']['DateTimeOriginal'] : null);
+            if($taken_at!=null){
+                $taken_at = strtotime($taken_at);
+            }
+
+            $width = intval(isset($exif['COMPUTED']['Width']) && strlen($exif['COMPUTED']['Width']) > 0 ? $exif['COMPUTED']['Width'] : 0);
+            $height = intval(isset($exif['COMPUTED']['Height']) && strlen($exif['COMPUTED']['Height']) > 0 ? $exif['COMPUTED']['Height'] : 0);
+
+            if($width==$height){
+                $orientation = 'square';
+            }
+            elseif($width<$height){
+                $orientation = 'portrait';
+            }
+            else{
+                $orientation = 'landscape';
+            }
+
+            $info['orientation'] = $orientation;
+            $info['width'] = $width;
+            $info['height'] = $height;
+            $info['camera'] = (isset($exif['IFD0']['Model']) && strlen($exif['IFD0']['Model']) > 0 ? $exif['IFD0']['Model'] : null);
+            $info['focal_length'] = $focal;
+            $info['shutter_speed'] = (isset($exif['EXIF']['ExposureTime']) && strlen($exif['EXIF']['ExposureTime']) > 0 ? $exif['EXIF']['ExposureTime'] : null);
+            $info['aperture'] = (isset($exif['COMPUTED']['ApertureFNumber']) && strlen($exif['COMPUTED']['ApertureFNumber']) > 0 ? $exif['COMPUTED']['ApertureFNumber'] : null);
+            $info['iso'] = (isset($exif['EXIF']['ISOSpeedRatings']) && strlen($exif['EXIF']['ISOSpeedRatings']) > 0 ? $exif['EXIF']['ISOSpeedRatings'] : null);
+            $info['copyright'] = (isset($exif['COMPUTED']['Copyright']) && strlen($exif['COMPUTED']['Copyright']) > 0 ? $exif['COMPUTED']['Copyright'] : null);
+            $info['resolution'] = $resolution;
+            $info['software'] = (isset($exif['IFD0']['Software']) && strlen($exif['IFD0']['Software']) > 0 ? $exif['IFD0']['Software'] : null);
+            $info['taken_at'] = $taken_at;
+
+            $thumbnail = $media->name;
+
+        }
+        else if($type=="video"){
+
+            $fileName = str_random(9);
+            $newname = $fileName . "." . $ext;
+            $extension = $ext;
+
+            $file->move('uploads/media', $newname);
+
+            $video_path = base_path() . '/uploads/media/' . $newname;
+            $thumbnail_path = base_path() . '/uploads/media/';
+            $thumbnail_image = $fileName . '.png';
+
+            // $thumbnail_status = Thumbnail::getThumbnail($video_path,$thumbnail_path,$thumbnail_image,160,128,2,$water_mark,true);
+            $thumbnail_status = Thumbnail::getThumbnail($video_path,$thumbnail_path,$thumbnail_image);
+            if($thumbnail_status){
+                $thumbnail = $thumbnail_image;
+            }
+            else{
+                $thumbnail = '';
+            }
+
+        }
+
         sleep(1);
-        $approved_at = Carbon::now();
+
         $media = new Media();
         $media->user_id = $request->user()->id;
-        $media->main_image = $mediaName . "." . $mimetype;
-        $media->name = $mediaName;
+        $media->name = $newname;
+        $media->thumbnail = $thumbnail;
         $media->title = $title;
         $media->slug = $slug;
-        $media->type = $mimetype;
+        $media->type = $type;
+        $media->extension = $extension;
         $media->tags = $tags;
         $media->description = $description;
-        $media->approved_at = $approved_at;
         $media->save();
 
 
-        $info_data = [
-            'cover_image' => '',
-        ];
+        // $obj_info = new MediaInfo($info);
 
-        $info = new MediaInfo($info_data);
-        $media->info()->create($info_data);
+        $media->info()->create($info);
 
 
         return [
@@ -304,43 +375,56 @@ class MediaController extends Controller
                 0 => ['success'      => 'Uploaded',
                       'successSlug'  => route('media', ['id' => $media->id, 'slug' => $media->slug]),
                       'successTitle' => ucfirst($media->title),
-                      'thumbnail'    => Resize::img($media->main_image, 'listingMedia')
+                      'thumbnail'    => Resize::img($media->thumbnail, 'listingMedia')
                 ]
             ]
         ];
     }
 
 
-    public function doClone($id)
-    {
+    private function getTypeOfExtension($ext){
 
-        $source = Media::findOrFail($id);
-        $media = $source->replicate();
+        $mime_types = array(
 
-        $media->title = $media->title . ' (clon)';
-        $media->slug = $media->slug . '-clon';
+            'png' => 'image',
+            'jpe' => 'image',
+            'jpeg' => 'image',
+            'jpg' => 'image',
+            'gif' => 'image',
+            'bmp' => 'image',
+            'ico' => 'image',
+            'tiff' => 'image',
+            'tif' => 'image',
+            'svg' => 'image',
+            'svgz' => 'image',
 
-        $media->push();
+            'zip' => 'compressed',
+            'rar' => 'compressed',
 
-        // replicar el 1:1 con info
-        $new_info = $source->info->replicate();
-        $media->info()->save($new_info);
+            'mp3' => 'audio',
 
-        // insertar clon en las mismas categorias que el master
-        foreach($source->categories as $category){
-            $media->categories()->attach($category);
-        }
+            'qt' => 'video',
+            'mov' => 'video',
+            'mp4' => 'video',
+            'wmv' => 'video',
 
-        $title = t('Edit the Clone');
+            'pdf' => 'adobe',
+            'psd' => 'adobe',
+            'ai' => 'adobe',
+            'eps' => 'adobe',
+            'ps' => 'adobe',
 
-        $categories = MediaCategory::items();
-        foreach ($categories as $c) {
-            if($media->hasCategory($c->id)){
-                $c->checked = 'checked';
-            }
-        }
+            'doc' => 'office',
+            'rtf' => 'office',
+            'xls' => 'office',
+            'ppt' => 'office',
+            'odt' => 'office',
+            'ods' => 'office',
 
-        return redirect()->route('admin.media.edit',['id' => $media->id])->with('flashSuccess', 'Clonado');
+        );
+
+        return $mime_types[strtolower($ext)];
+
     }
 
 

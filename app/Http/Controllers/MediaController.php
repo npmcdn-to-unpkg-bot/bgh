@@ -33,11 +33,7 @@ class MediaController extends Controller
         $id = Crypt::decrypt($id);
         $media = $this->media->getById($id);
 
-        if (auth()->user()->id != $media->user_id) {
-            $media->downloads = $media->downloads + 1;
-            $media->save();
-        }
-        $file = new ResizeHelper($media->main_image, 'uploads/medias');
+        $file = new ResizeHelper($media->name, 'uploads/media');
         $file = $file->download();
 
         return response()->download($file, $media->slug . '.' . $media->type, ['content-type' => 'image/jpg'])->deleteFileAfterSend(true);
@@ -45,21 +41,21 @@ class MediaController extends Controller
 
     public function getByTags($tag)
     {
-        $medias = $this->medias->getByTags($tag);
+        $media = $this->media->getByTags($tag);
         $title = sprintf('%s %s', t('Tagged With'), ucfirst($tag));
 
-        return view('gallery.index', compact('medias', 'title'));
+        return view('gallery.index', compact('media', 'title'));
     }
 
     public function search(Request $request)
     {
         $this->validate($request, ['q' => 'required']);
 
-        $medias = $this->medias->search($request->get('q'), $request->get('category'), $request->get('timeframe'));
+        $media = $this->media->search($request->get('q'), $request->get('category'), $request->get('timeframe'));
 
         $title = sprintf('%s %s', t('Searching for'), ucfirst($request->get('q')));
 
-        return view('gallery.index', compact('title', 'medias'));
+        return view('gallery.index', compact('title', 'media'));
     }
 
 }

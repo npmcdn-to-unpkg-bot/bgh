@@ -8,9 +8,9 @@ class Media extends Profiled
 {
     // use SoftDeletes;
 
-    protected $table = 'medias';
-    protected $softDelete = true;
-    protected $dates = ['deleted_at', 'featured_at'];
+    protected $table = 'media';
+    protected $softDelete = false;
+    protected $dates = ['deleted_at'];
 
     public function info()
     {
@@ -21,17 +21,30 @@ class Media extends Profiled
     {
         $res = new \stdClass();
 
-        if($this->is_microsite==1){
-            $res->url = $this->microsite;
-            $res->target = '_blank';
-        }
-        else{
+        // if($this->is_microsite==1){
+        //     $res->url = $this->microsite;
+        //     $res->target = '_blank';
+        // }
+        // else{
             $res->url = route('media', ['id' => $this->id, 'slug' => $this->slug]);;
             $res->target = '_self';
-        }
+        // }
 
         return $res;
     }
+
+    // public function getThumb()
+    // {
+
+    //     if($this->type='image'){
+    //         Resize::img($media->name, 'listingMedia')
+    //     }
+    //     else{
+
+    //     }
+
+    //     return $res;
+    // }
 
 
 }

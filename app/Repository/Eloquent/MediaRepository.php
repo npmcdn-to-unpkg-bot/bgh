@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Cache;
 class MediaRepository implements MediaRepositoryInterface
 {
 
-    public function __construct(Media $medias)
+    public function __construct(Media $media)
     {
-        $this->medias = $medias;
+        $this->media = $media;
     }
 
     public function getById($id)
@@ -28,7 +28,7 @@ class MediaRepository implements MediaRepositoryInterface
     private function posts($timeframe = null)
     {
 
-        $posts = $this->medias;
+        $posts = $this->media;
 
         if ($this->resolveTime($timeframe)) {
             $posts = $posts->whereBetween('created_at', $this->resolveTime($timeframe));
@@ -62,9 +62,9 @@ class MediaRepository implements MediaRepositoryInterface
 
     public function getByTags($tag)
     {
-        $medias = $this->posts()->where('tags', 'LIKE', '%' . $tag . '%')->orderBy('approved_at', 'desc')->with('user');
+        $media = $this->posts()->where('tags', 'LIKE', '%' . $tag . '%')->orderBy('approved_at', 'desc')->with('user');
 
-        return $medias->paginate(perPage());
+        return $media->paginate(perPage());
     }
 
 
@@ -72,20 +72,20 @@ class MediaRepository implements MediaRepositoryInterface
     {
         $extends = explode(' ', $search);
 
-        $medias = $this->posts($timeframe)->where('title', 'LIKE', '%' . $search . '%')
+        $media = $this->posts($timeframe)->where('title', 'LIKE', '%' . $search . '%')
             ->orWhere('tags', 'LIKE', '%' . $search . '%')
             ->whereNull('deleted_at')->whereNotNull('approved_at')->orderBy('approved_at', 'desc');
 
         foreach ($extends as $extend) {
 
-            $medias->orWhere('tags', 'LIKE', '%' . $extend . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
+            $media->orWhere('tags', 'LIKE', '%' . $extend . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
                 ->orWhere('title', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at')
                 ->orWhere('description', 'LIKE', '%' . $search . '%')->whereNotNull('approved_at')->whereNull('deleted_at');
 
         }
 
-        return $medias = $medias->with('user')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
-        // return $medias = $medias->with('user', 'comments', 'favorites')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
+        return $media = $media->with('user')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
+        // return $media = $media->with('user', 'comments', 'favorites')->whereNotNull('approved_at')->whereNull('deleted_at')->paginate(perPage());
     }
 
 }

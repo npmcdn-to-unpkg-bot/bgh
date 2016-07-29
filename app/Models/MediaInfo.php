@@ -9,9 +9,24 @@ class MediaInfo extends Model
     // reb activando, el delete en vez de borrar el registro, le pone fecha de baja (baja logica)
     // use SoftDeletes;
 
-    protected $table = 'medias_info';
+    protected $table = 'media_info';
 
-    protected $fillable = ['cover_image', 'is_microsite'];
+    protected $fillable = [
+            'camera',
+            'focal_length',
+            'shutter_speed',
+            'aperture',
+            'iso',
+            'width',
+            'height',
+            'mime_type',
+            'original',
+            'copyright',
+            'resolution',
+            'software',
+            'taken_at',
+            'orientation'
+            ];
 
     public function getDates()
     {

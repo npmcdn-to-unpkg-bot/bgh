@@ -15,7 +15,7 @@ class MediaRequest extends Request
     public function authorize()
     {
 
-        // $numberOfUploadByUser = auth()->user()->medias()->where('created_at', '>=', Carbon::now()->subDays(1)->toDateTimeString())->count();
+        // $numberOfUploadByUser = auth()->user()->media()->where('created_at', '>=', Carbon::now()->subDays(1)->toDateTimeString())->count();
         // if ((int)$numberOfUploadByUser >= (int)limitPerDay()) {
         //     return false;
         // }

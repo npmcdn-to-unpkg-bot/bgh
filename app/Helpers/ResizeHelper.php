@@ -232,10 +232,9 @@ class ResizeHelper extends NamespacedItemResolver
     {
         $filename = $this->newFileName();
         $mime = $this->resolveMime($this->name);
-        Storage::put(sprintf('%s/%s/%s.%s', $this->basePath(), $this->dirName, $filename, $mime),
-            file_get_contents($this->name));
-
-        return [$filename, $mime];
+        $final = sprintf('%s/%s/%s.%s', $this->basePath(), $this->dirName, $filename, $mime);
+        Storage::put($final,file_get_contents($this->name));
+        return [$filename, $mime, $final];
     }
 
     private function newFileName()

@@ -50,7 +50,7 @@
                                 <a href="{{ route('products', ['category' =>  $category->link]) }}" target="_blank" class="btn btn-default" rel="view"><i class="fa fa-eye"></i></a>
                                 <a href="{{ route('admin.productcategories.items', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-cubes"></i></a>
                                 <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                                <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-default" rel="delete"><i class="fa fa-trash-o"></i></a>
+                                <a href="{{ route('admin.productcategories.edit', ['id' => $category->id]) }}" class="btn btn-danger" rel="delete"><i class="fa fa-trash-o"></i></a>
                             </div>
                         </div>
 

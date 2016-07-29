@@ -133,8 +133,11 @@ ol.sortable span small{
 /* sobreescritura de los datatable para no tocar el css original */
 
 .dataTables_wrapper .dataTables_processing {
-    top: 50px;
-    }
+    top: 15px;
+    background-color: #fff;
+    height: 90px;
+    line-height: 60px;
+}
 
 table.dataTable.no-footer {
     border-bottom: none;

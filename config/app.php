@@ -151,7 +151,10 @@ return [
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
         Roumen\Feed\FeedServiceProvider::class,
         Roumen\Sitemap\SitemapServiceProvider::class,
-        yajra\Datatables\DatatablesServiceProvider::class
+        yajra\Datatables\DatatablesServiceProvider::class,
+
+        // reb para el thumbail ffmpeg de video
+        Lakshmajim\Thumbnail\ThumbnailServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -207,6 +210,9 @@ return [
         'Resize' => App\Helpers\Resize::class,
         'Feed' => Roumen\Feed\Facades\Feed::class,
         'Datatables' => yajra\Datatables\Datatables::class,
+
+        // reb
+        'Thumbnail' => Lakshmajim\Thumbnail\Facade\Thumbnail::class,
     ],
 
 ];

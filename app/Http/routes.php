@@ -70,7 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@getLogout']);
     Route::get('feeds', ['as' => 'users.feeds', 'uses' => 'UserController@getFeeds']);
     Route::get('user/{username}/following', ['as' => 'users.following', 'uses' => 'UserController@getFollowing']);
-    Route::get('product/{any}/download', ['as' => 'products.download', 'uses' => 'ProductController@download']);
     Route::get('media/{any}/download', ['as' => 'media.download', 'uses' => 'MediaController@download']);
     Route::get('settings', ['as' => 'users.settings', 'uses' => 'UserController@getSettings']);
     Route::get('user/{username}/report', ['as' => 'user.report', 'uses' => 'ReportController@getReport']);
@@ -110,8 +109,6 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/products/{id}/clearcache', ['as' => 'admin.products.clearcache', 'uses' => 'Product\ProductController@clearCache']);
     Route::put('admin/products/create', ['as' => 'admin.products.create', 'uses' => 'Product\ProductController@put', 'before' => 'csrf']);
     Route::post('admin/products/approve', ['as' => 'admin.products.approve', 'uses' => 'Product\ProductController@approve']);
-    Route::get('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@getBulkUpload']);
-    Route::post('admin/products/bulkupload', ['as' => 'admin.products.bulkupload', 'uses' => 'Product\ProductController@postBulkUpload']);
     Route::get('admin/products/{id}/clone', ['as' => 'admin.products.clone', 'uses' => 'Product\ProductController@doClone']);
 
     // Product Category

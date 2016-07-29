@@ -33,7 +33,6 @@
                 <li><a href="{{ route('admin.products', ['type' => 'approved']) }}"><i class="fa fa-reorder"></i> {{ t('List') }}</a></li>
                 <li><a href="{{ route('admin.products', ['type' => 'featured']) }}"><i class="fa fa-star"></i> {{ t('Featured') }}</a></li>
                 <li><a href="{{ route('admin.products', ['type' => 'approvalRequired']) }}"><i class="fa fa-legal"></i> {{ t('Approval') }}</a></li>
-                <li><a href="{{ route('admin.products.bulkupload', ['type' => 'approvalRequired']) }}"><i class="fa fa-upload"></i> {{ t('Bulk Create') }}</a></li>
             </ul>
         </li>
 
