@@ -9,7 +9,7 @@ Route::get('user/{username}/followers', ['as' => 'users.followers', 'uses' => 'U
 Route::get('users', ['as' => 'users', 'uses' => 'UserController@getAll']);
 Route::get('productos/{category?}', ['as' => 'products', 'uses' => 'ProductCategoryController@getCategory'])->where('category', '(.*)');
 Route::get('producto/{id}/{slug?}', ['as' => 'product', 'uses' => 'ProductController@getIndex']);
-Route::get('media/{id}/{slug?}', ['as' => 'media', 'uses' => 'MediaController@getIndex']);
+Route::get('media/{id}/{slug?}', ['as' => 'media', 'uses' => 'MediaController@getMedia']);
 Route::get('tag/{tag}', ['as' => 'tags', 'uses' => 'TagsController@getIndex']);
 Route::get('notifications', ['as' => 'notifications', 'uses' => 'UserController@getNotifications']);
 Route::get('tos', ['as' => 'tos', 'uses' => 'PolicyController@getTos']);
@@ -130,6 +130,7 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@edit']);
     Route::patch('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@patch', 'before' => 'csrf']);
     Route::delete('admin/media/{id}/edit', ['as' => 'admin.media.edit', 'uses' => 'MediaController@delete', 'before' => 'csrf']);
+    Route::get('admin/media/{id}/use', ['as' => 'admin.media.use', 'uses' => 'MediaController@getUse']);
     Route::get('admin/media/{id}/clearcache', ['as' => 'admin.media.clearcache', 'uses' => 'MediaController@clearCache']);
     Route::put('admin/media/create', ['as' => 'admin.media.create', 'uses' => 'MediaController@put', 'before' => 'csrf']);
     Route::get('admin/media/bulkupload', ['as' => 'admin.media.bulkupload', 'uses' => 'MediaController@getBulkUpload']);

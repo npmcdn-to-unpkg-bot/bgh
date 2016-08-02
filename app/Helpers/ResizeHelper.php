@@ -60,30 +60,47 @@ class ResizeHelper extends NamespacedItemResolver
     //     return substr(hash('sha1', sprintf('%s%s', $src, $pad)), 0, $len);
     // }
 
-    public function resize()
+    public function resize($inpath = false)
     {
 
-        if ($url = $this->checkIfCacheExits()) {
-            return $url;
-        }
+        // var_dump($this);
 
-        $this->createCache();
+        // if($inpath){
+        //     return 'aaaaaa.jpg';
+        // }
+
+        return $this->checkIfCacheExits($inpath);
+
+
+
+        // ****** REB PUEDE QUE LA HAYA COMENTADO Y SEA NECESARIA A PESAR DE ESTAR en checkIfCacheExits
+        // if ($url = $this->checkIfCacheExits()) {
+        //     return $url;
+        // }
+        // $this->createCache();
+
 
         // $img = new \stdClass();
         // $img->url = $this->url();
         // list($w, $h) = getimagesize(public_path() . $this->getCachedFileAbsolutePath());
         // $img->width = $w;
         // $img->height = $h;
-
         // return $img;
-        return $this->url();
+
+
+        // return $this->url();
     }
 
-    protected function checkIfCacheExits()
+    protected function checkIfCacheExits($inpath = false)
     {
+
         if (config('filesystems.default') == 'local') {
             $this->createCache();
-            return $this->url();
+
+            // var_dump($this);
+
+            return $this->url($inpath);
+
         }
 
         if (Cache::store('image')->has($this->key)) {
@@ -94,6 +111,7 @@ class ResizeHelper extends NamespacedItemResolver
             $this->createCache();
             return $this->url();
         });
+
     }
 
     protected function createCache()
@@ -199,33 +217,42 @@ class ResizeHelper extends NamespacedItemResolver
         return $mime;
     }
 
-    protected function url()
+    protected function url($inpath = false)
     {
-        if (config('filesystems.default') == 'local') {
-            return asset($this->getCachedFileAbsolutePath());
-        }
 
-        if (config('filesystems.default') == 's3') {
-            if (config('filesystems.disks.s3.distribution_url')) {
-                return sprintf('//%s%s', config('filesystems.disks.s3.distribution_url'),
-                    $this->getCachedFileAbsolutePath());
+        if (config('filesystems.default') == 'local') {
+
+            if($inpath){
+                return  sprintf('%s/%s', base_path(), $this->getCachedFileAbsolutePath());
+            }
+            else{
+                return asset($this->getCachedFileAbsolutePath());
             }
 
-            return sprintf('//%s.s3.amazonaws.com%s', config('filesystems.disks.s3.bucket'),
-                $this->getCachedFileAbsolutePath());
+
         }
 
-        if (config('filesystems.default') == 'dropbox') {
-            return sprintf('//dl.dropboxusercontent.com/u/%s/%s',
-                config('filesystems.disks.dropbox.userId'),
-                str_replace('Public', '', $this->getCachedFileAbsolutePath()));
-        }
+        // if (config('filesystems.default') == 's3') {
+        //     if (config('filesystems.disks.s3.distribution_url')) {
+        //         return sprintf('//%s%s', config('filesystems.disks.s3.distribution_url'),
+        //             $this->getCachedFileAbsolutePath());
+        //     }
 
-        if (config('filesystems.default') == 'copy') {
-            $link = Storage::getDriver()->getAdapter()->getClient()->createLink($this->getCachedFileAbsolutePath());
+        //     return sprintf('//%s.s3.amazonaws.com%s', config('filesystems.disks.s3.bucket'),
+        //         $this->getCachedFileAbsolutePath());
+        // }
 
-            return sprintf('%s/%s', $link->url, $link->name);
-        }
+        // if (config('filesystems.default') == 'dropbox') {
+        //     return sprintf('//dl.dropboxusercontent.com/u/%s/%s',
+        //         config('filesystems.disks.dropbox.userId'),
+        //         str_replace('Public', '', $this->getCachedFileAbsolutePath()));
+        // }
+
+        // if (config('filesystems.default') == 'copy') {
+        //     $link = Storage::getDriver()->getAdapter()->getClient()->createLink($this->getCachedFileAbsolutePath());
+
+        //     return sprintf('%s/%s', $link->url, $link->name);
+        // }
     }
 
     public function saveOriginal()

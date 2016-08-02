@@ -66,8 +66,10 @@ class MediaController extends Controller
             return '
             <div class="btn-group pull-right btn-group-sm" role="group" aria-label="Actions">
                 <a href="' . route('admin.media.edit', [$media->id]) . '" class="btn btn-default"><i class="fa fa-edit"></i> Edit </a>
+                <a href="' . route('admin.media.use', [$media->id]) . '" class="btn btn-default"><i class="fa fa-share-alt"></i> Use</a>
                 <a href="' . route('media', [$media->id, $media->slug]) . '" class="btn btn-default" target="_blank"><i class="fa fa-eye"></i> View</a>
-                <a href="' . route('admin.media.edit', [$media->id]) . '" class="btn btn-danger" rel="delete"><i class="fa fa-trash"></i> Delete</a>
+                <a href="' . route('media', [$media->id, $media->slug, 'download']) . '" class="btn btn-default"><i class="fa fa-download"></i> Download</a>
+                <a href="' . route('admin.media.edit', [$media->id]) . '" class="btn btn-default" rel="delete"><i class="fa fa-trash"></i> Delete</a>
             </div>';
         });
 
@@ -80,6 +82,18 @@ class MediaController extends Controller
             ->addColumn('profile', '{!! $profile_name !!}')
             ->make(true);
     }
+
+
+    public function getUse($id)
+    {
+        $media = Media::whereId($id)->with('info')->firstOrFail();
+
+        $title = t('Use');
+
+        return view('admin.media.use', compact('media', 'title'));
+    }
+
+
 
     // #################################
     // REB metodos que responden al routes en modo REST con verbs (PUT, PATCH, DELETE) para no usar el post en distitnas rutas y ser mas organico
@@ -237,7 +251,7 @@ class MediaController extends Controller
 
     public function getBulkUpload()
     {
-        $title = sprintf('Bulkupload');
+        $title = t('Add');
 
         return view('admin.media.bulkupload', compact('title'));
     }

@@ -8,11 +8,14 @@ use Validator;
 // use App\Http\Requests\Request; REB no es abstracta
 use Illuminate\Http\Request;
 
+
 class AppServiceProvider extends ServiceProvider
 {
 
     public function boot(Request $request)
     {
+
+        view()->share('testinallviews', 'prueba de dato en todas las vistas');
 
         // reb determino la url host para saber que base de datos levanto (en test es con ?country=uy)
         $host = $request->getHost();
@@ -20,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         if ($request->input('country') == 'uy') {
             \Config::set('database.default', 'mysql_uy');
         }
+
 
 
         // reb cambio el idioma en base a la configuracion de la tabla settings
@@ -33,11 +37,10 @@ class AppServiceProvider extends ServiceProvider
         \Config::set('app.timezone', siteSettings('timezone'));
         date_default_timezone_set(\Config::get('app.timezone'));
 
-
-
         Validator::extend('country', function ($attribute, $value, $parameters) {
             return countryIsoCodeMatch($value) == true;
         });
+
     }
 
     public function register()

@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'Delete?' => 'Delete?',
+    'Select files..' => 'Select files..',
     'Media' => 'Media',
     'Yes' => 'Yes',
     'No' => 'No',

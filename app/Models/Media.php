@@ -17,20 +17,26 @@ class Media extends Profiled
         return $this->hasOne(MediaInfo::class, 'media_id');
     }
 
-    public function getLink()
+    // public function getLink()
+    // {
+    //     $res = new \stdClass();
+
+    //     // if($this->is_microsite==1){
+    //     //     $res->url = $this->microsite;
+    //     //     $res->target = '_blank';
+    //     // }
+    //     // else{
+    //         $res->url = route('media', ['id' => $this->id, 'slug' => $this->slug]);;
+    //         $res->target = '_self';
+    //     // }
+
+    //     return $res;
+    // }
+
+
+    public function getOriginalPath()
     {
-        $res = new \stdClass();
-
-        // if($this->is_microsite==1){
-        //     $res->url = $this->microsite;
-        //     $res->target = '_blank';
-        // }
-        // else{
-            $res->url = route('media', ['id' => $this->id, 'slug' => $this->slug]);;
-            $res->target = '_self';
-        // }
-
-        return $res;
+        return sprintf('%s/uploads/media/%s', base_path(), $this->name);
     }
 
 }

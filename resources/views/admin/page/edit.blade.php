@@ -44,14 +44,14 @@
 
             <div class="form-group">
                 {!! Form::label('title', 'Title') !!}
-                {!! Form::text('title', $page->title, ['class' => 'form-control input-lg', 'placeholder' => 'Title of Product']) !!}
+                {!! Form::text('title', $page->title, ['class' => 'form-control', 'placeholder' => 'Title of Product']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('slug', 'Slug') !!}
-                {!! Form::text('slug', $page->slug, ['class' => 'form-control input-lg', 'placeholder' => 'Slug']) !!}
+                {!! Form::text('slug', $page->slug, ['class' => 'form-control', 'placeholder' => 'Slug']) !!}
             </div>
 
-            <div class="form-group form-group-lg">
+            <div class="form-group">
                 {!! Form::label('tags', 'Tags') !!}
                 <select class="form-control input-lg tagging" multiple="multiple" name="tags[]">
                     @foreach(explode(',',$page->tags) as $tag)
@@ -77,8 +77,8 @@
                         {!! Form::select('profile', $profiles, $page->profile->id,['class' => 'form-control']); !!}
                     </div>
 
-                    {!! Form::button('Update', ['class' => 'btn btn-success btn-lg', 'id' => 'btn_submit']) !!}
-                    {!! Form::button('Delete', ['class' => 'btn btn-danger btn-lg', 'id' => 'btn_delete']) !!}
+                    {!! Form::button('Update', ['class' => 'btn btn-success', 'id' => 'btn_submit']) !!}
+                    {!! Form::button('Delete', ['class' => 'btn btn-danger', 'id' => 'btn_delete']) !!}
 
                     <i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>
                     <div class="progress progress-striped active" style="display:none;">
@@ -98,12 +98,14 @@
         <div class="col-md-12">
 
             <div id="editor">
-                <h2>This editor is the default build of Trumbowyg.</h2>
+                <h2>Título de la página.</h2>
                 <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, aliquam, minima fugiat placeat provident optio nam reiciendis eius beatae quibusdam!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, aliquam, minima fugiat placeat provident optio nam reiciendis eius beatae quibusdam!
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, aliquam, minima fugiat placeat provident optio nam reiciendis eius beatae quibusdam!
                 </p>
                 <p>
-                    The text is derived from Cicero's De Finibus Bonorum et Malorum (On the Ends of Goods and Evils, or alternatively [About] The Purposes of Good and Evil ). The original passage began: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit (Translation: &quot;Neither is there anyone who loves grief itself since it is grief and thus wants to obtain it&quot;).
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, aliquam, minima fugiat placeat provident optio nam reiciendis eius beatae quibusdam!
                 </p>
             </div>
 

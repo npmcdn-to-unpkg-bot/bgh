@@ -1,10 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Helpers\Resize;
 use App\Helpers\ResizeHelper;
+use App\Helpers\VideoStream;
+
 use App\Repository\MediaRepositoryInterface;
 use App\Http\Requests\Media\EditRequest;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Http\Request;
+
 
 class MediaController extends Controller
 {
@@ -14,18 +19,61 @@ class MediaController extends Controller
         $this->media = $media;
     }
 
-    public function getIndex($id, $slug = null)
+    public function getMedia(Request $request, $id, $slug = null)
     {
 
         $media = $this->media->getById($id);
 
-        if (empty($slug) or $slug != $media->slug) {
-            return redirect()->route('media', ['id' => $media->id, 'slug' => $media->slug], 301);
+        // if (empty($slug) or $slug != $media->slug) {
+        //     return redirect()->route('media', ['id' => $media->id, 'slug' => $media->slug], 301);
+        // }
+
+        // si existe el parametro view, muestro la pagina con la foto y sus datos
+        if ($request->exists('view')) {
+            $title = ucfirst($media->title);
+            return view('media.view', compact('media', 'title'));
+        }
+        else{
+
+            switch ($media->type) {
+
+                case 'image':
+
+                    if ($request->has('recipe')) { // el has no toma como valido un ''
+                        $recipe = $request->get('recipe');
+                    }
+                    else{
+                        $recipe = 'mainMedia';
+                    }
+
+                    if ($request->exists('download')) {
+                        return response()->download(Resize::img($media->name,$recipe,true));
+                    }
+                    else{
+                        return response()->file(Resize::img($media->name,$recipe,true));
+                    }
+
+                    break;
+
+                case 'video':
+
+                    if ($request->exists('download')) {
+                        return response()->download($media->getOriginalPath());
+                    }
+                    else{
+                        $stream = new VideoStream($media->getOriginalPath());
+                        $stream->start();
+                    }
+
+                    break;
+
+                default:
+                    return Response::error('404');
+
+            }
+
         }
 
-        $title = ucfirst($media->title);
-
-        return view('media.view', compact('media', 'title'));
     }
 
     public function download($id)

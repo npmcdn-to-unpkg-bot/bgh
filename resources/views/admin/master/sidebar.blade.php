@@ -90,12 +90,12 @@
                 </ul>
             </li>
 
-            <li class="treeview">
+           {{--  <li class="treeview">
                 <a href="{{ route('admin.reports') }}">
                     <i class="fa fa-exclamation-triangle"></i>
                     <span>{{ t('Reports') }}</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="treeview">
                 <a href="#">

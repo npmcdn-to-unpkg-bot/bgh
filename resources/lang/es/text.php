@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'Delete?' => 'Eliminar?',
+    'Select files..' => 'Seleccionar archivos..',
     'Media' => 'Media',
     'Yes' => 'Si',
     'No' => 'No',
@@ -201,7 +203,7 @@ return [
     'Status'                                                                      => 'Status',
     'Tagged with'                                                                 => 'Tagged with',
     'Tags are required'                                                           => 'Tags are required',
-    'Tags'                                                                        => 'Tags',
+    'Tags'                                                                        => 'Etiquetas',
     'Taken At'                                                                    => 'Taken At',
     'Time Frame'                                                                  => 'Time Frame',
     'terms and conditions'                                                        => 'términos y condiciones',
@@ -222,7 +224,7 @@ return [
     'Update'                                                                      => 'Actualizar',
     'Upload Completed and waiting for approval'                                   => 'Upload Completed and waiting for approval',
     'Upload Completed'                                                            => 'Upload Completed',
-    'Upload'                                                                      => 'Upload',
+    'Upload'                                                                      => 'Subir',
     'Uploaded'                                                                    => 'Uploaded',
     'Username or Email address'                                                   => 'Username or Email address',
     'Username'                                                                    => 'Username',

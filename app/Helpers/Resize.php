@@ -139,14 +139,14 @@ class Resize
     }
 
 
-    public static function getSizes()
+    public static function img($name, $recipe = null, $inpath = false)
     {
-        return self::$sizes;
+        $image = new Resize($name, $recipe);
+        return $image->process($inpath);
     }
 
 
-
-    protected function process()
+    protected function process($inpath = false)
     {
 
         if ($this->file instanceof User) {
@@ -157,8 +157,15 @@ class Resize
 
         $resize = new ResizeHelper($this->file, $this->dir, $this->recipe, $this->width, $this->height, $this->method, $this->watermark, $this->bnw);
 
-        return $resize->resize();
+        return $resize->resize($inpath);
     }
+
+
+    public static function getSizes()
+    {
+        return self::$sizes;
+    }
+
 
     // public static function image($image, $recipe = null)
     // {
@@ -178,11 +185,6 @@ class Resize
     //     return $image->process();
     // }
 
-    public static function img($name, $recipe = null)
-    {
-        $image = new Resize($name, $recipe);
-        return $image->process();
-    }
 
     public function __call($func, $args)
     {

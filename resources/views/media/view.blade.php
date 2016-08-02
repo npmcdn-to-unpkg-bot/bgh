@@ -58,7 +58,3 @@
    <!--.clearfix-->
 
 @endsection
-
-@section('sidebar')
-   @include('media/sidebar')
-@endsection

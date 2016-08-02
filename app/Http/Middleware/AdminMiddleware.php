@@ -26,12 +26,12 @@ class AdminMiddleware
                 return $next($request);
             }
             else{
-                return redirect()->back()->with('flashError', 'User is not admin');
+                return redirect(route('home'))->with('flashError', 'User is not admin');
             }
 
         }
         else{
-            return redirect()->back()->with('flashError', 'No user authenticated');
+            return redirect(route('home'))->with('flashError', 'No user authenticated');
         }
 
         // return redirect(route('home'));

@@ -141,15 +141,16 @@
                 $('form[name="delete"]').attr('action',$this.attr('href'));
 
                 BootstrapDialog.show({
-                    message: 'Confirm Delete?',
+                    title: '{{t('Delete?')}}',
+                    // message: '{{t('Delete?')}}',
                     buttons: [{
-                        label: 'Confirm',
-                        cssClass: 'btn-primary',
+                        label: '{{t('Yes')}}',
+                        cssClass: 'btn-danger',
                         action: function(){
                             $('form[name="delete"]').attr('action',$this.attr('href')).submit();
                         }
                     }, {
-                        label: 'Close',
+                        label: '{{t('No')}}',
                         action: function(dlg){
                             dlg.close();
                         }
