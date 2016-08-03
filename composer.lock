@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4e768fca43f90c4dd3b68a8fc367a7b1",
-    "content-hash": "a7e04041d2fd50a1ed9383be67cbd93b",
+    "hash": "1fb246dbb35c73b32af1893e61bd5d35",
+    "content-hash": "d6eaa93fa8711b9484597b1758672e95",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -186,6 +186,56 @@
             ],
             "abandoned": true,
             "time": "2015-05-27 21:28:58"
+        },
+        {
+            "name": "blueimp/jquery-file-upload",
+            "version": "9.12.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vkhramtsov/jQuery-File-Upload.git",
+                "reference": "f60a273f69303b140c5089e5cde1c8a187a94871"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vkhramtsov/jQuery-File-Upload/zipball/f60a273f69303b140c5089e5cde1c8a187a94871",
+                "reference": "f60a273f69303b140c5089e5cde1c8a187a94871",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Tschan",
+                    "homepage": "https://blueimp.net"
+                }
+            ],
+            "description": "File Upload widget for jQuery.",
+            "homepage": "https://github.com/blueimp/jQuery-File-Upload",
+            "keywords": [
+                "bootstrap",
+                "chunk",
+                "cross-domain",
+                "cross-site",
+                "drag",
+                "drop",
+                "file",
+                "gae",
+                "go",
+                "jquery",
+                "multiple",
+                "php",
+                "preview",
+                "progress",
+                "python",
+                "resume",
+                "selection",
+                "upload",
+                "widget"
+            ],
+            "time": "2016-06-13 05:52:31"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -2094,6 +2144,60 @@
                 "php"
             ],
             "time": "2016-04-19 13:41:41"
+        },
+        {
+            "name": "openskill/datatable",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OpenSkill/Datatable.git",
+                "reference": "c344d2538030f97f17cb17b86ae32ef578e42474"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OpenSkill/Datatable/zipball/c344d2538030f97f17cb17b86ae32ef578e42474",
+                "reference": "c344d2538030f97f17cb17b86ae32ef578e42474",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": ">=4.2.0",
+                "illuminate/support": ">=4.2.0",
+                "php": ">=5.4.0",
+                "symfony/http-foundation": "2.7.*|~3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "4.8.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenSkill\\Datatable\\": "src/OpenSkill/Datatable"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Plaschke",
+                    "email": "github@nilsplaschke.de",
+                    "homepage": "http://nilsplaschke.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a Laravel 5 package for the server and client side of DataTables (http://datatables.net/)",
+            "homepage": "http://github.com/OpenSkill/Datatable",
+            "keywords": [
+                "Dynatable",
+                "ajax",
+                "datatables",
+                "jquery",
+                "laravel"
+            ],
+            "time": "2016-01-18 01:21:17"
         },
         {
             "name": "paragonie/random_compat",

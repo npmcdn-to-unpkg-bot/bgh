@@ -5,65 +5,56 @@
     <title>{{ siteSettings('siteName') }} | {{ t('Admin') }}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    {!! HTML::style('//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') !!}
-    {!! HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css') !!}
-    {!! HTML::style('static/admin/css/normalize.css') !!}
+    {!! HTML::style('static/plugins/Ionicons/css/ionicons.min.css') !!}
+
+    {!! HTML::style('static/plugins/font-awesome/css/font-awesome.min.css') !!}
+
+    {!! HTML::style('static/plugins/normalize-css/normalize.css') !!}
 
     <!--[if lt IE 9]>
     {!! HTML::style('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js') !!}
     {!! HTML::style('https://oss.maxcdn.com/respond/1.4.2/respond.min.js') !!}
     <![endif]-->
 
-    <!-- JQUERY -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    {!! HTML::script('static/plugins/jquery/dist/jquery.min.js') !!}
 
+    {!! HTML::script('static/plugins/jquery-ui/jquery-ui.min.js') !!}
+    {!! HTML::style('static/plugins/jquery-ui/themes/smoothness/jquery-ui.css') !!}
 
-    <!-- BOOTSTRAP -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    {!! HTML::script('static/plugins/bootstrap/dist/js/bootstrap.min.js') !!}
+    {!! HTML::style('static/plugins/bootstrap/dist/css/bootstrap.min.css') !!}
+    {!! HTML::style('static/plugins/bootstrap/dist/css/bootstrap-theme.min.css') !!}
 
-    <!-- notificaciones toaster -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" ></script>
+    {!! HTML::script('static/plugins/toastr/toastr.min.js') !!}
+    {!! HTML::style('static/plugins/toastr/toastr.min.css') !!}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    {!! HTML::script('static/plugins/select2/dist/js/select2.min.js') !!}
+    {!! HTML::style('static/plugins/select2/dist/css/select2.min.css') !!}
+
+    {!! HTML::style('static/plugins/datatables/media/css/jquery.dataTables.css') !!}
+    {!! HTML::script('static/plugins/datatables/media/js/jquery.dataTables.min.js') !!}
+
+    {!! HTML::script('static/plugins/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js') !!}
+    {!! HTML::style('static/plugins/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css') !!}
+
+    {!! HTML::script('static/plugins/raphael/raphael.min.js') !!}
+
+    {!! HTML::script('static/plugins/morris.js/morris.min.js') !!}
+
+    {!! HTML::script('static/plugins/nestedSortable/jquery.ui.nestedSortable.js') !!}
+
+    {!! HTML::script('static/plugins/jquery.pin/jquery.pin.js') !!}
+
+    {!! HTML::script('static/plugins/headroom.js/dist/headroom.min.js') !!}
+
+    {!! HTML::script('static/plugins/jquery-form/jquery.form.js') !!}
 
 
     {!! HTML::style('static/admin/css/animate.css') !!}
-
-    {!! HTML::style('static/admin/css/bootstrap-dialog.min.css') !!}
-
-    {!! HTML::style('static/admin/plugins/datatables/css/jquery.dataTables.css') !!}
-    {{-- {!! HTML::style('static/admin/plugins/datatables/css/dataTables.jqueryui.css') !!} --}}
-    {{-- {!! HTML::style('static/admin/plugins/datatables/css/dataTables.bootstrap.css') !!} --}}
-    {!! HTML::script('static/admin/plugins/datatables/js/jquery.dataTables.min.js') !!}
-
     {!! HTML::style('static/admin/css/AdminLTE.css') !!}
     {!! HTML::style('static/admin/css/custom.css') !!}
 
-    {!! HTML::script('static/admin/js/bootstrap-dialog.min.js') !!}
-    {!! HTML::script('static/admin/js/raphael.min.js') !!}
-    {!! HTML::script('static/admin/js/morris.min.js') !!}
     {!! HTML::script('static/admin/js/adminLTE.js') !!}
-    {!! HTML::script('static/admin/js/jquery.mjs.nestedSortable.js') !!}
-    {!! HTML::script('static/admin/js/jquery-checktree.js') !!}
-
-    {{-- https://github.com/webpop/jquery.pin --}}
-    {!! HTML::script('static/admin/plugins/jquery.pin/jquery.pin.js') !!}
-
-    {{-- https://github.com/WickyNilliams/headroom.js  --}}
-    {!! HTML::script('static/admin/plugins/headroom/headroom.js') !!}
-
-    {{-- http://jquery.malsup.com/form/#ajaxForm --}}
-    {!! HTML::script('static/admin/js/jquery.form.min.js') !!}
-
     {!! HTML::script('static/admin/main.js') !!}
 
     @yield('extra-css')
@@ -102,7 +93,7 @@
                 <span class="sr-only">Toggle navigation</span>
             </a>
 
-            <div class="container">
+            <div class="container22">
                 <div class="navbar-header">
                   <a href="../../index2.html" class="navbar-brand"><b>{{ siteSettings('siteName') }}</b><?=siteSettings('siteSubname')?></a>
                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -302,23 +293,11 @@
   $(document).ready(function() {
 
 
+      // reb puede traer problemas con el jquery 3
+      $(".pin").pin({padding: {top: 10, bottom: 10}});
+
+
   });
-
-
-  // (function() {
-
-  //     var header = new Headroom(document.querySelector(".navbar"), {
-  //         tolerance: 5,
-  //         offset : 20,
-  //         classes: {
-  //           initial: "animated",
-  //           pinned: "swingInX",
-  //           unpinned: "swingOutX"
-  //         }
-  //     });
-  //     header.init();
-
-  // }());
 
 </script>
 

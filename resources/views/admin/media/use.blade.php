@@ -144,9 +144,6 @@
 
         $(document).ready(function() {
 
-            $(".pin").pin({padding: {top: 10, bottom: 10}});
-
-
             $('#btn_delete').on('click',function() {
 
                 BootstrapDialog.show({

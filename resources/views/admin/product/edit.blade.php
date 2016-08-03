@@ -236,8 +236,6 @@
 
         $(document).ready(function() {
 
-            $(".pin").pin({padding: {top: 10, bottom: 10}});
-
             $(".tagging").select2({
                 theme: "bootstrap",
                 minimumInputLength: 3,

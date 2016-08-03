@@ -20,8 +20,8 @@
     <!-- Ckeditor js -->
     <!--script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js"></script-->
 
-    {!! HTML::style('static/admin/plugins/grideditor/grideditor.css') !!}
-    {!! HTML::script('static/admin/plugins/grideditor/jquery.grideditor.js') !!}
+    {!! HTML::style('static/plugins/grid-editor/dist/grideditor.css') !!}
+    {!! HTML::script('static/plugins/grid-editor/dist/jquery.grideditor.min.js') !!}
 
     <style>
 

@@ -5,10 +5,8 @@
     <!-- blueimp Gallery styles -->
     <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
 
-    {!! HTML::style('static/admin/plugins/jQuery-File-Upload/css/jquery.fileupload.css') !!}
-    {!! HTML::style('static/admin/plugins/jQuery-File-Upload/css/jquery.fileupload-ui.css') !!}
-    {{-- {!! HTML::style('static/admin/plugins/jQuery-File-Upload/css/jquery.fileupload-noscript.css') !!} --}}
-    {{-- {!! HTML::style('static/admin/plugins/jQuery-File-Upload/css/jquery.fileupload-ui-noscript.css') !!} --}}
+    {!! HTML::style('static/plugins/jquery-file-upload/css/jquery.fileupload.css') !!}
+    {!! HTML::style('static/plugins/jquery-file-upload/css/jquery.fileupload-ui.css') !!}
 
 @endsection
 
@@ -73,16 +71,6 @@
 
     </form>
 
-        <!-- The blueimp Gallery widget -->
-        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
-            <div class="slides"></div>
-            <h3 class="title"></h3>
-            <a class="prev">‹</a>
-            <a class="next">›</a>
-            <a class="close">×</a>
-            <a class="play-pause"></a>
-            <ol class="indicator"></ol>
-        </div>
 
     <script id="template-upload" type="text/x-tmpl">
 
@@ -166,28 +154,18 @@
 
 @section('extra-js')
 
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/vendor/jquery.ui.widget.js') !!}
-
-    <!-- The Templates plugin is included to render the upload/download listings -->
-    <script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
-    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
-    <!-- blueimp Gallery script -->
-    <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
-
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.iframe-transport.js') !!}
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload.js') !!}
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-process.js') !!}
-
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-image.js') !!}
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-audio.js') !!}
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-video.js') !!}
-
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-validate.js') !!}
-    {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-ui.js') !!}
-    {{-- {!! HTML::script('static/admin/plugins/jQuery-File-Upload/js/jquery.fileupload-jquery-ui.js') !!} --}}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js') !!}
+    {!! HTML::script('static/plugins/blueimp-tmpl/js/tmpl.min.js') !!}
+    {!! HTML::script('static/plugins/blueimp-load-image/js/load-image.all.min.js') !!}
+    {!! HTML::script('static/plugins/blueimp-canvas-to-blob/js/canvas-to-blob.min.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.iframe-transport.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-process.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-image.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-audio.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-video.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-validate.js') !!}
+    {!! HTML::script('static/plugins/jquery-file-upload/js/jquery.fileupload-ui.js') !!}
 
     <script>
 
