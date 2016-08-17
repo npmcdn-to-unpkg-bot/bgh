@@ -38,11 +38,20 @@
 @section('extra-js')
     <script>
         $(function() {
+
+
+
             $('#table').DataTable({
+                // destroy: true,
                 processing: true,
                 serverSide: true,
                 responsive: true,
                 autoWidth: false,
+                pagingType: 'full_numbers',
+                search: {
+                    caseInsensitive: true
+                },
+                order: [[ 2, "asc" ]],
                 ajax: '{!! route('admin.pages.data', ['type' => $type]) !!}',
                 columns: [
                     { data: 'id', name: 'pages.id'},
@@ -50,14 +59,30 @@
                     { data: 'slug', name: 'pages.slug' },
                     { data: 'created_at', name: 'pages.created_at' },
                     { data: 'updated_at', name: 'pages.updated_at' },
-                    { data: 'user', name: 'user' },
-                    { data: 'profile', name: 'profile' },
+                    { data: 'user', name: 'user' , orderable: false},
+                    { data: 'profile', name: 'profile' , orderable: false},
                     { data: 'actions', name: 'actions', orderable: false, searchable: false },
                 ],
-                "fnInitComplete": function () {
+                fnInitComplete: function () {
 
+                    $('div.dataTables_filter input').addClass('form-control');
+                    $('div.dataTables_length select').addClass('form-control');
+                },
+                language: {
+                    processing: '<i class="fa fa-cog fa-spin fa-fw loading fa-2x"></i>',
+                    sSearch: '{{ t("Search") }} ',
+                    oPaginate: {
+                        sFirst: '{{ t("First") }}',
+                        sLast: '{{ t("Last") }}',
+                        sNext: '{{ t("Next") }}',
+                        sPrevious: '{{ t("Previous") }}'
+                    },
+                    sEmptyTable: '{{ t("Empty") }}',
+                    sZeroRecords: '{{ t("Empty") }}',
+                    sLengthMenu: '{{ t("Showing") }} _MENU_ {{ t("records") }}'
                 }
             });
+
         });
 
 
