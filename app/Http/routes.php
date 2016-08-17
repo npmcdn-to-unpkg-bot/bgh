@@ -181,6 +181,7 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
         // Pages
         Route::get('admin/pages', ['as' => 'admin.pages', 'uses' => 'PageController@getIndex']);
         Route::get('admin/pages/data', ['as' => 'admin.pages.data', 'uses' => 'PageController@getData']);
+        Route::get('admin/pages/{id}/editor', ['as' => 'admin.pages.editor', 'uses' => 'PageController@editor']);
         Route::get('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@edit']);
         Route::patch('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@patch', 'before' => 'csrf']);
         Route::delete('admin/pages/{id}/edit', ['as' => 'admin.pages.edit', 'uses' => 'PageController@delete', 'before' => 'csrf']);

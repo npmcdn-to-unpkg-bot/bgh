@@ -1,10 +1,16 @@
-var elixir = require('laravel-elixir');
-// Configure elixir to use different directories
+var Elixir = require('laravel-elixir');
 
-// elixir.config.assetsDir = 'app/assets/';
-// elixir.config.cssOutput = 'public_html/css';
-// elixir.config.jsOutput = 'public/js';
-// elixir.config.bowerDir = 'vendor/bower_components';
+require('elixir-busting');
+
+var config = Elixir.config;
+// Change your assets path
+config.assetsPath = './static';
+
+// elixir.config.assetsDir = 'resources/assets/';
+// elixir.config.cssOutput = 'static/css';
+// elixir.config.jsOutput = 'js';
+// elixir.config.bowerDir = 'static/plugins';
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -16,9 +22,26 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function (mix) {
+Elixir(function (mix) {
 
-    mix.sass("bootstrap.scss", 'public/static/css/bootstrap.min.css').styles([
+    //mix.sass("articles.scss", 'static/css/articles.css');
+
+    mix.sass("articles.scss", 'static/css/articles.css').styles([
+        "1.css",
+        "2.css",
+    ], 'static/css/12.css');
+
+    mix.sass("bootstrap.scss", 'static/css/bootstrap.min.css');
+
+    mix.busting([
+        config.assetsPath + '/css/12.css',
+        config.assetsPath + '/css/articles.css'
+    ]);
+
+//    mix.version(['static/css/12.css']);
+
+/*
+    mix.sass("bootstrap.scss", 'static/css/bootstrap.min.css').styles([
         "css/uploader.css",
         "css/bootstrap.min.css",
         "css/alert.css",
@@ -30,15 +53,15 @@ elixir(function (mix) {
         'plugins/jquery-file-upload/css/jquery.fileupload.css',
         'plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
         'plugins/lightgallery/dist/css/lightgallery.min.css',
-    ], 'public/static/css/main.css', 'public/static');
+    ], 'static/css/main.css', 'static');
 
-    mix.styles(["static/css/style.css"], 'public/static/css/style.min.css', 'public');
+    mix.styles(["static/css/style.css"], 'static/css/style.min.css', 'public');
 
-    mix.copy('public/static/plugins/bootstrap-sass/assets/fonts/bootstrap', 'public/static/fonts');
-    mix.copy('public/static/plugins/gmaps/gmaps.min.js', 'public/static/js');
-    mix.copy('public/static/plugins/fontawesome/fonts', 'public/static/fonts');
-    mix.copy('public/static/plugins/lightgallery/dist/img', 'public/static/img');
-    mix.copy('public/static/plugins/lightgallery/dist/fonts', 'public/static/fonts');
+    mix.copy('static/plugins/bootstrap-sass/assets/fonts/bootstrap', 'static/fonts');
+    mix.copy('static/plugins/gmaps/gmaps.min.js', 'static/js');
+    mix.copy('static/plugins/fontawesome/fonts', 'static/fonts');
+    mix.copy('static/plugins/lightgallery/dist/img', 'static/img');
+    mix.copy('static/plugins/lightgallery/dist/fonts', 'static/fonts');
 
     mix.scripts([
         'plugins/jquery/dist/jquery.js',
@@ -70,13 +93,19 @@ elixir(function (mix) {
         'plugins/autosize/dist/autosize.min.js',
         'js/alert.js',
         'js/app.js',
-    ], 'public/static/js/main.js', 'public/static');
-    mix.scripts(['static/js/custom.js'], 'public/static/js/custom.min.js', 'public');
+    ], 'static/js/main.js', 'static');
+    mix.scripts(['static/js/custom.js'], 'static/js/custom.min.js', 'public');
+*/
 
     /**
      * Admin Panel Template requirement's starts from here.
      */
 
+
+
+
+
+/*
     mix.styles([
         "css/uploader.css",
         "css/bootstrap.min.css",
@@ -92,7 +121,7 @@ elixir(function (mix) {
         'plugins/select2/dist/css/select2.min.css',
         'plugins/jquery-file-upload/css/jquery.fileupload.css',
         'plugins/jquery-file-upload/css/jquery.fileupload-ui.css',
-    ], 'public/static/admin/css/main.css', 'public/static');
+    ], 'static/admin/css/main.css', 'static');
 
     mix.scripts([
         'plugins/jquery/dist/jquery.js',
@@ -121,11 +150,13 @@ elixir(function (mix) {
         'admin/js/sortable.js',
         'admin/js/app.min.js',
         'admin/js/custom.js',
-    ], 'public/static/admin/main.js', 'public/static');
+    ], 'static/admin/main.js', 'static');
 
-    mix.copy('public/static/plugins/datatables/media/images', 'public/static/admin/images');
-    mix.copy('public/static/plugins/jquery-file-upload/img', 'public/static/admin/img');
-    mix.copy('public/static/plugins/bootstrap-sass/assets/fonts/bootstrap', 'public/static/admin/fonts');
-    mix.copy('public/static/plugins/fontawesome/fonts', 'public/static/admin/fonts');
+    mix.copy('static/plugins/datatables/media/images', 'static/admin/images');
+    mix.copy('static/plugins/jquery-file-upload/img', 'static/admin/img');
+    mix.copy('static/plugins/bootstrap-sass/assets/fonts/bootstrap', 'static/admin/fonts');
+    mix.copy('static/plugins/fontawesome/fonts', 'static/admin/fonts');
+
+*/
 
 });

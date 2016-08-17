@@ -1,6 +1,6 @@
 <?php
 return array(
-    'path'   => '../../static/smilies/',
+    'path'   => '../static/smilies/',
 
     'images' => array(
         ':mrgreen:' => array('icon_mrgreen.gif', '18', '18', 'question'),
