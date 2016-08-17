@@ -64,6 +64,16 @@ class PageController extends Controller
     }
 
 
+    public function editor($id)
+    {
+        $page = Page::whereId($id)->with('user')->firstOrFail();
+
+        $title = t('Edit');
+
+        return view('admin.page.editor', compact('page', 'title'));
+    }
+
+
     // #################################
     // REB metodos que responden al routes en modo REST con verbs (PUT, PATCH, DELETE) para no usar el post en distitnas rutas y ser mas organico
     // #################################
@@ -79,6 +89,8 @@ class PageController extends Controller
 
         return view('admin.page.edit', compact('page', 'title', 'profiles'));
     }
+
+
 
 
     public function patch(PageRequest $request)
