@@ -19,7 +19,7 @@
     {!! HTML::style('static/css/style.css') !!}
 
     {!! HTML::style('static/css/normalize.css') !!}
-    {!! HTML::style('static/css/bootstrap.css') !!}
+    {!! HTML::style('static/css/bootstrap.min.css') !!}
 
     {!! HTML::script('static/js/modernizr.custom.js') !!}
 

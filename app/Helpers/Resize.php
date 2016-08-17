@@ -139,14 +139,23 @@ class Resize
     }
 
 
+    // devuelvo solo la url para usar una llamada simple a imagen en cualquier lado
     public static function img($name, $recipe = null, $inpath = false)
     {
         $image = new Resize($name, $recipe);
-        return $image->process($inpath);
+        $image_obj = $image->process($inpath);
+        return $image_obj->url;
     }
 
+    // deuvelvo objto de la imagen con propiedades url,width,height y demas
+    public static function image($name, $recipe = null, $inpath = false)
+    {
+        $image = new Resize($name, $recipe);
+        $image_obj = $image->process($inpath,true);
+        return $image_obj;
+    }
 
-    protected function process($inpath = false)
+    protected function process($inpath = false, $with_properties = false)
     {
 
         if ($this->file instanceof User) {
@@ -157,7 +166,7 @@ class Resize
 
         $resize = new ResizeHelper($this->file, $this->dir, $this->recipe, $this->width, $this->height, $this->method, $this->watermark, $this->bnw);
 
-        return $resize->resize($inpath);
+        return $resize->resize($inpath,$with_properties);
     }
 
 

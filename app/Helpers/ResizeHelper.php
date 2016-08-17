@@ -60,35 +60,27 @@ class ResizeHelper extends NamespacedItemResolver
     //     return substr(hash('sha1', sprintf('%s%s', $src, $pad)), 0, $len);
     // }
 
-    public function resize($inpath = false)
+    public function resize($inpath = false, $with_properties = false)
     {
-
-        // var_dump($this);
-
         // if($inpath){
         //     return 'aaaaaa.jpg';
         // }
 
-        return $this->checkIfCacheExits($inpath);
+        $url = $this->checkIfCacheExits($inpath);
 
+        $img = new \stdClass();
+        $img->url = $url;
 
+        if($with_properties){
+            list($w, $h) = getimagesize(public_path() . $this->getCachedFileAbsolutePath());
+            // $img->maxwidth = $this->width;
+            // $img->maxheight = $this->height;
+            $img->width = $w;
+            $img->height = $h;
+        }
 
-        // ****** REB PUEDE QUE LA HAYA COMENTADO Y SEA NECESARIA A PESAR DE ESTAR en checkIfCacheExits
-        // if ($url = $this->checkIfCacheExits()) {
-        //     return $url;
-        // }
-        // $this->createCache();
+        return $img;
 
-
-        // $img = new \stdClass();
-        // $img->url = $this->url();
-        // list($w, $h) = getimagesize(public_path() . $this->getCachedFileAbsolutePath());
-        // $img->width = $w;
-        // $img->height = $h;
-        // return $img;
-
-
-        // return $this->url();
     }
 
     protected function checkIfCacheExits($inpath = false)
@@ -96,11 +88,7 @@ class ResizeHelper extends NamespacedItemResolver
 
         if (config('filesystems.default') == 'local') {
             $this->createCache();
-
-            // var_dump($this);
-
             return $this->url($inpath);
-
         }
 
         if (Cache::store('image')->has($this->key)) {
