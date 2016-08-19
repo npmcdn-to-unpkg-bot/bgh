@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Resize;
 use App\Helpers\ResizeHelper;
+use App\Helpers\ImageHelper;
+
 use App\Models\Profile;
 use App\Models\Media;
 use App\Models\MediaInfo;
@@ -346,6 +348,16 @@ class MediaController extends Controller
             $info['software'] = (isset($exif['IFD0']['Software']) && strlen($exif['IFD0']['Software']) > 0 ? $exif['IFD0']['Software'] : null);
             $info['taken_at'] = $taken_at;
 
+
+            $image_helper = new ImageHelper($real);
+
+            list ($color1, $color2) = $image_helper->getDominantColors();
+            $info['color_1'] = $color1;
+            $info['color_2'] = $color2;
+
+            $brightness_factor = $image_helper->getOverallBrigthness();
+            $info['brightness_factor'] = $brightness_factor;
+
             $thumbnail = $newname;
 
         }
@@ -366,6 +378,16 @@ class MediaController extends Controller
             $thumbnail_status = Thumbnail::getThumbnail($video_path,$thumbnail_path,$thumbnail_image);
             if($thumbnail_status){
                 $thumbnail = $thumbnail_image;
+
+                $image_helper = new ImageHelper($real);
+
+                // list ($color1, $color2) = $image_helper->getDominantColors();
+                // $info['color_1'] = $color1;
+                // $info['color_2'] = $color2;
+
+                // $brightness_factor = $image_helper->getOverallBrigthness();
+                // $info['brightness_factor'] = $brightness_factor;
+
             }
             else{
                 $thumbnail = '';

@@ -28,6 +28,17 @@
                     {!! Form::text('slug',$category->slug,['class'=>'form-control','placeholder'=>'Slug','required'=>'required']) !!}
                 </div>
 
+                <div class="form-group">
+                    {!! Form::label('tags', 'Tags') !!}
+                    <select class="form-control  tagging" multiple="multiple" name="tags[]">
+                        @foreach(explode(',',$category->tags) as $tag)
+                            @if($tag)
+                                <option selected="selected">{{ $tag }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
                 {!! Form::submit('Update',['class'=>'btn btn-success']) !!}
                 <button type="button" class="btn btn-default" rel="close">Close</button>
 
@@ -40,7 +51,24 @@
 @section('extra-js')
     <script type="text/javascript">
 
+        $(document).ready(function() {
+
+            $(".tagging").select2({
+                theme: "bootstrap",
+                minimumInputLength: 3,
+                maximumSelectionLength: {{ (int)siteSettings('tagsLimit') }},
+                tags: true,
+                tokenSeparators: [","]
+            })
+
+            $("[rel=close]").click(function () {
+                location.href='{{ url('admin/productcategories/') }}';
+            });
+
+        });
+
         (function($){
+
             $.fn.extend({
                 select2_sortable: function(){
                     var select = $(this);
@@ -61,16 +89,6 @@
                 }
             });
         }(jQuery));
-
-
-
-        $(function () {
-
-            $("[rel=close]").click(function () {
-                location.href='{{ url('admin/productcategories/') }}';
-            });
-
-        });
 
     </script>
 @endsection

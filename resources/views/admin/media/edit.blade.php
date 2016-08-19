@@ -16,24 +16,33 @@
                     Information
                 </a>
                 <li class="list-group-item"><strong>Type</strong> {{ $media->type }}</li>
-                <li class="list-group-item"><strong>Extensión</strong> {{ $media->extension }}</li>
-                <li class="list-group-item"><strong>mime_type</strong> {{ $media->info->mime_type }}</li>
-                <li class="list-group-item"><strong>original</strong> {{ $media->info->original }}</li>
-                <li class="list-group-item"><strong>width</strong> {{ $media->info->width }}</li>
-                <li class="list-group-item"><strong>height</strong> {{ $media->info->height }}</li>
-                <li class="list-group-item"><strong>orientation</strong> {{ $media->info->orientation }}</li>
-                <li class="list-group-item"><strong>resolution</strong> {{ $media->info->resolution }}</li>
+                <li class="list-group-item"><strong>Extensión</strong> {{ strtoupper($media->extension) }}</li>
+                <li class="list-group-item"><strong>Mime Type</strong> {{ $media->info->mime_type }}</li>
+                <li class="list-group-item"><strong>Original</strong> {{ $media->info->original }}</li>
+                <li class="list-group-item"><strong>Width</strong> {{ $media->info->width }}px</li>
+                <li class="list-group-item"><strong>Height</strong> {{ $media->info->height }}px</li>
+                <li class="list-group-item"><strong>Orientation</strong> {{ ucfirst($media->info->orientation) }}</li>
+                <a href="#" class="list-group-item disabled">
+                    Extract
+                </a>
+                <li class="list-group-item"><strong>Primary Color</strong> #{{ $media->info->color_1 }} <div style="height:15px;width:100%;background-color:#{{ $media->info->color_1 }}"></div></li>
+                <li class="list-group-item"><strong>Secondary Color</strong> #{{ $media->info->color_2 }} <div style="height:15px;width:100%;background-color:#{{ $media->info->color_2 }}"></div></li>
+                <li class="list-group-item"><strong>Overall Brightness</strong> {{ $media->info->brightness_factor }}</li>
+                <a href="#" class="list-group-item disabled">
+                    Camera
+                </a>
+                <li class="list-group-item"><strong>Resolution</strong> {{ $media->info->resolution }}</li>
+                <li class="list-group-item"><strong>Camera</strong> {{ $media->info->camera }}</li>
+                <li class="list-group-item"><strong>Software</strong> {{ $media->info->software }}</li>
+                <li class="list-group-item"><strong>Copyright</strong> {{ $media->info->copyright }}</li>
                 <a href="#" class="list-group-item disabled">
                     EXIF
                 </a>
-                <li class="list-group-item"><strong>focal_length</strong> {{ $media->info->focal_length }}</li>
-                <li class="list-group-item"><strong>iso</strong> {{ $media->info->iso }}</li>
-                <li class="list-group-item"><strong>shutter_speed</strong> {{ $media->info->shutter_speed }}</li>
-                <li class="list-group-item"><strong>aperture</strong> {{ $media->info->aperture }}</li>
-                <li class="list-group-item"><strong>copyright</strong> {{ $media->info->copyright }}</li>
-                <li class="list-group-item"><strong>software</strong> {{ $media->info->software }}</li>
-                <li class="list-group-item"><strong>taken_at</strong> {{ $media->info->taken_at }}</li>
-
+                <li class="list-group-item"><strong>Focal Length</strong> {{ $media->info->focal_length }}</li>
+                <li class="list-group-item"><strong>ISO</strong> {{ $media->info->iso }}</li>
+                <li class="list-group-item"><strong>Shutter Speed</strong> {{ $media->info->shutter_speed }}</li>
+                <li class="list-group-item"><strong>Aperture</strong> {{ $media->info->aperture }}</li>
+                <li class="list-group-item"><strong>Taken</strong> {{ $media->info->taken_at }}</li>
             </ul>
 
         </div>

@@ -97,7 +97,7 @@
                 search: {
                     caseInsensitive: true
                 },
-                order: [[ 2, "asc" ]],
+                order: [[ 1, "desc" ]],
                 ajax: '{!! route('admin.media.data', ['type' => $type]) !!}',
                 columns: [
                     { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false },

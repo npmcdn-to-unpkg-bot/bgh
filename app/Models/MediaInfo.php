@@ -25,7 +25,10 @@ class MediaInfo extends Model
             'resolution',
             'software',
             'taken_at',
-            'orientation'
+            'orientation',
+            'color_1',
+            'color_2',
+            'brightness_factor'
             ];
 
     public function getDates()

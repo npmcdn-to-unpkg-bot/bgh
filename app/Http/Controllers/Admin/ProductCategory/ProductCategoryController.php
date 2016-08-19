@@ -137,6 +137,13 @@ class ProductCategoryController extends Controller
         $category->slug = $request->get('slug');
         $category->name = $request->get('name');
 
+        $tags = null;
+        if ($request->get('tags')) {
+            $tags = implode(',', $request->get('tags'));
+        }
+
+        $category->tags = $tags;
+
         $category->save();
 
         Artisan::call('cache:clear');

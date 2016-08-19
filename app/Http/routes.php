@@ -93,6 +93,8 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
 
     Route::get('admin', ['as' => 'admin', 'uses' => 'IndexController@getIndex']);
 
+    Route::get('admin/test/index', ['as' => 'admin.test.index', 'uses' => 'TestController@getIndex']);
+
     // Comment Manger
     Route::get('admin/comments', ['as' => 'admin.comments', 'uses' => 'Comment\CommentController@getIndex']);
     Route::get('admin/comments/data', ['as' => 'admin.comments.data', 'uses' => 'Comment\CommentController@getData']);
